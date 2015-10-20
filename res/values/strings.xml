@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">SuluPen</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_notebook">NoteBook</string>
+    <string name="title_new_notebook">New NoteBook</string>
+    <string name="edit_new">New</string>
+    <string name="edit_edit">Edit</string>
+    <string name="edit_search">Search</string>
+    <string name="edit_cancel">Cancel</string>
+    <string name="edit_done">Done</string>
+    <string name="new_notebook_tips">Input NoteBook Name</string>
+    <string name="default_notebookname">NoteBook</string>
+    <string name="empty_notebooklist_tips">NoteBook is empty</string>
+
+</resources>
