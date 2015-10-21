@@ -17,6 +17,7 @@ import com.j256.ormlite.stmt.QueryBuilder;
 import android.content.Context;
 import android.util.Log;
 import com.hanvon.sulupen.MainActivity;
+import com.hanvon.sulupen.db.bean.*;
 
 public class SCanRecordDao 
 {
@@ -24,7 +25,7 @@ public class SCanRecordDao
 	private SCanRecordHelper mHelper;
 	private Dao<ScanRecord, Integer> mSCanRecordDao;
 	private List<ScanRecord> mScanRecordList;
-	//private List<YMDInfo> mList;
+	private List<NoteBookInfo> mNoteBookList = new ArrayList<NoteBookInfo>();
 	private int mUpdateCount;
 	//private List<DataListBean> mDayInfoList;
 	//private List<YMDInfo> yearList=new ArrayList<YMDInfo>();
@@ -56,44 +57,118 @@ public class SCanRecordDao
 	// 保存一条数据
 	public void add(ScanRecord article) 
 	{
-		try {
+		try 
+		{
 			mSCanRecordDao.create(article);
-		} catch (SQLException e) {
+		} 
+		catch (SQLException e) 
+		{
 			e.printStackTrace();
 		}
 	}
+	
 	//删除一条记录
 	public void deleteRecord(ScanRecord article)
 	{
-		try {
+		try 
+		{
 			mSCanRecordDao.delete(article);
-		} catch (SQLException e) {
+		} 
+		catch (SQLException e) 
+		{
 			e.printStackTrace();
 		}
 	}
 
-	// 查询数据库里面所有的数据
-	public List<ScanRecord> query() 
-	{
-		try {
-			mScanRecordList = mSCanRecordDao.queryForAll();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return mScanRecordList;
-	}
+
 
 	// 修改数据库里面的数据
 	public int updataScanRecord(ScanRecord mScanRecord) 
 	{
-		try {
+		try 
+		{
 			mUpdateCount = mSCanRecordDao.update(mScanRecord);
-		} catch (SQLException e) {
+		} 
+		catch (SQLException e) 
+		{
 			e.printStackTrace();
 		}
 		return mUpdateCount;
 	}
+	
+	//清空数据
+    public void clearRecords() 
+    {
+        //      Log.i("ymq", "mDayInfoList:"+mDayInfoList);
+        //mDayInfoList.clear();    
+    }
+    
+    //清空数据库
+    public void deleteRecordsDB() 
+    {
+        try 
+        {
+            mSCanRecordDao.delete(mScanRecordList);
+        } 
+        catch (SQLException e) 
+        {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+    
 
+	
+	// 查询数据库里面所有的数据
+    public List<ScanRecord> query() 
+    {
+        try 
+        {
+            mScanRecordList = mSCanRecordDao.queryForAll();
+        } 
+        catch (SQLException e) 
+        {
+            e.printStackTrace();
+        }
+        return mScanRecordList;
+    }
+
+    // 按照时间倒叙将数据库中的数据取出
+    public List<ScanRecord> getALLRecordOrderByTime() 
+    {
+        List<ScanRecord> mList = query();
+        List<ScanRecord> mNewList = null;
+        mNewList = new ArrayList<ScanRecord>();
+        if(mList != null)
+        {
+            for(int i = mList.size()-1; i >=0; i--)
+            {
+                mNewList.add(mList.get(i));
+            }
+        }
+        return mNewList;
+    }
+    
+    public List<NoteBookInfo> getAllNoteBooks()
+    {
+        List<ScanRecord> rawList = getALLRecordOrderByTime();
+        for (int i = 0; i < rawList.size(); i++)
+        {
+            if (rawList.get(i).getRecType().equals("notebook"))
+            {
+                NoteBookInfo notebook = new NoteBookInfo();
+                notebook.setNoteBookName(rawList.get(i).getNoteBookName());
+                notebook.setNoteBookCreateTime(rawList.get(i).getCreateTime());
+                notebook.setNoteBookId(rawList.get(i).getId());
+                mNoteBookList.add(notebook);
+            }    
+        }
+        
+        return mNoteBookList;
+        
+    }
+
+    
 	/**
 	 * 获取年月记录统计数列表
 	 */
@@ -233,18 +308,6 @@ public class SCanRecordDao
 	}
 	*/
 	
-	// 按照时间倒叙将数据库中的数据取出
-	public List<ScanRecord> getALLRecordOrderByTime() {
-		List<ScanRecord> mList = query();
-		List<ScanRecord> mNewList = null;
-		mNewList = new ArrayList<ScanRecord>();
-		if(mList != null){
-		    for(int i = mList.size()-1; i >=0; i--){
-			    mNewList.add(mList.get(i));
-		    }
-		}
-		return mNewList;
-	}
 	/*
 	// 按照时间倒叙将数据库中的数据取出
 		private List<ScanRecord> getALLRecordOrderByTime(String curTopicId) {
@@ -590,25 +653,5 @@ public class SCanRecordDao
 		
 	}
 	*/
-	//清空数据
-	public void clearRecords() {
-		//		Log.i("ymq", "mDayInfoList:"+mDayInfoList);
-		//mDayInfoList.clear();
-		
-	}
-	
-	//清空数据库
-	public void deleteRecordsDB() 
-	{
-		try 
-		{
-			mSCanRecordDao.delete(mScanRecordList);
-		} 
-		catch (SQLException e) 
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-	
-}
+
+    }
