@@ -2,6 +2,8 @@
 package com.hanvon.sulupen;
 
 
+import java.util.List;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,12 +14,12 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
+import com.hanvon.sulupen.db.bean.NoteBookInfo;
 import com.hanvon.sulupen.db.bean.ScanRecord;
 import com.hanvon.sulupen.db.dao.SCanRecordDao;
-
-import java.util.List;
 
 public class MainActivity extends Activity implements OnClickListener
 {
@@ -29,12 +31,15 @@ public class MainActivity extends Activity implements OnClickListener
     private TextView mEditNoteBook;
     private TextView mSearchNoteBook;
     private ImageView mNewNote;
+    private ListView mBooksList;
+    private TextView mEmptyNoteBook;
     
     public final static int FLAG_EDIT = 1;
 	public final static int FLAG_CREATE = 2;
 	
 	private SCanRecordDao mScanRecordDao;
 	private List<ScanRecord> mDataList;
+	private List<NoteBookInfo> mNoteBookList;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) 
@@ -52,8 +57,9 @@ public class MainActivity extends Activity implements OnClickListener
     public void initDatas()
     {
         mScanRecordDao = new SCanRecordDao(this);
-        mDataList = mScanRecordDao.getALLRecordOrderByTime();
-        Log.d(TAG, "mDataList.size is " + mDataList.size());
+        mNoteBookList = mScanRecordDao.getAllNoteBooks();
+        //mDataList = mScanRecordDao.getALLRecordOrderByTime();
+        Log.d(TAG, "mNoteBookList.size is " + mNoteBookList.size());
     }
     
     public void initViews()
@@ -68,10 +74,27 @@ public class MainActivity extends Activity implements OnClickListener
         
         mNewNote = (ImageView) findViewById(R.id.iv_newnote);
         
+        mBooksList = (ListView) findViewById(R.id.lv_notebooklist);
+        mEmptyNoteBook = (TextView) findViewById(R.id.tv_showempty);
+        
         mNewNoteBook.setOnClickListener(this);
         mEditNoteBook.setOnClickListener(this);
         mSearchNoteBook.setOnClickListener(this);
         mNewNote.setOnClickListener(this);
+        
+        if (mNoteBookList.size() <= 0)
+        {
+        	mBooksList.setVisibility(View.GONE);
+        	mEmptyNoteBook.setVisibility(View.VISIBLE);
+        	
+        }
+        else
+        {
+        	mEmptyNoteBook.setVisibility(View.GONE);
+        	mBooksList.setVisibility(View.VISIBLE);
+        }
+        
+        
     }
     
     @Override

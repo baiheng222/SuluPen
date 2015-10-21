@@ -26,6 +26,7 @@ public class SCanRecordDao
 	private Dao<ScanRecord, Integer> mSCanRecordDao;
 	private List<ScanRecord> mScanRecordList;
 	private List<NoteBookInfo> mNoteBookList = new ArrayList<NoteBookInfo>();
+	private List<NoteInfo> mNoteList = new ArrayList<NoteInfo>();
 	private int mUpdateCount;
 	//private List<DataListBean> mDayInfoList;
 	//private List<YMDInfo> yearList=new ArrayList<YMDInfo>();
@@ -168,6 +169,29 @@ public class SCanRecordDao
         
     }
 
+    public List<NoteInfo> getNotesByNoteBookName(String noteBookName)
+    {
+    	List<ScanRecord> rawList = getALLRecordOrderByTime();
+    	for (int i = 0; i < rawList.size(); i++)
+        {
+            if (rawList.get(i).getRecType().equals("note")
+            	&& 	rawList.get(i).getNoteBookName().equals(noteBookName))
+            {
+                NoteInfo note = new NoteInfo();
+                note.setNoteId(rawList.get(i).getId());
+                note.setNoteBookName(rawList.get(i).getNoteBookName());
+                note.setNoteCreateTime(rawList.get(i).getCreateTime());
+                note.setNoteCreateAddr(rawList.get(i).getCreateAddr());
+                note.setNoteCotent(rawList.get(i).getNoteContent());
+                note.setNoteTitle(rawList.get(i).getNoteTitle());
+                note.setNotePhotoUrl(rawList.get(i).getPhotos());
+                note.setNoteIsShared(rawList.get(i).getIsUpdateBaidu());
+                note.setNoteIsUpload(rawList.get(i).getIsUpdateHanvon());
+                mNoteList.add(note);
+            }    
+        }
+    	return mNoteList;
+    }
     
 	/**
 	 * 获取年月记录统计数列表
