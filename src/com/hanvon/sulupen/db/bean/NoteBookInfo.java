@@ -1,5 +1,7 @@
 package com.hanvon.sulupen.db.bean;
 
+/*笔记本相关信息类*/
+
 public class NoteBookInfo 
 {
     private String mNoteBookName;
