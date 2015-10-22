@@ -86,12 +86,17 @@ public class MainActivity extends Activity implements OnClickListener
         {
         	mBooksList.setVisibility(View.GONE);
         	mEmptyNoteBook.setVisibility(View.VISIBLE);
+        	mEditNoteBook.setVisibility(View.GONE);
+        	mSearchNoteBook.setVisibility(View.GONE);
         	
         }
         else
         {
         	mEmptyNoteBook.setVisibility(View.GONE);
         	mBooksList.setVisibility(View.VISIBLE);
+        	mEditNoteBook.setVisibility(View.VISIBLE);
+        	mSearchNoteBook.setVisibility(View.VISIBLE);
+        	
         }
         
         

@@ -187,6 +187,7 @@ public class SCanRecordDao
                 note.setNotePhotoUrl(rawList.get(i).getPhotos());
                 note.setNoteIsShared(rawList.get(i).getIsUpdateBaidu());
                 note.setNoteIsUpload(rawList.get(i).getIsUpdateHanvon());
+                note.setNoteInputType(rawList.get(i).getInputType());
                 mNoteList.add(note);
             }    
         }

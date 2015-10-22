@@ -52,6 +52,10 @@ public class ScanRecord implements Parcelable
 	@DatabaseField(columnName = "isUpdateHanvon", dataType = DataType.INTEGER)
 	private int isUpdateHanvon;
 	
+	//0表示未上传到汉王云,1表示已上传到汉王云
+	@DatabaseField(columnName = "inputType", dataType = DataType.INTEGER)
+	private int inputType;
+	
 	//用于记录笔记的版本
 	@DatabaseField(columnName = "version", dataType = DataType.INTEGER)
 	private int version;
@@ -77,6 +81,7 @@ public class ScanRecord implements Parcelable
 			mScanRecord.setAddrDetail(source.readString());
 			mScanRecord.setIsUpdateBaidu(source.readInt());
 			mScanRecord.setIsUpdateHanvon(source.readInt());
+			mScanRecord.setInputType(source.readInt());
 			mScanRecord.setVersion(source.readInt());
 		
 		    return mScanRecord;  
@@ -189,6 +194,14 @@ public class ScanRecord implements Parcelable
 	public void setIsUpdateHanvon(int isUpdateHanvon) {
 		this.isUpdateHanvon = isUpdateHanvon;
 	}
+	
+	public int getInputType() {
+		return inputType;
+	}
+
+	public void setInputType(int inputtype) {
+		this.inputType = inputtype;
+	}
 
 	public int getVersion() {
 		return version;
@@ -204,7 +217,7 @@ public class ScanRecord implements Parcelable
 
 	public ScanRecord(int id, String type, String noteBookName, String title, String content, String createTime,
 			String createAddr, String weather, String photos, String addrDetail,
-			int isUpdateBaidu, int isUpdateHanvon, int version) 
+			int isUpdateBaidu, int isUpdateHanvon, int inputtype, int version) 
 	{
 		super();
 		this.id = id;
@@ -222,6 +235,7 @@ public class ScanRecord implements Parcelable
 		this.addrDetail = addrDetail;
 		this.isUpdateBaidu = isUpdateBaidu;
 		this.isUpdateHanvon = isUpdateHanvon;
+		this.inputType = inputtype;
 		this.version = version;
 	}
 
@@ -231,7 +245,7 @@ public class ScanRecord implements Parcelable
 		return "ScanRecord [id = " + id + ", type=" + recType + ", noteBookName = " + noteBookName + ", title = " + noteTitle +  
 		        ", content = " + noteContent + ", createTime = " + createTime + ", createAddr = "
 				+ createAddr + ", weather = " + weather + ", photos = " + photos + ", addrDetail = " + addrDetail
-				+ ", isUpdateBaidu = " + isUpdateBaidu + ", isUpdateHanvon = " + isUpdateHanvon + ", version = " + version + "]";
+				+ ", isUpdateBaidu = " + isUpdateBaidu + ", isUpdateHanvon = " + isUpdateHanvon + ", inputType =" + inputType + ", version = " + version + "]";
 	}
 
 	@Override
@@ -254,6 +268,7 @@ public class ScanRecord implements Parcelable
 		 dest.writeString(addrDetail);
 		 dest.writeInt(isUpdateBaidu);
 		 dest.writeInt(isUpdateHanvon);
+		 dest.writeInt(inputType);
 		 dest.writeInt(version);
 	}
 }

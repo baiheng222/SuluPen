@@ -11,6 +11,7 @@ public class NoteInfo
 	private String mNotePhotoUrl;
 	private int mNoteIsShared;
 	private int mNoteIsUpload;
+	private int mNoteInputType;
 
 	public NoteInfo()
 	{
@@ -105,5 +106,15 @@ public class NoteInfo
 	public int getNoteIsUpload()
 	{
 		return mNoteIsUpload;
+	}
+	
+	public void setNoteInputType(int flag)
+	{
+		mNoteInputType = flag;
+	}
+	
+	public int getNoteInputType()
+	{
+		return mNoteInputType;
 	}
 }
