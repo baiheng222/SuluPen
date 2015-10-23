@@ -10,7 +10,7 @@ import com.j256.ormlite.table.DatabaseTable;
 
 @DatabaseTable(tableName = "noteRecord_table")
 
-public class NoteRecord implements Parcelable
+public class NoteRecord //implements Parcelable
 {
     //数据库中每条记录的id
 	@DatabaseField(generatedId = true,dataType=DataType.INTEGER)
@@ -52,6 +52,12 @@ public class NoteRecord implements Parcelable
 	@DatabaseField(columnName = "version", dataType = DataType.INTEGER)
 	private int version;
 	
+	
+	//用于关联笔记本表的外键，笔记本的id
+	@DatabaseField(canBeNull = true, foreign = true, columnName = "notebookID")
+	private NoteBookRecord notebookId;
+	
+	/*
 	public static final Parcelable.Creator<ScanRecord> CREATOR = new Creator()
 	{
 	    @Override  
@@ -84,6 +90,8 @@ public class NoteRecord implements Parcelable
 	    }  
 
 	};
+	
+	*/
 
 	public int getId() {
 		return id;
@@ -175,11 +183,22 @@ public class NoteRecord implements Parcelable
 	public void setVersion(int version) {
 		this.version = version;
 	}
+	
+	public NoteBookRecord getNoteBookId()
+	{
+		return notebookId;
+	}
+	
+	public void setNoteBookId(NoteBookRecord notebook)
+	{
+		this.notebookId = notebook;
+	}
 
 	public NoteRecord() {
 		super();
 	}
 
+	/*
 	public NoteRecord(int id, String type, String noteBookName, String title, String content, String createTime,
 			String createAddr, String weather, String photos, String addrDetail,
 			int isUpdateBaidu, int isUpdateHanvon, int inputtype, int version) 
@@ -197,6 +216,7 @@ public class NoteRecord implements Parcelable
 		this.inputType = inputtype;
 		this.version = version;
 	}
+	*/
 
 	@Override
 	public String toString() 
@@ -207,11 +227,14 @@ public class NoteRecord implements Parcelable
 				+  ", isUpdateHanvon = " + isUpdateHanvon + ", inputType =" + inputType + ", version = " + version + "]";
 	}
 
+	
+	/*
 	@Override
 	public int describeContents() {
 		return 0;
 	}
 
+	
 	@Override
 	public void writeToParcel(Parcel dest, int flags) 
 	{
@@ -227,5 +250,6 @@ public class NoteRecord implements Parcelable
 		 dest.writeInt(inputType);
 		 dest.writeInt(version);
 	}
+	*/
 
 }

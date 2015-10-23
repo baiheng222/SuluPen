@@ -6,12 +6,12 @@ import java.util.Map;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.hanvon.sulupen.db.bean.ScanRecord;
-//import com.hanvon.inputmethod.db.bean.TopicBean;
 import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
+
+import com.hanvon.sulupen.db.bean.*;
 
 public class SCanRecordHelper extends OrmLiteSqliteOpenHelper 
 {
@@ -30,8 +30,9 @@ public class SCanRecordHelper extends OrmLiteSqliteOpenHelper
 	{
 		try 
 		{
-			TableUtils.createTable(mConnectionSource, ScanRecord.class);
-			//TableUtils.createTable(mConnectionSource, TopicBean.class);
+			TableUtils.createTable(mConnectionSource, NoteBookRecord.class);
+			TableUtils.createTable(mConnectionSource, NoteRecord.class);
+			TableUtils.createTable(mConnectionSource, NotePhotoRecord.class);
 		} 
 		catch (SQLException e) 
 		{
@@ -50,7 +51,9 @@ public class SCanRecordHelper extends OrmLiteSqliteOpenHelper
 		// 先删除就得版本，再创建新的版本
 		try 
 		{
-			TableUtils.dropTable(mConnectionSource, ScanRecord.class, true);
+			TableUtils.dropTable(mConnectionSource, NoteBookRecord.class, true);
+			TableUtils.dropTable(mConnectionSource, NoteRecord.class, true);
+			TableUtils.dropTable(mConnectionSource, NotePhotoRecord.class, true);
 			onCreate(mSqliteDatabase, mConnectionSource);
 		} 
 		catch (SQLException e) 

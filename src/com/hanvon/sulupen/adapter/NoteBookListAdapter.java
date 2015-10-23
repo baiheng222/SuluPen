@@ -2,6 +2,8 @@ package com.hanvon.sulupen.adapter;
 
 import java.util.List;  
 
+import com.hanvon.sulupen.R;
+
 import android.content.Context;  
 import android.view.LayoutInflater;  
 import android.view.View;  
@@ -46,23 +48,23 @@ public class NoteBookListAdapter extends BaseAdapter
         ViewHolder viewHolder = null;  
         if (convertView == null)  
         {  
-            convertView = mInflater.inflate(R.layout.item_single_str, parent,  
-                    false);  
+        	convertView = mInflater.inflate(R.layout.notebook_list_item, parent, false);
             viewHolder = new ViewHolder();  
-            viewHolder.mTextView = (TextView) convertView  
-                    .findViewById(R.id.id_tv_title);  
+            viewHolder.mNoteBookName = (TextView) convertView.findViewById(R.id.tv_notebook_name);
+            viewHolder.mNotesNum = (TextView) convertView.findViewById(R.id.tv_notes_in_notebook);
             convertView.setTag(viewHolder);  
         } else  
         {  
             viewHolder = (ViewHolder) convertView.getTag();  
         }  
-        viewHolder.mTextView.setText(mDatas.get(position));  
+        viewHolder.mNoteBookName.setText(mDatas.get(position));  
         return convertView;  
     }  
   
     private final class ViewHolder  
     {  
-        TextView mTextView;  
+        TextView mNoteBookName;
+        TextView mNotesNum;
     }  
   
 }

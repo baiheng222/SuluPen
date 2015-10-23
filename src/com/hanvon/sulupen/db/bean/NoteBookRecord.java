@@ -10,20 +10,21 @@ import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
 @DatabaseTable(tableName = "notebook_table")
-public class NoteBookRecord implements Parcelable
+public class NoteBookRecord //implements Parcelable
 {
     //数据库中每条记录的id
 	@DatabaseField(generatedId = true,dataType=DataType.INTEGER)
 	private int id;
 	
-	//笔记本ID
+	//笔记本ID,生成之后就不会再改变，是一个唯一的值，除非删除了这个笔记本，这个ID可以作为NoteRecord的外键
 	@DatabaseField(columnName = "noteBookId",dataType=DataType.INTEGER)
     private int noteBookId;
 	
-	//笔记本名称
+	//笔记本名称，笔记本名称是可以被修改的，虽然笔记本名称不会有两个同样的名称存在，
     @DatabaseField(columnName = "noteBookName",dataType=DataType.STRING)
     private String noteBookName;
 	
+    /*
     public static final Parcelable.Creator<ScanRecord> CREATOR = new Creator()
 	{
 	    @Override  
@@ -50,7 +51,7 @@ public class NoteBookRecord implements Parcelable
 	    }  
 
 	};
-	
+	*/
 	public int getId() {
 		return id;
 	}
@@ -96,6 +97,7 @@ public class NoteBookRecord implements Parcelable
 		return "NoteBookRecord [id = " + id + ", noteBookId = " + noteBookId + ", noteBookName = " + noteBookName; 
 	}
 	
+	/*
 	@Override
 	public int describeContents() {
 		return 0;
@@ -108,5 +110,5 @@ public class NoteBookRecord implements Parcelable
 		 dest.writeInt(noteBookId);
 		 dest.writeString(noteBookName);
 	}
-	
+	*/
 }

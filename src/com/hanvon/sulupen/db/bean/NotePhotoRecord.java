@@ -10,7 +10,7 @@ import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
 @DatabaseTable(tableName = "notephoto_table")
-public class NotePhotoRecord implements Parcelable
+public class NotePhotoRecord //implements Parcelable
 {
     //数据库中每条记录的id
 	@DatabaseField(generatedId = true,dataType=DataType.INTEGER)
@@ -23,7 +23,12 @@ public class NotePhotoRecord implements Parcelable
 	//图片的Web url
     @DatabaseField(columnName = "photoWebUrl",dataType=DataType.STRING)
     private String photoWebUrl;
+    
+    //关联笔记表的外键
+    @DatabaseField(canBeNull = true, foreign = true, columnName = "noteID")
+	private NoteRecord noteRecord;
 	
+    /*
     public static final Parcelable.Creator<ScanRecord> CREATOR = new Creator()
 	{
 	    @Override  
@@ -51,6 +56,8 @@ public class NotePhotoRecord implements Parcelable
 
 	};
 	
+	*/
+	
 	public int getId() {
 		return id;
 	}
@@ -75,11 +82,22 @@ public class NotePhotoRecord implements Parcelable
 		this.photoWebUrl = web;
 	}
 	
+	public NoteRecord getNoteId()
+	{
+		return this.noteRecord;
+	}
+	
+	public void setNoteId(NoteRecord rec)
+	{
+		this.noteRecord = rec;
+	}
+	
     
     public NotePhotoRecord() {
 		super();
 	}
 
+    /*
 	public NotePhotoRecord(int id, String localurl, String weburl) 
 	{
 		super();
@@ -87,6 +105,7 @@ public class NotePhotoRecord implements Parcelable
 		this.photoLocalUrl = localurl;
 		this.photoWebUrl = weburl;
 	}
+	*/
 
 	@Override
 	public String toString() 
@@ -94,6 +113,7 @@ public class NotePhotoRecord implements Parcelable
 		return "NotePhotoRecord [id = " + id + ", localUrl = " + photoLocalUrl + ", photoWebUrl = " + photoWebUrl; 
 	}
 	
+	/*
 	@Override
 	public int describeContents() {
 		return 0;
@@ -106,4 +126,5 @@ public class NotePhotoRecord implements Parcelable
 		 dest.writeString(photoLocalUrl);
 		 dest.writeString(photoWebUrl);
 	}
+	*/
 }

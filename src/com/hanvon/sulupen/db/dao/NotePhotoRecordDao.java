@@ -28,13 +28,8 @@ public class NotePhotoRecordDao
 	private SCanRecordHelper mHelper;
 	private Dao<NotePhotoRecord, Integer> mNotePhotoRecordDao;
 	private List<NotePhotoRecord> mScanRecordList;
-	//private List<NoteBookInfo> mNoteBookList = new ArrayList<NoteBookInfo>();
-	//private List<NoteInfo> mNoteList = new ArrayList<NoteInfo>();
+	
 	private int mUpdateCount;
-	//private List<DataListBean> mDayInfoList;
-	//private List<YMDInfo> yearList=new ArrayList<YMDInfo>();
-	// 每次加载 月份数
-	//public static final int KLOAD_LASTEST_MON = 3;
 	
 	private static NotePhotoRecordDao instance = null;
 	
@@ -137,66 +132,23 @@ public class NotePhotoRecordDao
         return mScanRecordList;
     }
 
-    /*
-    // 按照时间倒叙将数据库中的数据取出
-    public List<ScanRecord> getALLRecordOrderByTime() 
+    /** 
+     * 能获取到NotePhotoRecord图片集合，但是里面的NoteRecord只有id有值, 
+     * @param id
+     * @return 返回某一条笔记所包含的所有图片的集合
+     */  
+    public List<NotePhotoRecord> getNotePhotoRecordListByNoteId(int id)
     {
-        List<ScanRecord> mList = query();
-        List<ScanRecord> mNewList = null;
-        mNewList = new ArrayList<ScanRecord>();
-        if(mList != null)
-        {
-            for(int i = mList.size()-1; i >=0; i--)
-            {
-                mNewList.add(mList.get(i));
-            }
-        }
-        return mNewList;
+    	try
+    	{
+    		return mNotePhotoRecordDao.queryBuilder().where().eq("noteID", id).query();
+    	}
+    	catch (SQLException e)
+    	{
+    		e.printStackTrace();
+    		return null;
+    	}
+    	
     }
-    
-    public List<NoteBookInfo> getAllNoteBooks()
-    {
-        List<ScanRecord> rawList = getALLRecordOrderByTime();
-        for (int i = 0; i < rawList.size(); i++)
-        {
-            if (rawList.get(i).getRecType().equals("notebook"))
-            {
-                NoteBookInfo notebook = new NoteBookInfo();
-                notebook.setNoteBookName(rawList.get(i).getNoteBookName());
-                notebook.setNoteBookCreateTime(rawList.get(i).getCreateTime());
-                notebook.setNoteBookId(rawList.get(i).getId());
-                mNoteBookList.add(notebook);
-            }    
-        }
-        
-        return mNoteBookList;
-        
-    }
-
-    public List<NoteInfo> getNotesByNoteBookName(String noteBookName)
-    {
-    	List<ScanRecord> rawList = getALLRecordOrderByTime();
-    	for (int i = 0; i < rawList.size(); i++)
-        {
-            if (rawList.get(i).getRecType().equals("note")
-            	&& 	rawList.get(i).getNoteBookName().equals(noteBookName))
-            {
-                NoteInfo note = new NoteInfo();
-                note.setNoteId(rawList.get(i).getId());
-                note.setNoteBookName(rawList.get(i).getNoteBookName());
-                note.setNoteCreateTime(rawList.get(i).getCreateTime());
-                note.setNoteCreateAddr(rawList.get(i).getCreateAddr());
-                note.setNoteCotent(rawList.get(i).getNoteContent());
-                note.setNoteTitle(rawList.get(i).getNoteTitle());
-                note.setNotePhotoUrl(rawList.get(i).getPhotos());
-                note.setNoteIsShared(rawList.get(i).getIsUpdateBaidu());
-                note.setNoteIsUpload(rawList.get(i).getIsUpdateHanvon());
-                note.setNoteInputType(rawList.get(i).getInputType());
-                mNoteList.add(note);
-            }    
-        }
-    	return mNoteList;
-    }
-    */
 
 }

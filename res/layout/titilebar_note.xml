@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/note_title_bar"
+    android:layout_width="fill_parent"
+    android:layout_height="@dimen/title_bar_height"
+    android:background="@color/frame_bg"
+    android:orientation="vertical" >
+
+    <Button
+        android:id="@+id/cancel_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:padding="10dp" 
+        android:text="@string/button_cancel"
+        android:textSize="15sp"
+        android:textColor="@color/gray"
+        android:background="@color/button_back"/> 
+
+    <Button
+        android:id="@+id/save_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:padding="10dp" 
+        android:text="@string/button_save" 
+        android:textSize="15sp"
+        android:textColor="@color/gray"
+        android:background="@color/button_back"/> 
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"        
+        android:textColor="@color/gray"
+        android:text="@string/new_note" 
+        android:textSize="20sp"/>
+    
+<!--    android:textColor="@android:color/white"  -->
+
+</RelativeLayout>
