@@ -122,7 +122,9 @@ public class MainActivity extends Activity implements OnClickListener
                 break;
             
             case R.id.iv_newnote:
-                
+                Intent newNoteIntent = new Intent(this, NoteDetailActivity.class);
+                newNoteIntent.setFlags(FLAG_CREATE);
+                startActivity(newNoteIntent);
                 break;     
         }
     }
