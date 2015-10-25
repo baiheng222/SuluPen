@@ -10,8 +10,8 @@ import android.view.Window;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.hanvon.sulupen.db.bean.ScanRecord;
-import com.hanvon.sulupen.db.dao.SCanRecordDao;
+import com.hanvon.sulupen.db.bean.*;
+import com.hanvon.sulupen.db.dao.NoteBookRecordDao;
 import com.hanvon.sulupen.utils.TimeUtil;
 
 public class NewNoteBookActivity extends Activity implements OnClickListener
@@ -88,32 +88,19 @@ public class NewNoteBookActivity extends Activity implements OnClickListener
 	 
 	 public void saveNoteBookToDb()
 	 {
-	     ScanRecord record = new ScanRecord();
+	     NoteBookRecord record = new NoteBookRecord();
 	     
-	     record.setRecType("notebook");
+	     //record.setRecType("notebook");
 	     
 	     String noteBookName = mInput.getText().toString();
 	     Log.d(TAG, "noteBookName is " + noteBookName);
 	     record.setNoteBookName(noteBookName);
-	     
-	     String emptyField = "empty";
-	     record.setNoteTitle(emptyField);
-	     record.setNoteContent(emptyField);
-	     record.setCreateTime(TimeUtil.getcurTime(TimeUtil.FORMAT_FULL));
-	     record.setCreateAddr(emptyField);
-	     record.setWeather(emptyField);
-	     record.setPhotos(emptyField);
-	     record.setAddrDetail(emptyField);
-	     
-	     int flag = 0;
-	     record.setIsUpdateBaidu(flag);
-	     record.setIsUpdateHanvon(flag);
-	     record.setVersion(2);
+	     record.setNoteBookId(1);
 	     
 	     
-	     SCanRecordDao scanRecordDao = SCanRecordDao.getScanRecordDaoInstance();
+	     NoteBookRecordDao noteBookRecordDao = new NoteBookRecordDao(this);
 	     
-	     scanRecordDao.add(record);
+	     noteBookRecordDao.add(record);
 	     
 	 }
 }

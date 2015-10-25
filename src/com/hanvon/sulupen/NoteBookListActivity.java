@@ -1,6 +1,7 @@
 package com.hanvon.sulupen;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -17,6 +18,9 @@ public class NoteBookListActivity extends Activity implements OnClickListener
 	//private TextView mDoneBtn;
 	private EditText mInput;
 	private ImageView mNewNote;
+	 
+	public final static int FLAG_EDIT = 1;
+	public final static int FLAG_CREATE = 2;
 	
 
 	@Override
@@ -38,7 +42,7 @@ public class NoteBookListActivity extends Activity implements OnClickListener
 		 mNewNote = (ImageView) findViewById(R.id.iv_newnote);
 		 
 		 mBack.setOnClickListener(this);
-		 //mDoneBtn.setOnClickListener(this);
+		 mNewNote.setOnClickListener(this);
 	 }
 	 
 	 @Override
@@ -51,7 +55,9 @@ public class NoteBookListActivity extends Activity implements OnClickListener
             break;
                      
             case R.id.iv_newnote:
-                
+            	Intent newNoteIntent = new Intent(this, NoteDetailActivity.class);
+                newNoteIntent.setFlags(FLAG_CREATE);
+                startActivity(newNoteIntent);
             break;     
 		 }
 	 }
