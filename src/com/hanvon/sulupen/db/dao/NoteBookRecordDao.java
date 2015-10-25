@@ -44,7 +44,7 @@ public class NoteBookRecordDao
 		try 
 		{
 			mHelper = SCanRecordHelper.getHelper(context);
-			mNoteBookRecordDao = mHelper.getDao(ScanRecord.class);
+			mNoteBookRecordDao = mHelper.getDao(NoteBookRecord.class);
 			instance = this;
 		} 
 		catch (SQLException e) 
@@ -120,7 +120,7 @@ public class NoteBookRecordDao
 
 	
 	//获取全部笔记本的列表
-    public List<NoteBookRecord> query() 
+    public List<NoteBookRecord> getAllNoteBooks() 
     {
         try 
         {

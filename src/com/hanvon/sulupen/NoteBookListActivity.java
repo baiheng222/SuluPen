@@ -20,7 +20,7 @@ public class NoteBookListActivity extends Activity implements OnClickListener
 	private ImageView mNewNote;
 	 
 	public final static int FLAG_EDIT = 1;
-	public final static int FLAG_CREATE = 2;
+	public final static int FLAG_CREATE_WITH_BOOKNAME = 2;
 	
 
 	@Override
@@ -56,7 +56,7 @@ public class NoteBookListActivity extends Activity implements OnClickListener
                      
             case R.id.iv_newnote:
             	Intent newNoteIntent = new Intent(this, NoteDetailActivity.class);
-                newNoteIntent.setFlags(FLAG_CREATE);
+                newNoteIntent.setFlags(FLAG_CREATE_WITH_BOOKNAME);
                 startActivity(newNoteIntent);
             break;     
 		 }

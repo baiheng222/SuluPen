@@ -11,13 +11,15 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;  
 import android.widget.TextView;
 
+import com.hanvon.sulupen.db.bean.NoteBookRecord;
+
 public class NoteBookListAdapter extends BaseAdapter  
 {  
     private LayoutInflater mInflater;  
     private Context mContext;  
-    private List<String> mDatas;  
+    private List<NoteBookRecord> mDatas;  
   
-    public NoteBookListAdapter(Context context, List<String> mDatas)  
+    public NoteBookListAdapter(Context context, List<NoteBookRecord> mDatas)  
     {  
         mInflater = LayoutInflater.from(context);  
         this.mContext = context;  
@@ -57,7 +59,7 @@ public class NoteBookListAdapter extends BaseAdapter
         {  
             viewHolder = (ViewHolder) convertView.getTag();  
         }  
-        viewHolder.mNoteBookName.setText(mDatas.get(position));  
+        viewHolder.mNoteBookName.setText(mDatas.get(position).getNoteBookName());  
         return convertView;  
     }  
   

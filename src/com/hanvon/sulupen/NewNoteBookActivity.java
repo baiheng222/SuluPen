@@ -65,6 +65,8 @@ public class NewNoteBookActivity extends Activity implements OnClickListener
 		 switch (view.getId())
 		 {
 		 	case R.id.tv_cancel_btn:
+		 		Intent retIntent = new Intent(this, MainActivity.class);
+		 		setResult(RESULT_CANCELED, retIntent);
                 finish();
             break;
             
@@ -102,5 +104,8 @@ public class NewNoteBookActivity extends Activity implements OnClickListener
 	     
 	     noteBookRecordDao.add(record);
 	     
+	     Log.d(TAG, "send result to MainActivity");
+	     Intent retIntent = new Intent(this, MainActivity.class);
+	     setResult(RESULT_OK, retIntent);
 	 }
 }

@@ -18,8 +18,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.hanvon.sulupen.db.bean.NoteBookInfo;
-import com.hanvon.sulupen.db.bean.ScanRecord;
-import com.hanvon.sulupen.db.dao.SCanRecordDao;
+import com.hanvon.sulupen.db.bean.NoteBookRecord;
+import com.hanvon.sulupen.db.dao.NoteBookRecordDao;
+import com.hanvon.sulupen.adapter.*;
 
 public class MainActivity extends Activity implements OnClickListener
 {
@@ -37,9 +38,10 @@ public class MainActivity extends Activity implements OnClickListener
     public final static int FLAG_EDIT = 1;
 	public final static int FLAG_CREATE = 2;
 	
-	private SCanRecordDao mScanRecordDao;
-	private List<ScanRecord> mDataList;
-	private List<NoteBookInfo> mNoteBookList;
+	private NoteBookRecordDao mNoteBookRecordDao;
+	private List<NoteBookRecord> mNoteBookList;
+	private NoteBookListAdapter mNoteBookAdapter;
+	//private List<NoteBookInfo> mNoteBookList;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) 
@@ -56,8 +58,8 @@ public class MainActivity extends Activity implements OnClickListener
 
     public void initDatas()
     {
-        mScanRecordDao = new SCanRecordDao(this);
-        mNoteBookList = mScanRecordDao.getAllNoteBooks();
+    	mNoteBookRecordDao = new NoteBookRecordDao(this);
+    	mNoteBookList = mNoteBookRecordDao.getAllNoteBooks();
         //mDataList = mScanRecordDao.getALLRecordOrderByTime();
         Log.d(TAG, "mNoteBookList.size is " + mNoteBookList.size());
     }
@@ -97,6 +99,8 @@ public class MainActivity extends Activity implements OnClickListener
         	mEditNoteBook.setVisibility(View.VISIBLE);
         	mSearchNoteBook.setVisibility(View.VISIBLE);
         	
+        	mNoteBookAdapter = new NoteBookListAdapter(this, mNoteBookList);
+        	mBooksList.setAdapter(mNoteBookAdapter);
         }
         
         
@@ -124,10 +128,39 @@ public class MainActivity extends Activity implements OnClickListener
             case R.id.iv_newnote:
                 Intent newNoteIntent = new Intent(this, NoteDetailActivity.class);
                 newNoteIntent.setFlags(FLAG_CREATE);
-                startActivity(newNoteIntent);
+                startActivityForResult(newNoteIntent, 1);
                 break;     
         }
     }
+    
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) 
+    {
+    	mNoteBookList = mNoteBookRecordDao.getAllNoteBooks();
+    	Log.d(TAG, "in onActivityResult func, mNoteBookList.size is " + mNoteBookList.size());
+    	//if (null == mNoteBookAdapter)
+    	//{
+    		mNoteBookAdapter = new NoteBookListAdapter(this, mNoteBookList);
+    	//}
+    	
+    	mBooksList.setAdapter(mNoteBookAdapter);
+    	
+    	mNoteBookAdapter.notifyDataSetChanged();
+        //String result = data.getExtras().getString("result");//得到新Activity 关闭后返回的数据
+        //Log.i(TAG, result);
+    }
+    
+    @Override
+	protected void onResume() 
+    {
+		super.onResume();
+		Log.d(TAG, "on resume here");
+		mNoteBookList = mNoteBookRecordDao.getAllNoteBooks();
+		mNoteBookAdapter = new NoteBookListAdapter(this, mNoteBookList);
+		mBooksList.setAdapter(mNoteBookAdapter);
+    	
+    	mNoteBookAdapter.notifyDataSetChanged();
+    }	
     
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
