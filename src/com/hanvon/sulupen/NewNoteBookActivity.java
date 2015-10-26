@@ -69,11 +69,12 @@ public class NewNoteBookActivity extends Activity implements OnClickListener
 		 		setResult(RESULT_CANCELED, retIntent);
                 finish();
             break;
-            
+         
             case R.id.tv_done_btn:
                 saveNoteBookToDb();
             	Intent newIntent = new Intent(this, NoteBookListActivity.class);
     			//newIntent.setFlags(FLAG_CREATE);
+            	newIntent.putExtra("NoteBookName", mInput.getText().toString());
     			startActivity(newIntent);  
     			finish();
             break;

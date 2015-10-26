@@ -55,11 +55,15 @@ public class NoteBookListAdapter extends BaseAdapter
             viewHolder.mNoteBookName = (TextView) convertView.findViewById(R.id.tv_notebook_name);
             viewHolder.mNotesNum = (TextView) convertView.findViewById(R.id.tv_notes_in_notebook);
             convertView.setTag(viewHolder);  
-        } else  
+        } 
+        else  
         {  
             viewHolder = (ViewHolder) convertView.getTag();  
-        }  
-        viewHolder.mNoteBookName.setText(mDatas.get(position).getNoteBookName());  
+        }
+        
+        viewHolder.mNoteBookName.setText(mDatas.get(position).getNoteBookName());
+        viewHolder.mNotesNum.setText("0");
+        
         return convertView;  
     }  
   
@@ -67,6 +71,11 @@ public class NoteBookListAdapter extends BaseAdapter
     {  
         TextView mNoteBookName;
         TextView mNotesNum;
-    }  
+    }
+    
+    private int getNotesNumByNoteBook()
+    {
+        return 0;
+    }
   
 }

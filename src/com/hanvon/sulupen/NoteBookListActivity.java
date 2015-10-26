@@ -14,8 +14,10 @@ public class NoteBookListActivity extends Activity implements OnClickListener
 {
 	private final String TAG = "NoteBookListActivity";
 	
+	private String mNoteBookName = "NoteBook";
+	
 	private TextView mBack;
-	//private TextView mDoneBtn;
+	private TextView mTitle;
 	private EditText mInput;
 	private ImageView mNewNote;
 	 
@@ -30,16 +32,31 @@ public class NoteBookListActivity extends Activity implements OnClickListener
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.notebook_list);    
 		
+		initDatas();
+		
 		initViews();
 	        
 	}
 
+	
+	private void initDatas()
+    {
+        Intent intent = getIntent();
+        if (intent != null) 
+        {
+            mNoteBookName = intent.getStringExtra("NoteBookName");
+        }
+        
+    }
+	
 	 private void initViews()
 	 {
 		 mBack = (TextView) findViewById(R.id.tv_backbtn);
-		 //mDoneBtn = (TextView) findViewById(R.id.tv_done_btn);
+		 mTitle = (TextView) findViewById(R.id.tv_title);
 		 mInput = (EditText) findViewById(R.id.ed_search_input);
 		 mNewNote = (ImageView) findViewById(R.id.iv_newnote);
+		 
+		 mTitle.setText(mNoteBookName);
 		 
 		 mBack.setOnClickListener(this);
 		 mNewNote.setOnClickListener(this);
