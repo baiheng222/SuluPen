@@ -161,7 +161,7 @@ public class MainActivity extends Activity implements OnClickListener
         
         mBooksList = (ListView) findViewById(R.id.lv_notebooklist);
         mEmptyNoteBook = (TextView) findViewById(R.id.tv_showempty);
-        mEpen = (ImageView)findViewById(R.id.epen_button);
+        mEpen = (ImageView)findViewById(R.id.iv_rightbtn);
         
         mNewNoteBook.setOnClickListener(this);
         mEditNoteBook.setOnClickListener(this);
@@ -214,7 +214,7 @@ public class MainActivity extends Activity implements OnClickListener
                 newNoteIntent.setFlags(FLAG_CREATE);
                 startActivityForResult(newNoteIntent, 1);
                 break;
-            case R.id.epen_button:
+            case R.id.iv_rightbtn:
             	Intent newIntent1 = new Intent(this, BluetoothSearch.class);
         		startActivity(newIntent1);
             	break;

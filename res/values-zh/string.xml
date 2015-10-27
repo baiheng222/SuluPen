@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">汉王速录笔</string>
+    <string name="app_name">速记</string>
     <string name="hello_world">你好</string>
     <string name="action_settings">设置</string>
     <string name="title_notebook">笔记本</string>

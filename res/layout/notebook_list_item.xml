@@ -10,7 +10,7 @@
         android:layout_alignParentLeft="true"
         android:layout_marginLeft="8dp"
         android:text="NoteBookName"
-        android:textSize="20sp"/>"
+        android:textSize="20sp"/>
     
     <TextView 
         android:id="@+id/tv_notes_in_notebook"

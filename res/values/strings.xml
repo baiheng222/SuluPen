@@ -55,5 +55,6 @@
     <string name="rmb_time">重新发送验证码(60s)</string>
     <string name="back">返回</string>
     <string name="forget_pwd">找回密码</string>
+    <string name="empty_notebooklist_tips">NoteBook is empty</string>
     
 </resources>

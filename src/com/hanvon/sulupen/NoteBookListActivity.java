@@ -8,7 +8,13 @@ import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
+
+import com.hanvon.sulupen.db.bean.NoteRecord;
+import com.hanvon.sulupen.db.dao.NoteRecordDao;
+
+import java.util.List;
 
 public class NoteBookListActivity extends Activity implements OnClickListener
 {
@@ -18,8 +24,16 @@ public class NoteBookListActivity extends Activity implements OnClickListener
 	
 	private TextView mBack;
 	private TextView mTitle;
+	private TextView mRightBtn;
+	private TextView mEmptyNoteTip;
 	private EditText mInput;
 	private ImageView mNewNote;
+	private ListView mLvNoteList;
+	
+	NoteRecordDao mNoteRecordDao;
+	
+	List<NoteRecord> mNoteRecordList;
+	
 	 
 	public final static int FLAG_EDIT = 1;
 	public final static int FLAG_CREATE_WITH_BOOKNAME = 2;
@@ -47,19 +61,39 @@ public class NoteBookListActivity extends Activity implements OnClickListener
             mNoteBookName = intent.getStringExtra("NoteBookName");
         }
         
+        mNoteRecordDao = new NoteRecordDao(this);
+        mNoteRecordList = mNoteRecordDao.getAllNoteRecords();
+        
     }
 	
 	 private void initViews()
 	 {
 		 mBack = (TextView) findViewById(R.id.tv_backbtn);
 		 mTitle = (TextView) findViewById(R.id.tv_title);
+		 mRightBtn = (TextView) findViewById(R.id.tv_rightbtn);
 		 mInput = (EditText) findViewById(R.id.ed_search_input);
 		 mNewNote = (ImageView) findViewById(R.id.iv_newnote);
+		 mLvNoteList = (ListView) findViewById(R.id.lv_notelist);
+		 mEmptyNoteTip = (TextView) findViewById(R.id.tv_showemptynote);
 		 
 		 mTitle.setText(mNoteBookName);
 		 
 		 mBack.setOnClickListener(this);
+		 mRightBtn.setOnClickListener(this);
 		 mNewNote.setOnClickListener(this);
+		 
+		 if (mNoteRecordList.size() > 0)
+		 {
+		     mRightBtn.setVisibility(View.VISIBLE);
+		     mLvNoteList.setVisibility(View.VISIBLE);
+		     mEmptyNoteTip.setVisibility(View.GONE);
+		 }
+		 else
+		 {
+		     mRightBtn.setVisibility(View.GONE);
+		     mLvNoteList.setVisibility(View.GONE);
+             mEmptyNoteTip.setVisibility(View.VISIBLE);
+		 }
 	 }
 	 
 	 @Override
@@ -68,8 +102,14 @@ public class NoteBookListActivity extends Activity implements OnClickListener
 		 switch (view.getId())
 		 {
 		 	case R.id.tv_backbtn:
+		 	    
+		 	    finish();
                 
             break;
+            
+		 	case R.id.tv_rightbtn:
+		 	    
+		 	break;
                      
             case R.id.iv_newnote:
             	Intent newNoteIntent = new Intent(this, NoteDetailActivity.class);

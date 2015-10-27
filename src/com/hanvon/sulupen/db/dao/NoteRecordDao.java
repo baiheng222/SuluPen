@@ -119,7 +119,7 @@ public class NoteRecordDao
 
 	
 	// 查询数据库里面所有的数据
-    public List<NoteRecord> query() 
+    public List<NoteRecord> getAllNoteRecords() 
     {
         try 
         {
