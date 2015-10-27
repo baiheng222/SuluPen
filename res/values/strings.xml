@@ -11,14 +11,49 @@
     <string name="edit_search">Search</string>
     <string name="edit_cancel">Cancel</string>
     <string name="edit_done">Done</string>
-    <string name="new_notebook_tips">Input NoteBook Name</string>
-    <string name="default_notebookname">NoteBook</string>
-    <string name="empty_notebooklist_tips">NoteBook is empty</string>
+
+    <string name="bluetooth_connected">正在努力连接中，请耐心等候!</string>
+    <string name="msg_openingBT">蓝牙开启中...</string>
+    <string name="title_openingBT">打开蓝牙</string>
+    <string name="scanning">搜索中...</string>
+    <string name="msg_searching">亲，正在玩命寻找附近可用设备，请耐心等待哦！</string>
+     <string name="none_found">亲，没有发现可连设备哦！</string>
+    <string name="button_scan">再次扫描</string>
     <string name="button_cancel">取消</string>
+     <string name="bnTryAgain">再试一次</string>
+     <string name="msg_fail">亲，木有连接成功，请重新尝试！</string>
+     <string name="bn_reconnect">重新连接</string>
+     <string name="bnSearchNewDevice">搜索新设备</string>
+     <string name="msg_wait_connect">亲，正在努力连接，请耐心等候哦！</string>
+
     <string name="button_save">保存</string>
     <string name="new_note">新笔记</string>
     <string name="note_tag">笔记本</string>
     <string name="note_title_hint">输入标题</string>
     <string name="note_content_hint">总要留下点什么吧！</string>
-
+    <!-- 登录注册用到的标题 -->
+    <string name="login_user">&#160;&#160;邮箱/手机</string>
+    <string name="auth_code">&#160;&#160;验证码</string>
+    <string name="login_pwd">&#160;&#160;密码</string>
+    <string name="rgst_pwd">&#160;&#160;请设置密码，6-16位字母和数字组合</string>
+    <string name="register_user">注册账号</string>
+    <string name="login_third">----第三方登录----</string>
+    <string name="login_button">登录</string>
+    <string name="rgst_button">注册</string>
+    <string name="rgst_email">邮箱注册</string>
+    <string name="rgst_phone_user">&#160;&#160;请输入你的手机号</string>
+    <string name="rgst_email_user">&#160;&#160;请输入你的常用邮箱地址</string>
+    <string name="remember_pwd">忘记密码</string>
+    <string name="resetpwd_button">重设密码</string>
+    <string name="resetpwd_doc">输入已注册的手机号或邮箱</string>
+    <string name="resetpwd_reset">请输入新密码</string>
+    <string name="new_passwd">新密码</string>
+    <string name="ensure_new_passwd">确认新密码</string>
+    <string name="reset_passwd_error">格式有误请输入6-16位字母和数字组合密码</string>
+    <string name="pwd_format">6-16位数字和字母组合</string>
+    <string name="ensure">确定</string>
+    <string name="rmb_time">重新发送验证码(60s)</string>
+    <string name="back">返回</string>
+    <string name="forget_pwd">找回密码</string>
+    
 </resources>

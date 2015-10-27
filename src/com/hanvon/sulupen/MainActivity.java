@@ -3,10 +3,15 @@ package com.hanvon.sulupen;
 
 
 import java.util.List;
+import java.util.Set;
 
 import android.app.Activity;
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -17,10 +22,25 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+
+import com.hanvon.bluetooth.BluetoothChatService;
+import com.hanvon.bluetooth.BluetoothIntenAction;
+import com.hanvon.bluetooth.BluetoothMsgReceive;
+import com.hanvon.bluetooth.BluetoothSearch;
+import com.hanvon.bluetooth.BluetoothService;
+import com.hanvon.login.LoginActivity;
+import com.hanvon.sulupen.db.bean.ScanRecord;
+import com.hanvon.sulupen.db.dao.SCanRecordDao;
+
+import com.hanvon.sulupen.db.bean.ScanRecord;
+import com.hanvon.sulupen.db.dao.SCanRecordDao;
+
 import com.hanvon.sulupen.db.bean.NoteBookInfo;
 import com.hanvon.sulupen.db.bean.NoteBookRecord;
 import com.hanvon.sulupen.db.dao.NoteBookRecordDao;
+import com.hanvon.sulupen.utils.LogUtil;
 import com.hanvon.sulupen.adapter.*;
+
 
 public class MainActivity extends Activity implements OnClickListener
 {
@@ -34,6 +54,7 @@ public class MainActivity extends Activity implements OnClickListener
     private ImageView mNewNote;
     private ListView mBooksList;
     private TextView mEmptyNoteBook;
+    private ImageView mEpen;
     
     public final static int FLAG_EDIT = 1;
 	public final static int FLAG_CREATE = 2;
@@ -43,6 +64,23 @@ public class MainActivity extends Activity implements OnClickListener
 	private NoteBookListAdapter mNoteBookAdapter;
 	//private List<NoteBookInfo> mNoteBookList;
     
+	private BluetoothMsgReceive btMsgReceiver;
+	private boolean isConnectedEpen;
+	
+	private Handler mHandler = new Handler() {
+		public void handleMessage(android.os.Message msg) {
+			switch (msg.what) {
+			case BluetoothMsgReceive.BT_CONNECTED:
+				mEpen.setBackgroundResource(R.drawable.epen_manager);
+				break;
+			case BluetoothMsgReceive.BT_DISCONNECT:
+				mEpen.setBackgroundResource(R.drawable.epen_manager_nor);
+				break;
+				
+			}
+		};
+	};
+
     @Override
     protected void onCreate(Bundle savedInstanceState) 
     {
@@ -50,11 +88,56 @@ public class MainActivity extends Activity implements OnClickListener
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_main);
         
+		BluetoothService.startService(this);
+
         initDatas();
         
         initViews();
-        
     }
+
+    @Override
+	protected void onStart() {
+		super.onStart();
+		 IntentFilter mFilter = new IntentFilter(
+					BluetoothIntenAction.ACTION_EPEN_BATTERY_CHANGE);
+			mFilter.addAction(BluetoothIntenAction.ACTION_EPEN_BT_CONNECTED);
+			mFilter.addAction(BluetoothIntenAction.ACTION_EPEN_BT_DISCONNECT);
+			this.registerReceiver(btMsgReceiver, mFilter);
+		//	if (BluetoothService.getServiceInstance().getBluetoothChatService()
+		//			.getState() == BluetoothChatService.STATE_CONNECTED) {
+		//		mEpen.setBackgroundResource(R.drawable.epen_manager);
+		//	} else {
+		//		mEpen.setBackgroundResource(R.drawable.epen_manager_nor);
+		//	}
+			
+		//	if (!isConnected()){
+		//	    BluetoothCheck();
+		//	}
+	}
+    public void BluetoothCheck(){
+		BluetoothAdapter adapter = BluetoothAdapter.getDefaultAdapter();
+		Set<BluetoothDevice> devices = adapter.getBondedDevices();
+		boolean flag = false;
+		BluetoothDevice hanBluetooth = null;
+		for(int i=0; i<devices.size(); i++)    
+		{
+		    BluetoothDevice device = (BluetoothDevice) devices.iterator().next();    
+		    LogUtil.i("===============devicename:==="+device.getName());
+		    if (device.getName().indexOf("hanvon-scanpen") != -1){
+		    	flag = true;
+		    	hanBluetooth = device;
+		    }
+		}
+		if (flag){
+			String name = hanBluetooth.getName();
+			String deviceInfo = name + "\n" + hanBluetooth.getAddress();
+			
+			Intent intent = new Intent();
+			intent.putExtra("device", deviceInfo);
+			intent.setClass(MainActivity.this, BluetoothSearch.class);  
+			MainActivity.this.startActivity(intent);
+		}
+	}
 
     public void initDatas()
     {
@@ -78,11 +161,13 @@ public class MainActivity extends Activity implements OnClickListener
         
         mBooksList = (ListView) findViewById(R.id.lv_notebooklist);
         mEmptyNoteBook = (TextView) findViewById(R.id.tv_showempty);
+        mEpen = (ImageView)findViewById(R.id.epen_button);
         
         mNewNoteBook.setOnClickListener(this);
         mEditNoteBook.setOnClickListener(this);
         mSearchNoteBook.setOnClickListener(this);
         mNewNote.setOnClickListener(this);
+        mEpen.setOnClickListener(this);
         
         if (mNoteBookList.size() <= 0)
         {
@@ -102,8 +187,8 @@ public class MainActivity extends Activity implements OnClickListener
         	mNoteBookAdapter = new NoteBookListAdapter(this, mNoteBookList);
         	mBooksList.setAdapter(mNoteBookAdapter);
         }
-        
-        
+
+        btMsgReceiver = new BluetoothMsgReceive(mHandler);
     }
     
     @Override
@@ -122,14 +207,17 @@ public class MainActivity extends Activity implements OnClickListener
                 break;
                 
             case R.id.tv_searchbtn:
-                
                 break;
             
             case R.id.iv_newnote:
                 Intent newNoteIntent = new Intent(this, NoteDetailActivity.class);
                 newNoteIntent.setFlags(FLAG_CREATE);
                 startActivityForResult(newNoteIntent, 1);
-                break;     
+                break;
+            case R.id.epen_button:
+            	Intent newIntent1 = new Intent(this, BluetoothSearch.class);
+        		startActivity(newIntent1);
+            	break;
         }
     }
     
@@ -180,4 +268,15 @@ public class MainActivity extends Activity implements OnClickListener
         }
         return super.onOptionsItemSelected(item);
     }
+    
+    private boolean isConnected() {
+		return BluetoothService.getServiceInstance().getBluetoothChatService()
+				.getState() == BluetoothChatService.STATE_CONNECTED ? true
+				: false;
+	}
+    @Override
+	protected void onDestroy() {
+		unregisterReceiver(btMsgReceiver);
+		super.onDestroy();
+	}
 }

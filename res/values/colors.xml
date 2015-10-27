@@ -1,7 +1,102 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright (C) 2009 The Android Open Source Project
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
 <resources>
     <color name="frame_bg">#fff1f5f8</color>
-    <color name="gray">#ffb0b0b0</color>
-    <color name="blue_black">#ff313b4b</color>
+    <color name="label_color">#ff222222</color>
+    <color name="label_color_hl0">#ffffffff</color>
+    <color name="balloon_color">#ff000000</color>
+    <color name="candidate_color">#ff000000</color>
+    <color name="active_candidate_color">#ff0000ea</color>
+    <color name="recommended_candidate_color">#ffe35900</color>
+    <color name="footnote_color">#ff343233</color>
+    <color name="composing_color">#ff000000</color>
+    <color name="composing_color_hl">#ffffffff</color>
+    <color name="composing_color_idle">#ff777777</color>
     <color name="button_back">#00000000</color>
+    
+    
+    <color name="open_bg">#ffB6FCFB</color>
+    <color name="open_bn_pressed_bg">#ff0E86E8</color> 
+    <color name="open_bn_normal_bg">#ff74BCF7</color>
+    <!--  <color name="open_bn_unenabled_bg">#ffDFE5EB</color> -->
+    <color name="open_bn_unenabled_bg">#ff808080</color>
+    <!--main 涉及color  -->
+    <color name="list_item_title">#fff</color>
+    <color name="list_background">#303030</color>
+    <color name="list_background_pressed">#992416</color>
+    <color name="list_divider">#272727</color>
+    <color name="counter_text_bg">#626262</color>
+    <color name="counter_text_color">#c5c4c4</color>
+    
+    <color name="select_text_color">#ff0000</color>
+    
+    <color name="whilte">#ffffff</color>
+    <!-- menu -->
+    
+    <color name="gb_title_bar_vertical_line">#ffffffff</color>
+    <color name="black">#000000</color>
+    <color name="white">#ffffffff</color>
+    <color name="light_gray">#ffe9e9e9</color>
+    <color name="blue_black">#ff313b4b</color>
+     <color name="gray">#ffb0b0b0</color>
+       <color name="lighter_gray">#fff1f1f1</color>
+       <color name="skb_bg">#94B6D4</color>
+       <color name="transparent">#00000000</color>
+       <!--Scan Record  -->
+       <color name="time_line_bg">#ff28b0a0</color>
+       <color name="red">#ffff0000</color>
+       
+        <!-- drop down list header font color -->
+    <color name="drop_down_list_header_font_color">#000000</color>
+    <!-- drop down list header second font color -->
+    <color name="drop_down_list_header_second_font_color">#000000</color>
+    <!-- drop down list footer font color -->
+    <color name="drop_down_list_footer_font_color">#000000</color>
+    <!-- topic colors -->
+    <color name="topic_default">#000000</color>
+    <color name="topic_default_color0">#ff0000</color>
+    <color name="topic_default_color1">#00ff00</color>
+    <color name="topic_default_color2">#0000ff</color>
+    <color name="topic_default_color3">#ffff00</color>
+    <color name="topic_default_color4">#00ffff</color>
+    <color name="topic_default_color5">#ff00ff</color>
+    <color name="topic_default_color6">#ff0080</color>
+    <color name="topic_default_color7">#00ff80</color>
+    <color name="topic_default_color8">#80ff00</color>
+    <color name="topic_default_color9">#8000ff</color>
+    <!-- title bar -->
+    <color name="title_bar_background">#ff28b1e5</color>
+    <!-- ScanNoteDetailActivity -->
+    <color name="scan_image_bg">#ffe8e8e8</color>
+    <color name="list_main_text">#191919</color>
+    <color name="black4">#4a4a4a</color>
+    <color name="transparent_background">#00000000</color>
+    <color name="dialog_button_divider">#a3a3a3</color>
+    <color name="list_main_text_disabled">#ff757575</color>
+    <color name="list_sub_text">#757575</color>
+    <color name="accent_1">#ff29549f</color>
+    <color name="skb_background_color">#dddddd</color>
+
+    <!-- 添加图片用到的 -->
+    <color name="deep_gray">#394257</color>
+    <color name="border_gray">#d9dfe5</color>
+    <color name="bg_gray">#e1e1e1</color>
+    <color name="btn_gray">#d1d1d1</color>
+    <color name="glass_gall">#c2ebef</color>
+    <color name="light_blue">#87d0f2</color>
+
 </resources>
+

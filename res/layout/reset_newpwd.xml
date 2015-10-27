@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F2F2F2"
+    android:orientation="vertical" >
+    
+    <include layout="@layout/resetpwd_newpwd_title" />
+    
+    <TextView 
+        android:layout_width="match_parent"
+        android:layout_height="30dip"
+        android:layout_marginTop="40dip"
+        android:gravity="center"
+        android:text="@string/resetpwd_reset"
+        android:textColor="#999999"
+        android:textSize="18sp"/>
+    
+        <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dip"
+        android:layout_marginTop="20dip" 
+        android:text="@string/new_passwd"
+        android:textColor="#999999"
+        android:textSize="15sp"/>
+        
+        <com.hanvon.utils.ClearEditText
+                android:id="@+id/resetpwd_newpwd"
+                android:layout_width="match_parent"
+                android:layout_height="40dip"
+                android:layout_marginTop="10dip"
+                android:layout_marginLeft="20dip"
+                android:layout_marginRight="20dip"
+                android:background="#FFFFFF"
+                android:hint="@string/pwd_format"
+                android:singleLine="true"
+                android:drawableRight="@drawable/right_arrow"
+                android:maxLength="16"
+                android:textColor="#D7D7D7"
+                android:textColorHint="#D7D7D7"
+                android:textSize="15sp" 
+                android:imeOptions="actionNext" >
+            </com.hanvon.utils.ClearEditText>
+        
+        <TextView
+        android:id="@+id/resetpwd_error"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dip"
+        android:layout_marginTop="10dip" 
+        android:text="@string/reset_passwd_error"
+        android:textColor="#999999"
+        android:textSize="15sp"/>
+
+   <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dip"
+        android:layout_marginTop="20dip" 
+        android:text="@string/ensure_new_passwd"
+        android:textColor="#999999"
+        android:textSize="15sp"/>
+        
+        <com.hanvon.utils.ClearEditText
+                android:id="@+id/resetpwd_ensurepwd"
+                android:layout_width="match_parent"
+                android:layout_height="40dip"
+                android:layout_marginTop="10dip"
+                android:layout_marginLeft="20dip"
+                android:layout_marginRight="20dip"
+                android:background="#FFFFFF"
+                android:hint="@string/pwd_format"
+                android:singleLine="true"
+                android:drawableRight="@drawable/right_arrow"
+                android:maxLength="16"
+                android:textColor="#D7D7D7"
+                android:textColorHint="#D7D7D7"
+                android:textSize="15sp" 
+                android:imeOptions="actionNext" >
+            </com.hanvon.utils.ClearEditText>
+
+         <Button
+                android:id="@+id/resetpwd_button"
+                android:layout_width="match_parent"
+                android:layout_height="50dip"
+                android:layout_marginTop="30dip"
+                android:layout_marginLeft="20dip"
+                android:layout_marginRight="20dip"
+                android:background="#C9C9C9"
+                android:text="@string/ensure"
+                android:textColor="@android:color/white"
+                android:textSize="20sp" />
+</LinearLayout>
+

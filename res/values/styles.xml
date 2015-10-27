@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!--
         Base application theme, dependent on API level. This theme is replaced
@@ -17,4 +17,15 @@
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
     </style>
 
+    <style name="NetDisk" />
+    <style name="NetDisk.TextAppearance" parent="@style/NetDisk" />
+    
+   <style name="NetDisk.TextAppearance.Large" parent="@style/NetDisk.TextAppearance">
+        <item name="android:textSize">@dimen/text_size_large</item>
+    </style>
+     <style name="NetDisk.TextAppearance.Large.Black" parent="@style/NetDisk.TextAppearance.Large">
+        <item name="android:textColor">@color/blue_black</item>
+    </style>
+    
+      
 </resources>

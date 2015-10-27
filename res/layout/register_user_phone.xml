@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F2F2F2"
+    android:orientation="vertical" >
+
+    <include layout="@layout/rgst_user_title" />
+		 <com.hanvon.utils.ClearEditText
+                android:id="@+id/rgst_user"
+                android:layout_width="match_parent"
+                android:layout_height="40dip"
+                android:layout_marginTop="70dip"
+                android:background="#FFFFFF"
+                android:hint="@string/rgst_phone_user"
+                android:singleLine="true"
+                android:drawableRight="@drawable/right_arrow"
+                android:maxLength="32"
+                android:textColor="#D7D7D7"
+                android:textColorHint="#D7D7D7"
+                android:textSize="15sp" 
+                android:imeOptions="actionNext" >
+            </com.hanvon.utils.ClearEditText>
+
+            <com.hanvon.utils.ClearEditText
+                android:id="@+id/rgst_pswd"
+                android:layout_width="match_parent"
+                android:layout_height="40dip"
+                android:layout_marginTop="112dip"
+                android:hint="@string/rgst_pwd"
+                android:background="#FFFFFF"
+                android:inputType="textPassword"
+                android:singleLine="true"
+                android:maxLength="16"
+                android:textColor="#D7D7D7"
+                android:textColorHint="#D7D7D7"
+                android:drawableRight="@drawable/right_arrow"
+                android:textSize="15sp" 
+                android:imeOptions="actionDone">
+            </com.hanvon.utils.ClearEditText>
+
+            <Button
+                android:id="@+id/rgst_rgstbutton"
+                android:layout_width="match_parent"
+                android:layout_height="40dip"
+                android:layout_marginLeft="20dip"
+                android:layout_marginRight="20dip"
+                android:layout_marginTop="190dip"
+                android:background="#C9C9C9"
+                android:text="@string/rgst_button"
+                android:textColor="@android:color/white"
+                android:textSize="20sp" />
+
+           <TextView
+               android:id="@+id/regist_emailuser"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:layout_alignParentBottom="true"
+               android:layout_alignParentLeft="true"
+               android:layout_marginBottom="60dp"
+               android:layout_marginEnd="30dip"
+               android:gravity="center"
+               android:text="@string/rgst_email"
+               android:textColor="@color/black4"
+               android:textSize="18sp" />
+
+</RelativeLayout>
