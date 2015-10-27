@@ -9,6 +9,7 @@ import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.hanvon.sulupen.db.bean.NoteBookRecord;
 import com.hanvon.sulupen.db.dao.NoteBookRecordDao;
@@ -72,12 +73,19 @@ public class NewNoteBookActivity extends Activity implements OnClickListener
             break;
          
             case R.id.tv_done_btn:
-                saveNoteBookToDb();
-            	Intent newIntent = new Intent(this, NoteBookListActivity.class);
-    			//newIntent.setFlags(FLAG_CREATE);
-            	newIntent.putExtra("NoteBookName", mInput.getText().toString());
-    			startActivity(newIntent);  
-    			finish();
+            	if (!isNoteBookCreated())
+            	{
+            		saveNoteBookToDb();
+            		Intent newIntent = new Intent(this, NoteBookListActivity.class);
+            		//newIntent.setFlags(FLAG_CREATE);
+            		newIntent.putExtra("NoteBookName", mInput.getText().toString());
+            		startActivity(newIntent);
+            		finish();
+            	}
+            	else
+            	{
+            		Toast.makeText(this, "NoteBook exist", Toast.LENGTH_SHORT).show();
+            	}
             break;
                 
             case R.id.tv_searchbtn:
@@ -98,8 +106,10 @@ public class NewNoteBookActivity extends Activity implements OnClickListener
 	     String noteBookName = mInput.getText().toString();
 	     for (int i = 0; i < noteBooks.size(); i++)
 	     {
+	    	 Log.d(TAG, "notebook name is " + noteBooks.get(i).getNoteBookName());
 	         if (noteBooks.get(i).getNoteBookName().equals(noteBookName))
 	         {
+	        	 
 	             ret = true;
 	             break;
 	         }
