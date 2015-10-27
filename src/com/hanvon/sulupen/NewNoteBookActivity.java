@@ -10,9 +10,10 @@ import android.view.Window;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.hanvon.sulupen.db.bean.*;
+import com.hanvon.sulupen.db.bean.NoteBookRecord;
 import com.hanvon.sulupen.db.dao.NoteBookRecordDao;
-import com.hanvon.sulupen.utils.TimeUtil;
+
+import java.util.List;
 
 public class NewNoteBookActivity extends Activity implements OnClickListener
 {
@@ -87,6 +88,24 @@ public class NewNoteBookActivity extends Activity implements OnClickListener
                 
                 break;     
 		 }
+	 }
+	 
+	 public boolean isNoteBookCreated()
+	 {
+	     boolean ret = false;
+	     NoteBookRecordDao noteBookRecordDao = new NoteBookRecordDao(this);
+	     List<NoteBookRecord> noteBooks = noteBookRecordDao.getAllNoteBooks();
+	     String noteBookName = mInput.getText().toString();
+	     for (int i = 0; i < noteBooks.size(); i++)
+	     {
+	         if (noteBooks.get(i).getNoteBookName().equals(noteBookName))
+	         {
+	             ret = true;
+	             break;
+	         }
+	     }
+	     
+	     return ret;
 	 }
 	 
 	 public void saveNoteBookToDb()
