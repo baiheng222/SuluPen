@@ -1,13 +1,14 @@
 package com.hanvon.sulupen.db.bean;
 
 
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
+
 import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.field.ForeignCollectionField;
 import com.j256.ormlite.table.DatabaseTable;
-
-import java.io.Serializable;
-import java.util.Collection;
 
 @DatabaseTable(tableName = "notebook_table")
 public class NoteBookRecord implements Serializable
@@ -37,6 +38,12 @@ public class NoteBookRecord implements Serializable
         this.noteRecords = notes;
     }
 	
+    public ArrayList<NoteRecord> getNoteRecordList()
+    {
+    	ArrayList<NoteRecord> mNotesList = new ArrayList<NoteRecord>(noteRecords);
+    	return mNotesList;
+    }
+    
     /*
     public static final Parcelable.Creator<ScanRecord> CREATOR = new Creator()
 	{

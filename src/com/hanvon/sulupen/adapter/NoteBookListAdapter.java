@@ -1,16 +1,18 @@
 package com.hanvon.sulupen.adapter;
 
-import java.util.List;  
+import java.util.ArrayList;
+import java.util.List;
 
-import android.content.Context;  
-import android.view.LayoutInflater;  
-import android.view.View;  
-import android.view.ViewGroup;  
-import android.widget.BaseAdapter;  
+import android.content.Context;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.hanvon.sulupen.R;
 import com.hanvon.sulupen.db.bean.NoteBookRecord;
+import com.hanvon.sulupen.db.bean.NoteRecord;
 
 public class NoteBookListAdapter extends BaseAdapter  
 {  
@@ -61,11 +63,24 @@ public class NoteBookListAdapter extends BaseAdapter
         }
         
         viewHolder.mNoteBookName.setText(mDatas.get(position).getNoteBookName());
-        viewHolder.mNotesNum.setText("0");
+        int notesNum = getNoteNumInNoteBook(position);
+        viewHolder.mNotesNum.setText(String.valueOf(notesNum));
         
         return convertView;  
     }  
   
+    private int getNoteNumInNoteBook(int position)
+    {
+    	ArrayList<NoteRecord> notes = mDatas.get(position).getNoteRecordList();
+    	return notes.size();
+    	
+    	/*
+    	NoteRecordDao mNoteRecordDao = new NoteRecordDao(mContext);
+    	List<NoteRecord> notes = mNoteRecordDao.getNoteRecordsByNoteBookId(mDatas.get(position).getId());
+    	return notes.size();
+    	*/
+    }
+    
     private final class ViewHolder  
     {  
         TextView mNoteBookName;
