@@ -15,7 +15,7 @@
         android:textColor="#999999"
         android:textSize="18sp"/>
     
-    <com.hanvon.utils.ClearEditText
+    <com.hanvon.sulupen.utils.ClearEditText
                 android:id="@+id/regist_phone"
                 android:layout_width="match_parent"
                 android:layout_height="40dip"
@@ -29,7 +29,7 @@
                 android:textColorHint="#D7D7D7"
                 android:textSize="15sp" 
                 android:imeOptions="actionDone" >
-            </com.hanvon.utils.ClearEditText>
+            </com.hanvon.sulupen.utils.ClearEditText>
         
    
      <Button

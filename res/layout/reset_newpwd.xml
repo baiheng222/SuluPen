@@ -25,7 +25,7 @@
         android:textColor="#999999"
         android:textSize="15sp"/>
         
-        <com.hanvon.utils.ClearEditText
+        <com.hanvon.sulupen.utils.ClearEditText
                 android:id="@+id/resetpwd_newpwd"
                 android:layout_width="match_parent"
                 android:layout_height="40dip"
@@ -41,7 +41,7 @@
                 android:textColorHint="#D7D7D7"
                 android:textSize="15sp" 
                 android:imeOptions="actionNext" >
-            </com.hanvon.utils.ClearEditText>
+            </com.hanvon.sulupen.utils.ClearEditText>
         
         <TextView
         android:id="@+id/resetpwd_error"
@@ -62,7 +62,7 @@
         android:textColor="#999999"
         android:textSize="15sp"/>
         
-        <com.hanvon.utils.ClearEditText
+        <com.hanvon.sulupen.utils.ClearEditText
                 android:id="@+id/resetpwd_ensurepwd"
                 android:layout_width="match_parent"
                 android:layout_height="40dip"
@@ -78,7 +78,7 @@
                 android:textColorHint="#D7D7D7"
                 android:textSize="15sp" 
                 android:imeOptions="actionNext" >
-            </com.hanvon.utils.ClearEditText>
+            </com.hanvon.sulupen.utils.ClearEditText>
 
          <Button
                 android:id="@+id/resetpwd_button"

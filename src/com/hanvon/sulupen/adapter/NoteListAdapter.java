@@ -21,7 +21,7 @@ public class NoteListAdapter extends BaseAdapter
     private List<NoteRecord> mNoteList;
     private LayoutInflater mInflater;
     
-    NoteListAdapter(Context context, List<NoteRecord> mDatas)
+    public NoteListAdapter(Context context, List<NoteRecord> mDatas)
     {
         mContext = context;
         mNoteList = mDatas;

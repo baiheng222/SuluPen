@@ -6,7 +6,7 @@
     android:orientation="vertical" >
 
     <include layout="@layout/rgst_user_title" />
-		 <com.hanvon.utils.ClearEditText
+		 <com.hanvon.sulupen.utils.ClearEditText
                 android:id="@+id/rgst_user"
                 android:layout_width="match_parent"
                 android:layout_height="40dip"
@@ -20,9 +20,9 @@
                 android:textColorHint="#D7D7D7"
                 android:textSize="15sp" 
                 android:imeOptions="actionNext" >
-            </com.hanvon.utils.ClearEditText>
+            </com.hanvon.sulupen.utils.ClearEditText>
 
-            <com.hanvon.utils.ClearEditText
+            <com.hanvon.sulupen.utils.ClearEditText
                 android:id="@+id/rgst_pswd"
                 android:layout_width="match_parent"
                 android:layout_height="40dip"
@@ -37,7 +37,7 @@
                 android:drawableRight="@drawable/right_arrow"
                 android:textSize="15sp" 
                 android:imeOptions="actionDone">
-            </com.hanvon.utils.ClearEditText>
+            </com.hanvon.sulupen.utils.ClearEditText>
 
             <Button
                 android:id="@+id/rgst_rgstbutton"

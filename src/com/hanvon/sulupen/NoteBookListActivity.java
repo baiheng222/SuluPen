@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.hanvon.sulupen.db.bean.NoteRecord;
 import com.hanvon.sulupen.db.dao.NoteRecordDao;
+import com.hanvon.sulupen.adapter.NoteListAdapter;
 
 import java.util.List;
 
@@ -31,6 +32,7 @@ public class NoteBookListActivity extends Activity implements OnClickListener
 	private ListView mLvNoteList;
 	
 	NoteRecordDao mNoteRecordDao;
+	NoteListAdapter mNoteListAdapter;
 	
 	List<NoteRecord> mNoteRecordList;
 	
@@ -87,6 +89,9 @@ public class NoteBookListActivity extends Activity implements OnClickListener
 		     mRightBtn.setVisibility(View.VISIBLE);
 		     mLvNoteList.setVisibility(View.VISIBLE);
 		     mEmptyNoteTip.setVisibility(View.GONE);
+		     
+		     mNoteListAdapter = new NoteListAdapter(this, mNoteRecordList);
+		     mLvNoteList.setAdapter(mNoteListAdapter);
 		 }
 		 else
 		 {
@@ -117,5 +122,11 @@ public class NoteBookListActivity extends Activity implements OnClickListener
                 startActivity(newNoteIntent);
             break;     
 		 }
+	 }
+	 
+	 @Override
+	 protected void onResume()
+	 {
+	     super.onResume();
 	 }
 }

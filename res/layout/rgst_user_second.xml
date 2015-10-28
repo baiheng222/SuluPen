@@ -17,7 +17,7 @@
         android:textColor="#999999"
         android:textSize="15sp"/>
     
-        <com.hanvon.utils.ClearEditText
+        <com.hanvon.sulupen.utils.ClearEditText
                 android:id="@+id/regist_user_getcode"
                 android:layout_width="match_parent"
                 android:layout_height="40dip"
@@ -31,7 +31,7 @@
                 android:textColorHint="#D7D7D7"
                 android:textSize="16sp" 
                 android:imeOptions="actionDone" >
-            </com.hanvon.utils.ClearEditText>
+            </com.hanvon.sulupen.utils.ClearEditText>
         
    
            <Button
@@ -46,7 +46,7 @@
                 android:textColor="@android:color/white"
                 android:textSize="20sp" />
            
-           
+ <!--           
            <Button
                 android:id="@+id/rgst_getcode_time"
                 android:layout_width="match_parent"
@@ -58,4 +58,5 @@
                 android:text="@string/rmb_time"
                 android:textColor="@android:color/white"
                 android:textSize="20sp" />
+ -->
 </LinearLayout>
