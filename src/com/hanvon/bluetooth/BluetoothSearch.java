@@ -3,7 +3,7 @@ package com.hanvon.bluetooth;
 import java.util.ArrayList;
 
 import com.hanvon.sulupen.R;
-import com.hanvon.utils.LogUtil;
+import com.hanvon.sulupen.utils.LogUtil;
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;

@@ -15,7 +15,7 @@ import java.util.UUID;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.hanvon.utils.LogUtil;
+import com.hanvon.sulupen.utils.LogUtil;
 
 import android.annotation.TargetApi;
 import android.app.ProgressDialog;

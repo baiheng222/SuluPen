@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;  
 import android.widget.TextView;
 
-//import com.hanvon.sulupen.R;
+import com.hanvon.sulupen.R;
 import com.hanvon.sulupen.db.bean.NoteBookRecord;
 
 public class NoteBookListAdapter extends BaseAdapter  

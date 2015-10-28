@@ -2,7 +2,7 @@ package com.hanvon.bluetooth;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import com.hanvon.utils.LogUtil;
+import com.hanvon.sulupen.utils.LogUtil;
 
 import android.app.ProgressDialog;
 import android.app.Service;

@@ -1,6 +1,6 @@
 package com.hanvon.bluetooth;
 
-import com.hanvon.utils.LogUtil;
+import com.hanvon.sulupen.utils.LogUtil;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;

@@ -5,11 +5,14 @@ package com.hanvon.sulupen;
 import java.util.List;
 import java.util.Set;
 
+import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -28,7 +31,6 @@ import com.hanvon.bluetooth.BluetoothIntenAction;
 import com.hanvon.bluetooth.BluetoothMsgReceive;
 import com.hanvon.bluetooth.BluetoothSearch;
 import com.hanvon.bluetooth.BluetoothService;
-import com.hanvon.login.LoginActivity;
 import com.hanvon.sulupen.db.bean.ScanRecord;
 import com.hanvon.sulupen.db.dao.SCanRecordDao;
 
@@ -38,6 +40,7 @@ import com.hanvon.sulupen.db.dao.SCanRecordDao;
 import com.hanvon.sulupen.db.bean.NoteBookInfo;
 import com.hanvon.sulupen.db.bean.NoteBookRecord;
 import com.hanvon.sulupen.db.dao.NoteBookRecordDao;
+import com.hanvon.sulupen.login.LoginActivity;
 import com.hanvon.sulupen.utils.LogUtil;
 import com.hanvon.sulupen.adapter.*;
 
@@ -114,7 +117,7 @@ public class MainActivity extends Activity implements OnClickListener
 		//	    BluetoothCheck();
 		//	}
 	}
-    public void BluetoothCheck(){
+    @TargetApi(Build.VERSION_CODES.ECLAIR) @SuppressLint("NewApi") public void BluetoothCheck(){
 		BluetoothAdapter adapter = BluetoothAdapter.getDefaultAdapter();
 		Set<BluetoothDevice> devices = adapter.getBondedDevices();
 		boolean flag = false;
