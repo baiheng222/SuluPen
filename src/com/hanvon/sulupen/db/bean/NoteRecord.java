@@ -54,8 +54,8 @@ public class NoteRecord //implements Parcelable
 	
 	
 	//用于关联笔记本表的外键，笔记本的id
-	@DatabaseField(canBeNull = true, foreign = true, columnName = "notebookID")
-	private NoteBookRecord notebookId;
+	@DatabaseField(canBeNull = true, foreign = true, columnName = "notebookID", foreignAutoRefresh = true)
+	private NoteBookRecord notebook;
 	
 	/*
 	public static final Parcelable.Creator<ScanRecord> CREATOR = new Creator()
@@ -184,14 +184,14 @@ public class NoteRecord //implements Parcelable
 		this.version = version;
 	}
 	
-	public NoteBookRecord getNoteBookId()
+	public NoteBookRecord getNoteBook()
 	{
-		return notebookId;
+		return notebook;
 	}
 	
-	public void setNoteBookId(NoteBookRecord notebook)
+	public void setNoteBook(NoteBookRecord nb)
 	{
-		this.notebookId = notebook;
+		this.notebook = nb;
 	}
 
 	public NoteRecord() {

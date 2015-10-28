@@ -57,6 +57,7 @@ public class NoteListAdapter extends BaseAdapter
             viewHolder = new ViewHolder();
             viewHolder.mNoteContent = (TextView) convertView.findViewById(R.id.tv_note_content);
             viewHolder.mNoteTitle = (TextView) convertView.findViewById(R.id.tv_note_title);
+            viewHolder.mNoteCreateTime = (TextView) convertView.findViewById(R.id.tv_note_create_time);
             convertView.setTag(viewHolder);
         }
         else
@@ -64,8 +65,12 @@ public class NoteListAdapter extends BaseAdapter
             viewHolder = (ViewHolder) convertView.getTag();
         }
         
-        viewHolder.mNoteTitle.setText("title");
-        viewHolder.mNoteContent.setText("content");
+        String title = mNoteList.get(position).getNoteTitle();
+        String content = mNoteList.get(position).getNoteContent();
+        String time = mNoteList.get(position).getCreateTime();
+        viewHolder.mNoteTitle.setText(title);
+        viewHolder.mNoteContent.setText(content);
+        viewHolder.mNoteCreateTime.setText(time);
         
         return convertView;
     }
@@ -74,5 +79,6 @@ public class NoteListAdapter extends BaseAdapter
     {
         TextView mNoteContent;
         TextView mNoteTitle;
+        TextView mNoteCreateTime;
     }
 }

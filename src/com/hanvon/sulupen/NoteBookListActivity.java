@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.hanvon.sulupen.db.bean.NoteBookRecord;
 import com.hanvon.sulupen.db.bean.NoteRecord;
 import com.hanvon.sulupen.db.dao.NoteRecordDao;
 import com.hanvon.sulupen.adapter.NoteListAdapter;
@@ -36,6 +37,8 @@ public class NoteBookListActivity extends Activity implements OnClickListener
 	
 	List<NoteRecord> mNoteRecordList;
 	
+	NoteBookRecord mPassedNoteBook;
+	
 	 
 	public final static int FLAG_EDIT = 1;
 	public final static int FLAG_CREATE_WITH_BOOKNAME = 2;
@@ -60,7 +63,13 @@ public class NoteBookListActivity extends Activity implements OnClickListener
         Intent intent = getIntent();
         if (intent != null) 
         {
-            mNoteBookName = intent.getStringExtra("NoteBookName");
+             
+            mPassedNoteBook = (NoteBookRecord) intent.getSerializableExtra("NoteBook");
+            mNoteBookName = mPassedNoteBook.getNoteBookName();
+        }
+        else
+        {
+            mNoteBookName = "NoteBook";
         }
         
         mNoteRecordDao = new NoteRecordDao(this);
@@ -119,6 +128,7 @@ public class NoteBookListActivity extends Activity implements OnClickListener
             case R.id.iv_newnote:
             	Intent newNoteIntent = new Intent(this, NoteDetailActivity.class);
                 newNoteIntent.setFlags(FLAG_CREATE_WITH_BOOKNAME);
+                newNoteIntent.putExtra("NoteBook", mPassedNoteBook);
                 startActivity(newNoteIntent);
             break;     
 		 }

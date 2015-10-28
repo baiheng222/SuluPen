@@ -194,7 +194,8 @@ public class MainActivity extends Activity implements OnClickListener
         	        NoteBookRecord noteBook = mNoteBookList.get(position);
         	        Intent newIntent = new Intent(MainActivity.this, NoteBookListActivity.class);
                     //newIntent.setFlags(FLAG_CREATE);
-                    newIntent.putExtra("NoteBookName", noteBook.getNoteBookName());
+        	        newIntent.putExtra("NoteBook", noteBook);
+                    //newIntent.putExtra("NoteBookName", noteBook.getNoteBookName());
                     startActivity(newIntent);
         	    }
         	});

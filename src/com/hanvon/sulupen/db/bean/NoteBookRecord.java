@@ -1,16 +1,16 @@
 package com.hanvon.sulupen.db.bean;
 
 
-import android.os.Parcel;
-import android.os.Parcelable;
-import android.os.Parcelable.Creator;
-
 import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.field.ForeignCollectionField;
 import com.j256.ormlite.table.DatabaseTable;
 
+import java.io.Serializable;
+import java.util.Collection;
+
 @DatabaseTable(tableName = "notebook_table")
-public class NoteBookRecord //implements Parcelable
+public class NoteBookRecord implements Serializable
 {
     //数据库中每条记录的id
 	@DatabaseField(generatedId = true,dataType=DataType.INTEGER)
@@ -23,6 +23,19 @@ public class NoteBookRecord //implements Parcelable
 	//笔记本名称，笔记本名称是可以被修改的，虽然笔记本名称不会有两个同样的名称存在，
     @DatabaseField(columnName = "noteBookName",dataType=DataType.STRING)
     private String noteBookName;
+    
+    @ForeignCollectionField
+    private Collection<NoteRecord> noteRecords;
+
+    public Collection<NoteRecord> getNoteRecords()
+    {
+        return noteRecords;
+    }
+
+    public void setArticles(Collection<NoteRecord> notes)
+    {
+        this.noteRecords = notes;
+    }
 	
     /*
     public static final Parcelable.Creator<ScanRecord> CREATOR = new Creator()

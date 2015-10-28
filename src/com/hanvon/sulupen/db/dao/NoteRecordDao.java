@@ -17,6 +17,7 @@ import com.j256.ormlite.dao.GenericRawResults;
 import com.j256.ormlite.dao.RawRowMapper;
 import com.j256.ormlite.stmt.QueryBuilder;
 
+
 import android.content.Context;
 import android.util.Log;
 //import com.hanvon.sulupen.MainActivity;
@@ -166,4 +167,26 @@ public class NoteRecordDao
     	}
     }
 
+    /**
+     * 通过Id得到一个笔记，这个笔记是附带着它所属的笔记本的信息的
+     * 
+     * @param id
+     * @return
+     */
+    @SuppressWarnings("unchecked")
+    public NoteRecord getNoteRecordWithNoteBook(int id)
+    {
+        NoteRecord note = null;
+        try
+        {
+            note = mNoteRecordDao.queryForId(id);
+            mHelper.getDao(NoteBookRecord.class).refresh(note.getNoteBook());
+
+        } catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+        return note;
+    }
+    
 }

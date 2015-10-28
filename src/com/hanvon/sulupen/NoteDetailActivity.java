@@ -9,8 +9,10 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
+import com.hanvon.sulupen.db.bean.NoteBookRecord;
 import com.hanvon.sulupen.db.bean.NoteRecord;
 import com.hanvon.sulupen.db.dao.NoteRecordDao;
 import com.hanvon.sulupen.utils.TimeUtil;
@@ -22,9 +24,12 @@ public class NoteDetailActivity extends Activity implements OnClickListener
     private final String TAG = "NoteDetailActivity";
     
     private Button mConfirmButton;
-    private TextView mTextView ;  
+    private TextView mTextView ;
+    private EditText mEtContent;
+    private EditText mEtTitle;
     private int flagIntent = -1;
     
+    private NoteBookRecord mPassedNoteBookRecord;
     private NoteRecord mNoteRecord;
     private String mCreateDate;
     private String mNoteBookName;
@@ -35,6 +40,9 @@ public class NoteDetailActivity extends Activity implements OnClickListener
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_note_detail);
+		
+		initDatas();
+		
         initView();
         
         mCreateDate = TimeUtil.getCurDate();
@@ -47,19 +55,26 @@ public class NoteDetailActivity extends Activity implements OnClickListener
 	{
 		mConfirmButton=(Button) findViewById(R.id.save_button);
 		mTextView = (TextView) findViewById(R.id.etNoteContent);
+		mEtContent = (EditText) findViewById(R.id.etNoteContent);
+		mEtTitle = (EditText) findViewById(R.id.etNoteTitle);
 		
 		mConfirmButton.setOnClickListener(this);
 	}
 	
 	private void initDatas()
 	{
+	    mNoteBookName = "NoteBook";
+	    
 		Intent intent = getIntent();
 		if (intent != null) 
 		{
+		    mPassedNoteBookRecord = (NoteBookRecord) intent.getSerializableExtra("NoteBook");
+		    mNoteBookName = mPassedNoteBookRecord.getNoteBookName();
+		    Log.d(TAG, "NoteBookName is " + mNoteBookName);
 			flagIntent = intent.getFlags();
 			if (flagIntent == MainActivity.FLAG_CREATE) 
 			{
-				mNoteBookName = "NoteBook";
+				
 			}
 		}
 	}
@@ -83,8 +98,8 @@ public class NoteDetailActivity extends Activity implements OnClickListener
 	{
 		NoteRecord note = new NoteRecord();
 		note.setNoteBookName(mNoteBookName);
-		note.setNoteTitle("test");
-		note.setNoteContent(mTextView.getText().toString());
+		note.setNoteContent(mEtContent.getText().toString());
+		note.setNoteTitle(mEtTitle.getText().toString());
 		note.setCreateTime(mCreateDate);
 		note.setCreateAddr("test");
 		note.setWeather("test");
@@ -92,6 +107,7 @@ public class NoteDetailActivity extends Activity implements OnClickListener
 		note.setIsUpdateHanvon(0);
 		note.setInputType(0);
 		note.setVersion(1);
+		note.setNoteBook(mPassedNoteBookRecord);
 		
 		NoteRecordDao noteDao = new NoteRecordDao(this);
 		noteDao.add(note);
