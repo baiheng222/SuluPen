@@ -2,9 +2,6 @@
 package com.hanvon.sulupen;
 
 
-import java.util.List;
-import java.util.Set;
-
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
@@ -21,28 +18,26 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-
 
 import com.hanvon.bluetooth.BluetoothChatService;
 import com.hanvon.bluetooth.BluetoothIntenAction;
 import com.hanvon.bluetooth.BluetoothMsgReceive;
 import com.hanvon.bluetooth.BluetoothSearch;
 import com.hanvon.bluetooth.BluetoothService;
-import com.hanvon.sulupen.db.bean.ScanRecord;
-import com.hanvon.sulupen.db.dao.SCanRecordDao;
-
-import com.hanvon.sulupen.db.bean.ScanRecord;
-import com.hanvon.sulupen.db.dao.SCanRecordDao;
-
-import com.hanvon.sulupen.db.bean.NoteBookInfo;
+import com.hanvon.sulupen.adapter.NoteBookListAdapter;
 import com.hanvon.sulupen.db.bean.NoteBookRecord;
 import com.hanvon.sulupen.db.dao.NoteBookRecordDao;
-import com.hanvon.sulupen.login.LoginActivity;
 import com.hanvon.sulupen.utils.LogUtil;
-import com.hanvon.sulupen.adapter.*;
+import com.hanvon.sulupen.NoteBookListActivity;
+import com.hanvon.sulupen.login.LoginActivity;
+
+import java.util.List;
+import java.util.Set;
 
 
 public class MainActivity extends Activity implements OnClickListener
@@ -166,6 +161,7 @@ public class MainActivity extends Activity implements OnClickListener
         mEmptyNoteBook = (TextView) findViewById(R.id.tv_showempty);
         mEpen = (ImageView)findViewById(R.id.iv_rightbtn);
         
+        mLeftBtn.setOnClickListener(this);
         mNewNoteBook.setOnClickListener(this);
         mEditNoteBook.setOnClickListener(this);
         mSearchNoteBook.setOnClickListener(this);
@@ -189,6 +185,19 @@ public class MainActivity extends Activity implements OnClickListener
         	
         	mNoteBookAdapter = new NoteBookListAdapter(this, mNoteBookList);
         	mBooksList.setAdapter(mNoteBookAdapter);
+        	mBooksList.setOnItemClickListener(new OnItemClickListener()
+        	{
+        	    @Override
+        	    public void onItemClick(AdapterView <?> parent, View view, int position, long id)
+        	    {
+        	        Log.d(TAG, "item " + position + " clicked");
+        	        NoteBookRecord noteBook = mNoteBookList.get(position);
+        	        Intent newIntent = new Intent(MainActivity.this, NoteBookListActivity.class);
+                    //newIntent.setFlags(FLAG_CREATE);
+                    newIntent.putExtra("NoteBookName", noteBook.getNoteBookName());
+                    startActivity(newIntent);
+        	    }
+        	});
         }
 
         btMsgReceiver = new BluetoothMsgReceive(mHandler);
@@ -218,9 +227,13 @@ public class MainActivity extends Activity implements OnClickListener
                 startActivityForResult(newNoteIntent, 1);
                 break;
             case R.id.iv_rightbtn:
-            	Intent newIntent1 = new Intent(this, BluetoothSearch.class);
-        		startActivity(newIntent1);
+            	Intent newIntent2 = new Intent(this, BluetoothSearch.class);
+        		startActivity(newIntent2);
             	break;
+            case R.id.tv_leftbtn:
+                Intent newIntent1 = new Intent(this, LoginActivity.class);
+    		    startActivity(newIntent1);
+    		break;
         }
     }
     

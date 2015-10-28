@@ -92,7 +92,7 @@ public class LoginActivity extends Activity implements OnClickListener {
 		LLWXUser.setOnClickListener(this);
 
 		if (HanvonApplication.mTencent == null) {
-			HanvonApplication.mTencent = Tencent.createInstance("100424468", this);
+			HanvonApplication.mTencent = Tencent.createInstance("1104705079", this);
 	    }
 		
 		Intent intent = getIntent();
@@ -143,7 +143,7 @@ public class LoginActivity extends Activity implements OnClickListener {
 				break;
             case R.id.registuser:
             	LogUtil.i("INTO Create user Before");
-            	Intent intent = new Intent(LoginActivity.this, RegisterUserFromPhone.class);
+            	Intent intent = new Intent(LoginActivity.this, RegisterUserGetCodePhone.class);
                 LoginActivity.this.startActivity(intent);
                 LoginActivity.this.finish();
                 break;

@@ -23,7 +23,7 @@
                 android:background="#FFFFFF"
                 android:hint="@string/login_user"
                 android:singleLine="true"
-                android:drawableRight="@drawable/right_arrow"
+                android:drawableRight="@drawable/login_skip"
                 android:maxLength="32"
                 android:textColor="#D7D7D7"
                 android:textColorHint="#D7D7D7"

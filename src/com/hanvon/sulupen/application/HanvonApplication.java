@@ -15,6 +15,7 @@ import android.telephony.TelephonyManager;
 
 import com.baidu.frontia.FrontiaApplication;
 import com.hanvon.bluetooth.BluetoothService;
+import com.hanvon.sulupen.utils.LogUtil;
 import com.tencent.mm.sdk.openapi.IWXAPI;
 import com.tencent.mm.sdk.openapi.WXAPIFactory;
 import com.tencent.tauth.Tencent;
@@ -57,7 +58,7 @@ public class HanvonApplication extends FrontiaApplication {
 		super.onCreate();
 		
 
-		
+		LogUtil.i("-------------FIRST---------------------------");
 		api = WXAPIFactory.createWXAPI(this, "wxdf64ce17dae09860", true);
 		api.registerApp("wxdf64ce17dae09860");	
 

@@ -4,6 +4,7 @@ package com.hanvon.sulupen;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
@@ -11,13 +12,15 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.hanvon.sulupen.db.bean.NoteRecord;
-import com.hanvon.sulupen.db.dao.*;
+import com.hanvon.sulupen.db.dao.NoteRecordDao;
 import com.hanvon.sulupen.utils.TimeUtil;
 
 
 
 public class NoteDetailActivity extends Activity implements OnClickListener
 {
+    private final String TAG = "NoteDetailActivity";
+    
     private Button mConfirmButton;
     private TextView mTextView ;  
     private int flagIntent = -1;
@@ -35,6 +38,8 @@ public class NoteDetailActivity extends Activity implements OnClickListener
         initView();
         
         mCreateDate = TimeUtil.getCurDate();
+        Log.d(TAG, "note create tiem " +  mCreateDate);
+        
 
 	}
 	
@@ -67,7 +72,8 @@ public class NoteDetailActivity extends Activity implements OnClickListener
 	     switch (v.getId())
 	        {
 	            case R.id.save_button:
-	            	
+	                saveNoteToDb();
+	                finish();
 	            break;
 	        }
 	}
@@ -76,7 +82,7 @@ public class NoteDetailActivity extends Activity implements OnClickListener
 	private void saveNoteToDb()
 	{
 		NoteRecord note = new NoteRecord();
-		note.setNoteBookName("NoteBook");
+		note.setNoteBookName(mNoteBookName);
 		note.setNoteTitle("test");
 		note.setNoteContent(mTextView.getText().toString());
 		note.setCreateTime(mCreateDate);

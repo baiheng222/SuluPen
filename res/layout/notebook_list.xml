@@ -7,6 +7,7 @@
     android:id="@+id/rl_title"
     android:layout_width="match_parent"
     android:layout_height="45dp"
+    android:background="#f6f6f6"
     android:layout_alignParentTop="true" >
     
     	<TextView
@@ -16,7 +17,7 @@
     	android:layout_alignParentLeft="true"
     	android:layout_marginLeft="8dp"
     	android:layout_marginRight="8dp"
-    	android:background="@drawable/titlebar_back_note"
+    	android:background="@drawable/back"
     	android:gravity="center_vertical"/>
     
         <TextView
@@ -26,8 +27,10 @@
     	android:layout_alignParentRight="true"
     	android:layout_marginLeft="8dp"
     	android:layout_marginRight="8dp"
-    	android:text="right"
-    	android:textSize="16sp"
+    	android:text="@string/choose_notes"
+    	android:textSize="13sp"
+    	android:textColor="#3b8989"
+    	android:visibility="gone"
     	android:gravity="center_vertical"/>
         
         <TextView
@@ -36,6 +39,7 @@
             android:layout_height="match_parent"
             android:layout_toLeftOf="@id/tv_rightbtn"
             android:layout_toRightOf="@id/tv_backbtn"
+            android:textColor="#4d4d4d"
             android:gravity="center_vertical|center_horizontal"
             android:text="@string/title_notebook"
             android:textSize="20sp"/>        
@@ -54,7 +58,7 @@
     	android:layout_alignParentLeft="true"
     	android:layout_marginLeft="8dp"
     	android:layout_marginRight="8dp"
-    	android:src="@drawable/edit_normal"
+    	android:src="@drawable/search_note"
     	android:gravity="center_vertical"/>
     
         <EditText
@@ -66,7 +70,9 @@
     	android:layout_marginLeft="8dp"
     	android:layout_marginRight="8dp"
     	android:text="@string/edit_search"
-    	android:textSize="16sp"
+    	android:textSize="13sp"
+    	android:textColor="#c8c8c8"
+    	android:hint="@string/search_note"
     	android:focusable="false"
     	android:gravity="center_vertical"/>
         
@@ -75,19 +81,28 @@
 
     <RelativeLayout
         android:id="@+id/rl_newnote"
-        android:background="#eeeeee" 
+        android:background="#e2e2e2" 
         android:layout_width="match_parent"
-        android:layout_height="45dp"
+        android:layout_height="48dp"
         android:layout_alignParentBottom="true"
         >
        	
-        <ImageView 
-            android:id="@+id/iv_newnote"
-            android:layout_width="45dp"
-            android:layout_height="45dp"
-            android:layout_centerInParent="true"
-            android:src="@drawable/blue_cricle"/>            
+<!--         <ImageView  -->
+<!--             android:id="@+id/iv_newnote" -->
+<!--             android:layout_width="wrap_content" -->
+<!--             android:layout_height="wrap_content" -->
+<!--             android:layout_centerInParent="true" -->
+<!--             android:src="@drawable/add_new_note"/>             -->
     </RelativeLayout>
+    
+    <ImageView 
+            android:id="@+id/iv_newnote"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerInParent="true"
+            android:layout_marginBottom="10dp"
+            android:src="@drawable/add_new_note"/>
     
     <RelativeLayout
         android:id="@+id/rl_list"

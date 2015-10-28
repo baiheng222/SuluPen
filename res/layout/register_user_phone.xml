@@ -14,7 +14,7 @@
                 android:background="#FFFFFF"
                 android:hint="@string/rgst_phone_user"
                 android:singleLine="true"
-                android:drawableRight="@drawable/right_arrow"
+                android:drawableRight="@drawable/login_skip"
                 android:maxLength="32"
                 android:textColor="#D7D7D7"
                 android:textColorHint="#D7D7D7"
@@ -34,7 +34,7 @@
                 android:maxLength="16"
                 android:textColor="#D7D7D7"
                 android:textColorHint="#D7D7D7"
-                android:drawableRight="@drawable/right_arrow"
+                android:drawableRight="@drawable/login_skip"
                 android:textSize="15sp" 
                 android:imeOptions="actionDone">
             </com.hanvon.sulupen.utils.ClearEditText>

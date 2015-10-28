@@ -10,6 +10,8 @@
     <string name="edit_search">搜索</string>
     <string name="edit_cancel">取消</string>
     <string name="edit_done">完成</string>
+    <string name="search_note">查找笔记</string>
+    <string name="choose_notes">选择</string>
     <string name="new_notebook_tips">Input NoteBook Name</string>
     <string name="default_notebookname">NoteBook</string>
     <string name="empty_notebooklist_tips">NoteBook is empty</string>

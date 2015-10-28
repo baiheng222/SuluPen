@@ -66,6 +66,7 @@ public class NoteBookListActivity extends Activity implements OnClickListener
         mNoteRecordDao = new NoteRecordDao(this);
         mNoteRecordList = mNoteRecordDao.getAllNoteRecords();
         
+        
     }
 	
 	 private void initViews()
@@ -89,9 +90,8 @@ public class NoteBookListActivity extends Activity implements OnClickListener
 		     mRightBtn.setVisibility(View.VISIBLE);
 		     mLvNoteList.setVisibility(View.VISIBLE);
 		     mEmptyNoteTip.setVisibility(View.GONE);
+		     setNoteListAdapter();
 		     
-		     mNoteListAdapter = new NoteListAdapter(this, mNoteRecordList);
-		     mLvNoteList.setAdapter(mNoteListAdapter);
 		 }
 		 else
 		 {
@@ -128,5 +128,13 @@ public class NoteBookListActivity extends Activity implements OnClickListener
 	 protected void onResume()
 	 {
 	     super.onResume();
+	     setNoteListAdapter();
+	 }
+	 
+	 public void setNoteListAdapter()
+	 {
+	     mNoteRecordList = mNoteRecordDao.getAllNoteRecords();
+	     mNoteListAdapter = new NoteListAdapter(this, mNoteRecordList);
+         mLvNoteList.setAdapter(mNoteListAdapter);
 	 }
 }
