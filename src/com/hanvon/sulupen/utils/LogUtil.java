@@ -4,22 +4,20 @@ import java.util.Hashtable;
 
 import android.util.Log;
 
+
 /**
- * @desc 打印Log工具类
- * @author  PengWenCai
- * @time 2015-6-25 下午12:06:45
- * @version
+ * 
+ * @desc 打印log日志信息
+ * @author chenxzhuang
+ * @date 2015-10-20 下午4:26:39
  */
 public class LogUtil {
-	private static boolean DEGUG = true;
-	private static String TAG = "pwc";
-	private static LogUtil logUtil = null;
 
-	/**
-	 * 构造
-	 * 
-	 * @param name
-	 */
+	private static boolean DEGUG = true;
+	private static String TAG = "hvn";
+	private static LogUtil logUtil = null;
+	
+	
 	private LogUtil(String name) {
 		if (!name.equals(""))
 			setTAG(name);
@@ -28,7 +26,7 @@ public class LogUtil {
 	private LogUtil() {
 
 	}
-
+	
 	/**
 	 * 得到一个LogUtil实例
 	 * 
@@ -41,6 +39,7 @@ public class LogUtil {
 		return logUtil;
 	}
 
+	
 	/**
 	 * 得到当前打印log位置的函数名 方法名 行号等信息
 	 * 
@@ -54,7 +53,8 @@ public class LogUtil {
 		return String.format("[%s:%s]:%s--%s", ste.getClassName(),
 				ste.getMethodName(), ste.getLineNumber(), msg);
 	}
-
+	
+	
 	/**
 	 * Get The Current Function Name 得到当前打印log位置的函数名 方法名 行号等信息
 	 * 
@@ -82,6 +82,7 @@ public class LogUtil {
 		return null;
 	}
 
+	
 	/**
 	 * Log.i
 	 * 
@@ -199,14 +200,11 @@ public class LogUtil {
 		}
 	}
 
-	public static String getTAG() {
-		return TAG;
-	}
-
+	
 	public static void setTAG(String tAG) {
 		TAG = tAG;
 	}
-
+	
 	public static void setDebug(boolean debug) {
 		DEGUG = debug;
 	}
