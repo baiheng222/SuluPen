@@ -82,12 +82,12 @@ public class NotePhotoRecord //implements Parcelable
 		this.photoWebUrl = web;
 	}
 	
-	public NoteRecord getNoteId()
+	public NoteRecord getNote()
 	{
 		return this.noteRecord;
 	}
 	
-	public void setNoteId(NoteRecord rec)
+	public void setNote(NoteRecord rec)
 	{
 		this.noteRecord = rec;
 	}

@@ -143,6 +143,7 @@ public class NoteBookListActivity extends Activity implements OnClickListener
 	 {
 	     super.onResume();
 	     setNoteListAdapter();
+	     mNoteListAdapter.notifyDataSetChanged();
 	 }
 	 
 	 public void setNoteListAdapter()

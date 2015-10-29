@@ -6,7 +6,11 @@ import android.os.Parcelable.Creator;
 
 import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.field.ForeignCollectionField;
 import com.j256.ormlite.table.DatabaseTable;
+
+import java.util.ArrayList;
+import java.util.Collection;
 
 @DatabaseTable(tableName = "noteRecord_table")
 
@@ -56,6 +60,28 @@ public class NoteRecord //implements Parcelable
 	//用于关联笔记本表的外键，笔记本的id
 	@DatabaseField(canBeNull = true, foreign = true, columnName = "notebookID", foreignAutoRefresh = true)
 	private NoteBookRecord notebook;
+	
+	
+	@ForeignCollectionField
+    private Collection<NotePhotoRecord> notePhotos;
+	
+	 public Collection<NotePhotoRecord> getNoteRecords()
+	 {
+	     return notePhotos;
+	 }
+
+	 public void setArticles(Collection<NotePhotoRecord> photos)
+	 {
+	     this.notePhotos = photos;
+	 }
+	  
+	 /*获取笔记所包含的所有图片的集合*/
+	 public ArrayList<NotePhotoRecord> getNoteRecordList()
+	 {
+	     ArrayList<NotePhotoRecord> mNotesList = new ArrayList<NotePhotoRecord>(notePhotos);
+	     return mNotesList;
+	 }
+	
 	
 	/*
 	public static final Parcelable.Creator<ScanRecord> CREATOR = new Creator()
