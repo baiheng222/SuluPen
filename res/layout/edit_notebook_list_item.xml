@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="43dp"
+    android:background="@color/bg_gray" >
+    
+    <ImageView
+        android:id="@+id/iv_del_notebook_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="23dp"
+        android:layout_marginRight="14dp"
+        android:src="@drawable/del_notebook" />
+    
+    
+    <ImageView
+        android:id="@+id/iv_rename_notebook_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="14dp"
+        android:layout_marginRight="23dp"
+        android:src="@drawable/rename_notebook" />
+    
+    
+    <TextView 
+        android:id="@+id/tv_notebook_name"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_toRightOf="@id/iv_del_notebook_icon"
+        android:layout_toLeftOf="@id/iv_rename_notebook_icon"
+        android:textSize="20sp"
+        android:textColor="#4d4d4d"
+        android:gravity="center_vertical|center_horizontal"
+        />
+
+</RelativeLayout>
