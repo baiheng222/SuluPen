@@ -76,6 +76,16 @@ public class NoteBookEditListAdapter extends BaseAdapter
 		return convertView;
 	}
 	
+	private void delNoteBook(int pos)
+	{
+		
+	}
+	
+	private void renameNoteBook(int pos)
+	{
+		
+	}
+	
 	private final class ViewHolder
 	{
 		ImageView mIvDel;
@@ -94,10 +104,12 @@ public class NoteBookEditListAdapter extends BaseAdapter
 			{
 				case R.id.iv_del_notebook_icon:
 					Log.d(TAG, "del icon clicked");
+					delNoteBook(position);
 				break;
 				
 				case R.id.iv_rename_notebook_icon:
 					Log.d(TAG, "rename icon clicked");
+					renameNoteBook(position);
 				break;
 			}
 		}
