@@ -24,6 +24,8 @@ public class NewNoteBookActivity extends Activity implements OnClickListener
 	private TextView mDoneBtn;
 	private EditText mInput;
 	
+	private NoteBookRecord mCreatedNoteBook;
+	
 	private int flagIntent = -1;
 
 	@Override
@@ -78,7 +80,7 @@ public class NewNoteBookActivity extends Activity implements OnClickListener
             		saveNoteBookToDb();
             		Intent newIntent = new Intent(this, NoteBookListActivity.class);
             		//newIntent.setFlags(FLAG_CREATE);
-            		newIntent.putExtra("NoteBookName", mInput.getText().toString());
+            		newIntent.putExtra("NoteBook", mCreatedNoteBook);
             		startActivity(newIntent);
             		finish();
             	}
@@ -133,6 +135,8 @@ public class NewNoteBookActivity extends Activity implements OnClickListener
 	     NoteBookRecordDao noteBookRecordDao = new NoteBookRecordDao(this);
 	     
 	     noteBookRecordDao.add(record);
+	     
+	     mCreatedNoteBook = record;
 	     
 	     Log.d(TAG, "send result to MainActivity");
 	     Intent retIntent = new Intent(this, MainActivity.class);

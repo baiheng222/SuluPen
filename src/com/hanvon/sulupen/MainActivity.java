@@ -216,7 +216,8 @@ public class MainActivity extends Activity implements OnClickListener
             break;
             
             case R.id.tv_editnotebook:
-                
+                Intent intent = new Intent(this, EditNoteBookActivity.class);
+                startActivity(intent);
                 break;
                 
             case R.id.tv_searchbtn:
