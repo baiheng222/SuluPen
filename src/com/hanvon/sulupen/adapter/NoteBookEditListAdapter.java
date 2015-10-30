@@ -3,6 +3,7 @@ package com.hanvon.sulupen.adapter;
 import java.util.List;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.hanvon.sulupen.R;
+import com.hanvon.sulupen.RenameNoteBookActivity;
 import com.hanvon.sulupen.db.bean.NoteBookRecord;
 
 public class NoteBookEditListAdapter extends BaseAdapter
@@ -73,6 +75,8 @@ public class NoteBookEditListAdapter extends BaseAdapter
 		
 		holder.mTvNoteBookName.setText(mDatas.get(position).getNoteBookName());
 		
+		Log.d(TAG, "position is " + position + ": " + mDatas.get(position).toString());
+		
 		return convertView;
 	}
 	
@@ -83,7 +87,15 @@ public class NoteBookEditListAdapter extends BaseAdapter
 	
 	private void renameNoteBook(int pos)
 	{
-		
+		Intent intent = new Intent(mContext, RenameNoteBookActivity.class);
+		NoteBookRecord note = mDatas.get(pos);
+		if (null == note)
+		{
+			Log.d(TAG, "note is null");
+			return;
+		}
+		intent.putExtra("NoteBook", mDatas.get(pos));
+		mContext.startActivity(intent);
 	}
 	
 	private final class ViewHolder

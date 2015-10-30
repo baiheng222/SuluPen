@@ -101,6 +101,14 @@
         android:exported="true">
         </activity>
         
+        <activity android:name="RenameNoteBookActivity"
+        android:launchMode="singleTask"
+        android:exported="true">
+        </activity>
+        
+        
+        
+        
         <activity
                 android:name="com.hanvon.sulupen.login.LoginActivity"
                 android:screenOrientation="portrait"

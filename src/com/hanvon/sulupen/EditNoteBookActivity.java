@@ -73,4 +73,14 @@ public class EditNoteBookActivity extends Activity implements OnClickListener
 		}
 	}
 	
+	@Override
+	protected void onResume() 
+    {
+		super.onResume();
+		mNoteBookList = mNoteBookRecordDao.getAllNoteBooks();
+		mEditNoteBookAdapter = new NoteBookEditListAdapter(this, mNoteBookList);
+		mLvList.setAdapter(mEditNoteBookAdapter);
+		
+    }
+	
 }
