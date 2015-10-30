@@ -48,32 +48,37 @@
     <RelativeLayout 
         android:id="@+id/rl_search"
         android:layout_width="match_parent"
-        android:layout_height="45dp"
+        android:layout_height="37dp"
+        android:background="#e2e2e2"
         android:layout_below="@id/rl_title">
         
-        <ImageView
-        android:id="@+id/iv_search_note"
-    	android:layout_width="wrap_content"
-    	android:layout_height="match_parent"
-    	android:layout_alignParentLeft="true"
-    	android:layout_marginLeft="8dp"
-    	android:layout_marginRight="8dp"
-    	android:src="@drawable/search_note"
-    	android:gravity="center_vertical"/>
+<!--         <ImageView -->
+<!--         android:id="@+id/iv_search_note" -->
+<!--     	android:layout_width="wrap_content" -->
+<!--     	android:layout_height="match_parent" -->
+<!--     	android:layout_alignParentLeft="true" -->
+<!--     	android:layout_marginLeft="8dp" -->
+<!--     	android:layout_marginRight="8dp" -->
+<!--     	android:src="@drawable/search_note" -->
+<!--     	android:gravity="center_vertical"/> -->
     
         <EditText
         android:id="@+id/ed_search_input"
     	android:layout_width="match_parent"
-    	android:layout_height="match_parent"
-    	android:layout_toRightOf="@id/iv_search_note"
+    	android:layout_height="30dp"
+    	android:layout_centerVertical="true"
     	android:layout_alignParentRight="true"
-    	android:layout_marginLeft="8dp"
-    	android:layout_marginRight="8dp"
+    	android:layout_marginLeft="7dp"
+    	android:layout_marginRight="7dp"
     	android:text="@string/edit_search"
     	android:textSize="13sp"
     	android:textColor="#c8c8c8"
     	android:hint="@string/search_note"
     	android:focusable="false"
+    	android:drawableRight="@drawable/del_char"
+    	android:drawableLeft="@drawable/search_note"
+    	android:singleLine="true"
+    	android:background="#f6f6f6"
     	android:gravity="center_vertical"/>
         
         
