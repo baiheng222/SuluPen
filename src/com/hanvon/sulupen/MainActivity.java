@@ -5,8 +5,10 @@ package com.hanvon.sulupen;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Build;
@@ -17,6 +19,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnLongClickListener;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -25,6 +28,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.hanvon.bluetooth.BluetoothChatService;
+import com.hanvon.bluetooth.BluetoothDetail;
 import com.hanvon.bluetooth.BluetoothIntenAction;
 import com.hanvon.bluetooth.BluetoothMsgReceive;
 import com.hanvon.bluetooth.BluetoothSearch;
@@ -40,7 +44,7 @@ import java.util.List;
 import java.util.Set;
 
 
-public class MainActivity extends Activity implements OnClickListener
+public class MainActivity extends Activity implements OnClickListener, OnLongClickListener
 {
     private final String TAG = "MainActivity";
     private TextView mTitle;
@@ -85,8 +89,6 @@ public class MainActivity extends Activity implements OnClickListener
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_main);
-        
-		BluetoothService.startService(this);
 
         initDatas();
         
@@ -167,6 +169,7 @@ public class MainActivity extends Activity implements OnClickListener
         mSearchNoteBook.setOnClickListener(this);
         mNewNote.setOnClickListener(this);
         mEpen.setOnClickListener(this);
+        mEpen.setOnLongClickListener(this);
         
         if (mNoteBookList.size() <= 0)
         {
@@ -229,8 +232,13 @@ public class MainActivity extends Activity implements OnClickListener
                 startActivityForResult(newNoteIntent, 1);
                 break;
             case R.id.iv_rightbtn:
-            	Intent newIntent2 = new Intent(this, BluetoothSearch.class);
-        		startActivity(newIntent2);
+            	if (isConnected()) {
+            	    Intent blueDetailIntent = new Intent(this, BluetoothDetail.class);
+        	    	startActivity(blueDetailIntent);
+            	}else{
+            		Intent blueSearchIntent = new Intent(this, BluetoothSearch.class);
+            		startActivity(blueSearchIntent);
+            	}
             	break;
             case R.id.tv_leftbtn:
                 Intent newIntent1 = new Intent(this, LoginActivity.class);
@@ -297,4 +305,53 @@ public class MainActivity extends Activity implements OnClickListener
 		unregisterReceiver(btMsgReceiver);
 		super.onDestroy();
 	}
+
+	@Override
+	public boolean onLongClick(View v) {
+		// TODO Auto-generated method stub
+		switch (v.getId()) {
+		case R.id.iv_rightbtn:
+			if (isConnected()) {// 如果连接
+				AlertDialog.Builder dialog = new AlertDialog.Builder(MainActivity.this);
+				dialog.setMessage(R.string.msg_stop_connected);
+				dialog.setCancelable(false);
+				dialog.setNegativeButton(R.string.button_cancel,
+								new DialogInterface.OnClickListener() {
+
+									@Override
+									public void onClick(DialogInterface dialog,
+											int which) {
+
+									}
+								})
+						.setPositiveButton(R.string.ensure,
+								new DialogInterface.OnClickListener() {
+
+									@Override
+									public void onClick(DialogInterface dialog,
+											int which) {
+										stopConnect();
+									}
+								}).show();
+			} else {
+				// 如果没有连接就去搜索连接
+				startActivity(new Intent(this,
+						BluetoothSearch.class));
+			}
+
+			break;
+
+		default:
+			break;
+		}
+		return false;
+	}
+	
+	/**
+	 * 断开连接
+	 */
+	private void stopConnect() {
+		BluetoothService.getServiceInstance().getBluetoothChatService().stop();
+	}
+
 }

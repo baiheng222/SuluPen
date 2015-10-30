@@ -17,6 +17,7 @@ import org.json.JSONObject;
 
 import com.hanvon.sulupen.utils.LogUtil;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.ProgressDialog;
 import android.bluetooth.BluetoothAdapter;
@@ -92,6 +93,28 @@ public class BluetoothChatService {
 	}
 	
 	/**
+	 * @function:关闭所有线程，断开socket连接
+	 */
+	public synchronized void stop() {
+		if (D)
+			LogUtil.d("stop");
+		setState(STATE_NONE);
+		if (mConnectThread != null) {
+			mConnectThread.cancel();
+			mConnectThread = null;
+		}
+
+		if (mConnectedThread != null) {
+			mConnectedThread.cancel();
+			mConnectedThread = null;
+		}
+
+		if (mAcceptThread != null) {
+			mAcceptThread.cancel();
+			mAcceptThread = null;
+		}
+	}
+	/**
 	 * 
 	 * @desc 设备开始连接
 	 * @param device
@@ -121,7 +144,7 @@ public class BluetoothChatService {
 	private class AcceptThread extends Thread {
 		private final BluetoothServerSocket mmServerSocket;
 
-		public AcceptThread() {
+		@SuppressLint("NewApi") public AcceptThread() {
 			BluetoothServerSocket tmp = null;
 			int version = Build.VERSION.SDK_INT;
 			if (version >= 10) {
@@ -654,5 +677,15 @@ public class BluetoothChatService {
 				LogUtil.e("close() of connect socket failed");
 			}
 		}
+	}
+	
+	public synchronized void sendBTData(int dataType, String dataStr) {
+		// BTConnectedThread r;
+		// synchronized (this) {
+		// if (mState != STATE_CONNECTED) return;
+		// r = mConnectedThread;
+		// }
+		LogUtil.i("INTO sendBTData dataType:"+dataType+"    dataStr:"+dataStr);
+		mConnectedThread.sendData((byte) dataType, dataStr);
 	}
 }

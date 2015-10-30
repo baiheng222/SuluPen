@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import com.hanvon.sulupen.R;
 import com.hanvon.sulupen.utils.LogUtil;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -59,7 +60,7 @@ public class BluetoothSearch extends Activity implements OnClickListener{
 		};
 	};
 
-	@Override
+	@SuppressLint("NewApi") @Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
@@ -108,9 +109,9 @@ public class BluetoothSearch extends Activity implements OnClickListener{
 		filter.addAction(BluetoothDevice.ACTION_ACL_DISCONNECTED);
 		filter.addAction(BluetoothAdapter.ACTION_STATE_CHANGED);
 		this.registerReceiver(mReceiver, filter);
-	//	if (curBtAddress.equals("")) {
-	//		curBtAddress = PreferHelper.getString(EpenDeviceInfo.ADDRESS_KEY,"");
-	//	}
+		if (curBtAddress.equals("")) {
+			curBtAddress = BluetoothSetting.getBlueAddress();
+		}
 
 		if (curBtAddress.equals("")) {
 			doDiscovery();

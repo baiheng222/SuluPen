@@ -27,6 +27,7 @@
      <string name="bn_reconnect">重新连接</string>
      <string name="bnSearchNewDevice">搜索新设备</string>
      <string name="msg_wait_connect">亲，正在努力连接，请耐心等候哦！</string>
+     <string name="msg_stop_connected">确定与速录笔断开连接吗？</string>
 
     <string name="button_save">保存</string>
     <string name="new_note">新笔记</string>
@@ -58,5 +59,18 @@
     <string name="back">返回</string>
     <string name="forget_pwd">找回密码</string>
     <string name="empty_notebooklist_tips">NoteBook is empty</string>
-    
+    <!-- 硬件基本信息显示 -->
+    <string name="hw_electricity">电量：</string>
+    <string name="hw_status">状态：</string>
+    <string name="hw_status_conn">已连接</string>
+    <string name="hw_status_not_conn">未连接</string>
+    <string name="hw_sn">序列号:</string>
+    <string name="hw_sn_number">0000-0000-0000-0000</string>
+    <string name="hw_function">功能键设定</string>
+    <string name="hw_recognition">识别核心设定</string>
+    <string name="hw_sleep">休眠时间设定</string>
+    <string name="hw_shutdown">关机时间设定</string>
+    <string name="hw_restore">恢复出厂设置</string>
+    <string name="comeback_tips">重要提示</string>
+    <string name="comeback_message">将恢复默认设置</string>
 </resources>

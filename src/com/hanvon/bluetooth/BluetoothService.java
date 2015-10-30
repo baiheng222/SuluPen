@@ -2,6 +2,8 @@ package com.hanvon.bluetooth;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import com.hanvon.sulupen.login.LoginActivity;
 import com.hanvon.sulupen.utils.LogUtil;
 
 import android.app.ProgressDialog;
@@ -28,13 +30,6 @@ public class BluetoothService extends Service{
 	public int curBatteryStatus = -1;
 	// 1为盲扫模式，2为校对模式,3.输入法模式
 	public static int scanRecordMode = 1;
-	
-	@Override
-	public IBinder onBind(Intent arg0) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
 	/**
 	 * Handler 消息接收器
 	 * 
@@ -55,7 +50,7 @@ public class BluetoothService extends Service{
 				if (!BluetoothSearch.curBtAddress
 						.equals(BluetoothChatService.curDeviceAddress)) {
 					BluetoothSearch.curBtAddress = BluetoothChatService.curDeviceAddress;
-				//	EpenDeviceInfo.saveAddress(DeviceListActivity.curBtAddress);
+					BluetoothSetting.setBlueAddress(BluetoothSearch.curBtAddress);
 				}
 				break;
 			case BluetoothChatService.STATE_CONNECTING:
@@ -121,12 +116,9 @@ public class BluetoothService extends Service{
 							jsonData.put("device_btName",
 									BluetoothChatService.curDeviceName);
 							LogUtil.i("tong========&&&&&&&&&=======add db"+jsonData.toString());
-							// save to db
-					//		EpenDeviceAccess access = new EpenDeviceAccess(this);
-					//		access.saveEpenDevice(
-					//				DeviceListActivity.curBtAddress,
-					//				jsonData.toString());
 							LogUtil.i("----deviceinfo:"+jsonData.toString());
+							String serialNum = jsonData.getString("device_serialNum");
+							BluetoothSetting.setSeralNumber(serialNum);
 							/********************add by chenxzhuang*****************/
 							String version = jsonData.getString("device_version");
 							LogUtil.i("----device_version:"+version);
@@ -315,6 +307,11 @@ public class BluetoothService extends Service{
 		return blueService;
 	}
 	
+	@Override
+	public IBinder onBind(Intent arg0) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	@Override
 	public void onDestroy() {
 		// TODO Auto-generated method stub

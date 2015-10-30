@@ -49,7 +49,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme"  >
         <uses-library android:name="android.test.runner" />
-        
+        <service android:name="com.hanvon.bluetooth.BluetoothService" ></service>
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name" >
@@ -84,11 +84,6 @@
                    android:screenOrientation="portrait"
                 android:theme="@android:style/Theme.Dialog"  />
 
-        
-         <service android:name="com.hanvon.bluetooth.BluetoothService" ></service>
-
-
-        
         <activity android:name="NoteDetailActivity"
         android:launchMode="singleTask"
         android:exported="true">
@@ -141,6 +136,8 @@
         <activity  android:name="com.hanvon.sulupen.login.RegisterUserFromPhone">
         </activity>
         <activity  android:name="com.hanvon.sulupen.login.RegisterUserGetCodePhone">
+        </activity>
+        <activity  android:name="com.hanvon.bluetooth.BluetoothDetail">
         </activity>
     </application>
 

@@ -6,15 +6,19 @@ import org.json.JSONObject;
 
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningAppProcessInfo;
+import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.graphics.Bitmap;
+import android.preference.PreferenceManager;
 import android.telephony.TelephonyManager;
 
 import com.baidu.frontia.FrontiaApplication;
+import com.hanvon.bluetooth.BluetoothDetail;
 import com.hanvon.bluetooth.BluetoothService;
+import com.hanvon.bluetooth.BluetoothSetting;
 import com.hanvon.sulupen.utils.LogUtil;
 import com.tencent.mm.sdk.openapi.IWXAPI;
 import com.tencent.mm.sdk.openapi.WXAPIFactory;
@@ -88,5 +92,10 @@ public class HanvonApplication extends FrontiaApplication {
 		/**获取设备sn号**/
 		TelephonyManager telephonyManager = (TelephonyManager)this.getSystemService( this.getApplicationContext().TELEPHONY_SERVICE);
 		AppDeviceId =  telephonyManager.getSimSerialNumber();
+		
+		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+		BluetoothSetting.getInstance(sharedPref);
+
+		BluetoothService.startService(this);
 	}
 }

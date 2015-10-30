@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="epen_func_key">
+        <item >无</item>
+        <item >换行</item>
+        <item >插入空格</item>
+        <item >退格</item>
+    </string-array>
+    <string-array name="epen_ident_core">
+        <item >中英文</item>
+        <item >中文</item>
+        <item >英文</item>
+        <!-- <item >日文</item>
+        <item >韩文</item> -->
+    </string-array>
+    <string-array name="epen_sleep_time">
+        <item >2分钟</item>
+        <item >5分钟</item>
+        <item >10分钟</item>
+        <item >从不</item>
+    </string-array>
+    <string-array name="epen_close_time">
+        <item >0.5小时</item>
+        <item > 1小时</item>
+        <item >1.5小时</item>
+        <item >2小时</item>
+    </string-array>
+</resources>
