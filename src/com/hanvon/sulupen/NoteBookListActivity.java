@@ -126,7 +126,9 @@ public class NoteBookListActivity extends Activity implements OnClickListener
             break;
             
 		 	case R.id.tv_rightbtn:
-		 	    
+		 		Intent intent = new Intent(this, ChooseNoteActivity.class);
+		 		intent.putExtra("NoteBook", mPassedNoteBook);
+		 		startActivity(intent);
 		 	break;
                      
             case R.id.iv_newnote:
