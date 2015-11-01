@@ -50,9 +50,9 @@ public class MainActivity extends Activity implements OnClickListener, OnLongCli
     private TextView mTitle;
     private TextView mLeftBtn;
     private TextView mRightBtn;
-    private TextView mNewNoteBook;
-    private TextView mEditNoteBook;
-    private TextView mSearchNoteBook;
+    private ImageView mNewNoteBook;
+    private ImageView mEditNoteBook;
+    private ImageView mSearchNoteBook;
     private ImageView mNewNote;
     private ListView mBooksList;
     private TextView mEmptyNoteBook;
@@ -153,9 +153,9 @@ public class MainActivity extends Activity implements OnClickListener, OnLongCli
         mLeftBtn = (TextView) findViewById(R.id.tv_leftbtn);
         mRightBtn = (TextView) findViewById(R.id.tv_rightbtn);
         
-        mNewNoteBook = (TextView) findViewById(R.id.tv_newnotebook);
-        mEditNoteBook = (TextView) findViewById(R.id.tv_editnotebook);
-        mSearchNoteBook = (TextView) findViewById(R.id.tv_searchbtn);
+        mNewNoteBook = (ImageView) findViewById(R.id.tv_newnotebook);
+        mEditNoteBook = (ImageView) findViewById(R.id.tv_editnotebook);
+        mSearchNoteBook = (ImageView) findViewById(R.id.tv_searchbtn);
         
         mNewNote = (ImageView) findViewById(R.id.iv_newnote);
         

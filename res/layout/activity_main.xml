@@ -52,7 +52,7 @@
         android:layout_height="45dp"
         android:layout_below="@id/rl_title">
         
-        <TextView
+        <ImageView
         android:id="@+id/tv_newnotebook"
     	android:layout_width="wrap_content"
     	android:layout_height="match_parent"
@@ -61,9 +61,10 @@
     	android:layout_marginRight="8dp"
     	android:text="@string/edit_new"
     	android:textSize="16sp"
+    	android:src="@drawable/main_new_notebook"
     	android:gravity="center_vertical"/>
     
-        <TextView
+        <ImageView
         android:id="@+id/tv_searchbtn"
     	android:layout_width="wrap_content"
     	android:layout_height="match_parent"
@@ -72,15 +73,17 @@
     	android:layout_marginRight="8dp"
     	android:text="@string/edit_search"
     	android:textSize="16sp"
+    	android:src="@drawable/main_search"
     	android:gravity="center_vertical"/>
         
-        <TextView
+        <ImageView
             android:id="@+id/tv_editnotebook"
-            android:layout_width="wrap_content"
+            android:layout_width="30dp"
             android:layout_height="match_parent"
             android:layout_toLeftOf="@id/tv_searchbtn"
             android:layout_toRightOf="@id/tv_newnotebook"
             android:gravity="center_vertical|center_horizontal"
+            android:src="@drawable/main_edit_notebook"
             android:text="@string/edit_edit"
             android:textSize="16sp" />
         
