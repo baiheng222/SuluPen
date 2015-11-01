@@ -2,17 +2,21 @@ package com.hanvon.sulupen;
 
 import java.util.List;
 
-import com.hanvon.sulupen.db.bean.NoteBookRecord;
-import com.hanvon.sulupen.db.dao.NoteBookRecordDao;
-import com.hanvon.sulupen.adapter.NoteBookEditListAdapter;
-
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import com.hanvon.sulupen.adapter.NoteBookEditListAdapter;
+import com.hanvon.sulupen.db.bean.NoteBookRecord;
+import com.hanvon.sulupen.db.dao.NoteBookRecordDao;
 
 public class EditNoteBookActivity extends Activity implements OnClickListener
 {
@@ -83,4 +87,15 @@ public class EditNoteBookActivity extends Activity implements OnClickListener
 		
     }
 	
+	public void delNoteBook(int pos)
+	{
+		new AlertDialog.Builder(this).setTitle("请输入").setIcon(
+					android.R.drawable.ic_dialog_info).setView(
+							new EditText(this)).setPositiveButton("确定", null)
+							.setNegativeButton("取消", null).show();
+	}
+	
+	
+	
+		
 }

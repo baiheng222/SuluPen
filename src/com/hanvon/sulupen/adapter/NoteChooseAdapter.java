@@ -3,20 +3,19 @@ package com.hanvon.sulupen.adapter;
 import java.util.List;
 
 import android.content.Context;
-import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import com.hanvon.sulupen.R;
-import com.hanvon.sulupen.RenameNoteBookActivity;
-import com.hanvon.sulupen.db.bean.NoteBookRecord;
 import com.hanvon.sulupen.db.bean.NoteRecord;
+import com.hanvon.sulupen.db.dao.NoteRecordDao;
 
 public class NoteChooseAdapter extends BaseAdapter
 {
@@ -24,12 +23,23 @@ public class NoteChooseAdapter extends BaseAdapter
 	private Context mContext;
 	private LayoutInflater mInflater;
 	private List<NoteRecord> mDatas;
+	private int[] mCheckArray;
 	
 	public NoteChooseAdapter(Context context, List<NoteRecord> data)
 	{
 		mContext = context;
 		mDatas = data;
 		mInflater = LayoutInflater.from(context);
+		
+		initCheckList();
+		
+		/*
+		mCheckArray = new int[mDatas.size()];
+		for (int i = 0; i < mDatas.size();i++)
+		{
+			mCheckArray[i] = 0;
+		}
+		*/
 	}
 	
 	@Override
@@ -61,11 +71,27 @@ public class NoteChooseAdapter extends BaseAdapter
 			holder.mNoteContent = (TextView) convertView.findViewById(R.id.tv_choose_note_content);
 			holder.mNoteTitle = (TextView) convertView.findViewById(R.id.tv_choos_note_title);
 			holder.mNoteCreateTime = (TextView) convertView.findViewById(R.id.tv_choose_note_create_time);
-			holder.mNoteSelectIcon = (ImageView) convertView.findViewById(R.id.iv_choose_note);
-
-			
-			//holder.mNoteSelectIcon.setTag(position);
-			//holder.mNoteSelectIcon.setOnClickListener(new IvClickListener());
+			holder.mNoteSelectIcon = (CheckBox) convertView.findViewById(R.id.cb_note_choice);
+			holder.mNoteSelectIcon.setTag(position);
+			holder.mNoteSelectIcon.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
+			{ 
+	            @Override
+	            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) 
+	            { 
+	                // TODO Auto-generated method stub 
+	            	int position =Integer.parseInt(buttonView.getTag().toString());
+	                if(isChecked)
+	                { 
+	                   mCheckArray[position] = 1;
+	                   Log.d(TAG, "item " + position + " is selected");
+	                }
+	                else
+	                { 
+	                	mCheckArray[position] = 0;
+	                	Log.d(TAG, "item " + position + " is unselected");
+	                } 
+	            } 
+	        }); 
 			
 			convertView.setTag(holder);
 		}
@@ -83,9 +109,39 @@ public class NoteChooseAdapter extends BaseAdapter
 		return convertView;
 	}
 	
-	private void delNoteBook(int pos)
+	public void delSelectedNotes()
 	{
+		NoteRecordDao noteDao = new NoteRecordDao(mContext);
+		for (int i = 0; i < mCheckArray.length;i ++)
+		{
+			if (mCheckArray[i] == 1)
+			{
+				Log.d(TAG, "delete note, item is " + i);
+				noteDao.deleteRecord(mDatas.get(i));
+				
+			}
+		}
 		
+		for (int i = 0; i < mCheckArray.length;i ++)
+		{
+			if (mCheckArray[i] == 1)
+			{
+				mDatas.remove(i);
+			}
+		}
+		
+		initCheckList();
+		
+		notifyDataSetChanged();
+	}
+	
+	private void initCheckList()
+	{
+		mCheckArray = new int[mDatas.size()];
+		for (int i = 0; i < mDatas.size();i++)
+		{
+			mCheckArray[i] = 0;
+		}
 	}
 	
 	private void renameNoteBook(int pos)
@@ -108,23 +164,7 @@ public class NoteChooseAdapter extends BaseAdapter
         TextView mNoteContent;
         TextView mNoteTitle;
         TextView mNoteCreateTime;
-        ImageView mNoteSelectIcon;
+        CheckBox mNoteSelectIcon;
 	}
 	
-	class IvClickListener implements OnClickListener
-	{
-		@Override 
-		public void onClick(View view)
-		{
-			int position =Integer.parseInt(view.getTag().toString());
-			Log.d(TAG, "item " +  position + " clicked");
-			switch(view.getId())
-			{
-				case R.id.iv_choose_note:
-					Log.d(TAG, "del icon clicked");
-					delNoteBook(position);
-				break;
-			}
-		}
-	}
 }

@@ -2,7 +2,6 @@ package com.hanvon.sulupen.adapter;
 
 import java.util.List;
 
-import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,6 +12,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.hanvon.sulupen.EditNoteBookActivity;
 import com.hanvon.sulupen.R;
 import com.hanvon.sulupen.RenameNoteBookActivity;
 import com.hanvon.sulupen.db.bean.NoteBookRecord;
@@ -20,11 +20,11 @@ import com.hanvon.sulupen.db.bean.NoteBookRecord;
 public class NoteBookEditListAdapter extends BaseAdapter
 {
 	private final String TAG = "NoteBookEditListAdapter";
-	private Context mContext;
+	private EditNoteBookActivity mContext;
 	private LayoutInflater mInflater;
 	private List<NoteBookRecord> mDatas;
 	
-	public NoteBookEditListAdapter(Context context, List<NoteBookRecord> data)
+	public NoteBookEditListAdapter(EditNoteBookActivity context, List<NoteBookRecord> data)
 	{
 		mContext = context;
 		mDatas = data;
@@ -82,8 +82,35 @@ public class NoteBookEditListAdapter extends BaseAdapter
 	
 	private void delNoteBook(int pos)
 	{
+		//mDatas.remove(pos);
+		//notifyDataSetChanged();
 		
+		mContext.delNoteBook(pos);
 	}
+	
+	
+	/*
+	protected void dialog() 
+	{
+	　　  AlertDialog.Builder builder = new Builder(mContext);
+	　　  builder.setMessage("确认退出吗？");
+	　　  builder.setTitle("提示");
+	　　  builder.setPositiveButton("确认", new OnClickListener() {
+	　　   @Override
+	　　   public void onClick(DialogInterface dialog, int which) {
+	　　    dialog.dismiss();
+	　　    Main.this.finish();
+	　　   }
+	　　  });
+	　　  builder.setNegativeButton("取消", new OnClickListener() {
+	　　   @Override
+	　　   public void onClick(DialogInterface dialog, int which) {
+	　　    dialog.dismiss();
+	　　   }
+	　　  });
+	　　  builder.create().show();
+	　　 }
+	*/
 	
 	private void renameNoteBook(int pos)
 	{

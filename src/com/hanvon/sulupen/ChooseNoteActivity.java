@@ -115,8 +115,17 @@ public class ChooseNoteActivity extends Activity implements OnClickListener
 			break;
 			
 			case R.id.iv_delete_note:
-				
+				deleteSelectedNote();
 			break;
 		}
 	}
+	
+	private void deleteSelectedNote()
+	{
+		if (mNotesAdapter != null)
+		{
+			mNotesAdapter.delSelectedNotes();
+		}
+	}
+	
 }
