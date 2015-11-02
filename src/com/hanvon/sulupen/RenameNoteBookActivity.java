@@ -47,6 +47,8 @@ public class RenameNoteBookActivity extends Activity implements OnClickListener
 		
 		mTvCancleRename.setOnClickListener(this);
 		mTvDoneRename.setOnClickListener(this);
+		mIvDeleteChar.setOnClickListener(this);
+		
 		
 		mEtInputNewName.setText(mNoteBookNeedToReName.getNoteBookName());
 	}
@@ -82,6 +84,11 @@ public class RenameNoteBookActivity extends Activity implements OnClickListener
 		
 	}
 	
+	private void clearNoteBookName()
+	{
+		mEtInputNewName.setText("");
+	}
+	
 	@Override
 	public void onClick(View view)
 	{
@@ -94,6 +101,11 @@ public class RenameNoteBookActivity extends Activity implements OnClickListener
 			case R.id.tv_done_notebook_rename:
 				saveNewNoteBookName();
 				finish();
+			break;
+			
+			
+			case R.id.iv_delchar_icon:
+				clearNoteBookName();
 			break;
 		}
 	}

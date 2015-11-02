@@ -9,6 +9,8 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -41,8 +43,11 @@ public class NoteBookListActivity extends Activity implements OnClickListener
 	NoteBookRecord mPassedNoteBook;
 	
 	 
-	public final static int FLAG_EDIT = 1;
-	public final static int FLAG_CREATE_WITH_BOOKNAME = 2;
+	//public final static int FLAG_EDIT = 1;
+	//public final static int FLAG_CREATE_WITH_BOOKNAME = 2;
+	
+	private static int FLAG_CREATE = 2;
+    private static int FLAG_EDIT = 1;
 	
 
 	@Override
@@ -105,6 +110,16 @@ public class NoteBookListActivity extends Activity implements OnClickListener
 		     mEmptyNoteTip.setVisibility(View.GONE);
 		     setNoteListAdapter();
 		     
+		     mLvNoteList.setOnItemClickListener(new OnItemClickListener()
+		     {
+		    	 @Override
+		    	 public void onItemClick(AdapterView<?> arg0, View view, int position, long id)
+		    	 {
+		    		 Log.d(TAG, "item " +  position + " clicked");
+		    	 }
+		     }
+		     );
+		     
 		 }
 		 else
 		 {
@@ -112,6 +127,14 @@ public class NoteBookListActivity extends Activity implements OnClickListener
 		     mLvNoteList.setVisibility(View.GONE);
              mEmptyNoteTip.setVisibility(View.VISIBLE);
 		 }
+	 }
+	 
+	 
+	 public void startNoteDetailActivity(int pos)
+	 {
+		 Intent intent = new Intent(this, NoteDetailActivity.class);
+		 intent.putExtra("NoteRecord", mNoteRecordList.get(pos));
+		 startActivity(intent);
 	 }
 	 
 	 @Override
@@ -133,7 +156,7 @@ public class NoteBookListActivity extends Activity implements OnClickListener
                      
             case R.id.iv_newnote:
             	Intent newNoteIntent = new Intent(this, NoteDetailActivity.class);
-                newNoteIntent.setFlags(FLAG_CREATE_WITH_BOOKNAME);
+                newNoteIntent.setFlags(FLAG_CREATE);
                 newNoteIntent.putExtra("NoteBook", mPassedNoteBook);
                 startActivity(newNoteIntent);
             break;     

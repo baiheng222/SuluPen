@@ -227,8 +227,12 @@ public class MainActivity extends Activity implements OnClickListener, OnLongCli
                 break;
             
             case R.id.iv_newnote:
+            	NoteBookRecord defaultNoteBook = new NoteBookRecord();
+            	defaultNoteBook.setNoteBookId(0);
+            	defaultNoteBook.setNoteBookName("笔记本");
                 Intent newNoteIntent = new Intent(this, NoteDetailActivity.class);
                 newNoteIntent.setFlags(FLAG_CREATE);
+                newNoteIntent.putExtra("NoteBook", defaultNoteBook);
                 startActivityForResult(newNoteIntent, 1);
                 break;
             case R.id.iv_rightbtn:

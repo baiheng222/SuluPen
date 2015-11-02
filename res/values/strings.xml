@@ -13,6 +13,8 @@
     <string name="edit_done">Done</string>
     <string name="search_note">Search note</string>
     <string name="choose_notes">Select</string>
+    <string name="new_notebook_tips">Input NoteBook Name</string>
+    <string name="default_notebookname">NoteBook</string>
 
     <string name="bluetooth_connected">正在努力连接中，请耐心等候!</string>
     <string name="msg_openingBT">蓝牙开启中...</string>

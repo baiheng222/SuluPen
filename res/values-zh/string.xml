@@ -12,8 +12,8 @@
     <string name="edit_done">完成</string>
     <string name="search_note">查找笔记</string>
     <string name="choose_notes">选择</string>
-    <string name="new_notebook_tips">Input NoteBook Name</string>
-    <string name="default_notebookname">NoteBook</string>
+    <string name="new_notebook_tips">笔记本名称</string>
+    <string name="default_notebookname">笔记本</string>
     <string name="empty_notebooklist_tips">NoteBook is empty</string>
     <string name="button_cancel">取消</string>
     <string name="button_save">保存</string>

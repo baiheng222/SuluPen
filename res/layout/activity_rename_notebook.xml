@@ -81,6 +81,7 @@
             android:id="@+id/et_input_new_notebook_name"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@null"
             android:layout_alignParentLeft="true"
             android:layout_centerInParent="false"
             android:layout_centerVertical="false"

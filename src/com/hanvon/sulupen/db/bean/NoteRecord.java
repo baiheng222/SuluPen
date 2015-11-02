@@ -1,20 +1,17 @@
 package com.hanvon.sulupen.db.bean;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-import android.os.Parcelable.Creator;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
 
 import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.field.ForeignCollectionField;
 import com.j256.ormlite.table.DatabaseTable;
 
-import java.util.ArrayList;
-import java.util.Collection;
-
 @DatabaseTable(tableName = "noteRecord_table")
 
-public class NoteRecord //implements Parcelable
+public class NoteRecord implements Serializable	//Parcelable
 {
     //数据库中每条记录的id
 	@DatabaseField(generatedId = true,dataType=DataType.INTEGER)

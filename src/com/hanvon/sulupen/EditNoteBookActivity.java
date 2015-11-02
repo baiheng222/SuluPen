@@ -26,7 +26,7 @@ public class EditNoteBookActivity extends Activity implements OnClickListener
 	private TextView mTvDone;
 	private ListView mLvList;
 	
-	private NoteBookRecordDao mNoteBookRecordDao;
+	public NoteBookRecordDao mNoteBookRecordDao;
 	private List<NoteBookRecord> mNoteBookList;
 	private NoteBookEditListAdapter mEditNoteBookAdapter;
 	
@@ -85,14 +85,35 @@ public class EditNoteBookActivity extends Activity implements OnClickListener
 		mEditNoteBookAdapter = new NoteBookEditListAdapter(this, mNoteBookList);
 		mLvList.setAdapter(mEditNoteBookAdapter);
 		
+		mEditNoteBookAdapter.notifyDataSetChanged();
     }
 	
 	public void delNoteBook(int pos)
-	{
-		new AlertDialog.Builder(this).setTitle("请输入").setIcon(
-					android.R.drawable.ic_dialog_info).setView(
-							new EditText(this)).setPositiveButton("确定", null)
-							.setNegativeButton("取消", null).show();
+	{	
+		/*
+		AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+		dialog.setMessage("Delete NoteBook?");
+		dialog.setNegativeButton(R.string.button_cancel, new DialogInterface.OnClickListener() 
+		{
+			@Override
+			public void onClick(DialogInterface dialog, int which) 
+			{
+
+			}
+		});
+				
+		dialog.setPositiveButton(R.string.ensure, new DialogInterface.OnClickListener() 
+		{
+			@Override
+			public void onClick(DialogInterface dialog, int which) 
+			{
+				NoteBookRecord m = mNoteBookList.get(pos);
+				mNoteBookRecordDao.deleteRecord(m);
+			}
+		});
+		
+		dialog.show();
+		*/
 	}
 	
 	

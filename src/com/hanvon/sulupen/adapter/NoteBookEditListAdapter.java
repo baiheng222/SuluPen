@@ -2,6 +2,8 @@ package com.hanvon.sulupen.adapter;
 
 import java.util.List;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -80,12 +82,38 @@ public class NoteBookEditListAdapter extends BaseAdapter
 		return convertView;
 	}
 	
-	private void delNoteBook(int pos)
+	private void delNoteBook(final int pos)
 	{
 		//mDatas.remove(pos);
 		//notifyDataSetChanged();
 		
-		mContext.delNoteBook(pos);
+		//mContext.delNoteBook(pos);
+		
+		AlertDialog.Builder dialog = new AlertDialog.Builder(mContext);
+		dialog.setMessage("Delete NoteBook?");
+		dialog.setNegativeButton(R.string.button_cancel, new DialogInterface.OnClickListener() 
+		{
+			@Override
+			public void onClick(DialogInterface dialog, int which) 
+			{
+
+			}
+		});
+				
+		dialog.setPositiveButton(R.string.ensure, new DialogInterface.OnClickListener() 
+		{
+			@Override
+			public void onClick(DialogInterface dialog, int which) 
+			{
+				NoteBookRecord m = mDatas.get(pos); 
+				mContext.mNoteBookRecordDao.deleteRecord(m);
+				mDatas.remove(pos);
+				notifyDataSetChanged();
+			}
+		});
+		
+		dialog.show();
+		
 	}
 	
 	

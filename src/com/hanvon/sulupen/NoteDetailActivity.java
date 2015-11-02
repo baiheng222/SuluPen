@@ -28,9 +28,11 @@ public class NoteDetailActivity extends Activity implements OnClickListener
     private EditText mEtContent;
     private EditText mEtTitle;
     private int flagIntent = -1;
+    private static int FLAG_CREATE = 2;
+    private static int FLAG_EDIT = 1;
     
     private NoteBookRecord mPassedNoteBookRecord;
-    private NoteRecord mNoteRecord;
+    private NoteRecord mPassedNoteRecord;
     private String mCreateDate;
     private String mNoteBookName;
   
@@ -68,13 +70,16 @@ public class NoteDetailActivity extends Activity implements OnClickListener
 		Intent intent = getIntent();
 		if (intent != null) 
 		{
-		    mPassedNoteBookRecord = (NoteBookRecord) intent.getSerializableExtra("NoteBook");
-		    mNoteBookName = mPassedNoteBookRecord.getNoteBookName();
-		    Log.d(TAG, "NoteBookName is " + mNoteBookName);
 			flagIntent = intent.getFlags();
-			if (flagIntent == MainActivity.FLAG_CREATE) 
+			if (flagIntent == FLAG_CREATE) 
 			{
-				
+				mPassedNoteBookRecord = (NoteBookRecord) intent.getSerializableExtra("NoteBook");
+				mNoteBookName = mPassedNoteBookRecord.getNoteBookName();
+				Log.d(TAG, "NoteBookName is " + mNoteBookName);	
+			}
+			else if (flagIntent == FLAG_EDIT)
+			{
+				mPassedNoteRecord = (NoteRecord) intent.getSerializableExtra("NoteRecord");
 			}
 		}
 	}
