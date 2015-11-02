@@ -9,7 +9,6 @@ import java.util.List;
 //import com.hanvon.sulupen.db.bean.NoteBookInfo;
 //import com.hanvon.sulupen.db.bean.NoteInfo;
 import com.hanvon.sulupen.db.bean.NoteBookRecord;
-import com.hanvon.sulupen.db.bean.ScanRecord;
 
 import com.hanvon.sulupen.db.helper.SCanRecordHelper;
 import com.j256.ormlite.dao.Dao;

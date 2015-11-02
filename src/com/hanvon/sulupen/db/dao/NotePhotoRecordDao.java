@@ -5,11 +5,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-
-import com.hanvon.sulupen.db.bean.NoteBookInfo;
-import com.hanvon.sulupen.db.bean.NoteInfo;
-import com.hanvon.sulupen.db.bean.ScanRecord;
-
 import com.hanvon.sulupen.db.helper.SCanRecordHelper;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.GenericRawResults;
