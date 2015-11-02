@@ -46,8 +46,8 @@ public class NoteBookListActivity extends Activity implements OnClickListener
 	//public final static int FLAG_EDIT = 1;
 	//public final static int FLAG_CREATE_WITH_BOOKNAME = 2;
 	
-	private static int FLAG_CREATE = 2;
-    private static int FLAG_EDIT = 1;
+	private final static int FLAG_CREATE = 2;
+    private final static int FLAG_EDIT = 1;
 	
 
 	@Override
@@ -116,6 +116,7 @@ public class NoteBookListActivity extends Activity implements OnClickListener
 		    	 public void onItemClick(AdapterView<?> arg0, View view, int position, long id)
 		    	 {
 		    		 Log.d(TAG, "item " +  position + " clicked");
+		    		 startNoteDetailActivity(position);
 		    	 }
 		     }
 		     );
@@ -133,6 +134,7 @@ public class NoteBookListActivity extends Activity implements OnClickListener
 	 public void startNoteDetailActivity(int pos)
 	 {
 		 Intent intent = new Intent(this, NoteDetailActivity.class);
+		 intent.setFlags(FLAG_EDIT);
 		 intent.putExtra("NoteRecord", mNoteRecordList.get(pos));
 		 startActivity(intent);
 	 }

@@ -45,11 +45,7 @@ public class NoteDetailActivity extends Activity implements OnClickListener
 		
 		initDatas();
 		
-        initView();
-        
-        mCreateDate = TimeUtil.getCurDate();
-        Log.d(TAG, "note create tiem " +  mCreateDate);
-        
+        initView();      
 
 	}
 	
@@ -61,6 +57,12 @@ public class NoteDetailActivity extends Activity implements OnClickListener
 		mEtTitle = (EditText) findViewById(R.id.etNoteTitle);
 		
 		mConfirmButton.setOnClickListener(this);
+		
+		if (flagIntent == FLAG_EDIT)
+		{
+		    mEtTitle.setText(mPassedNoteRecord.getNoteTitle());
+		    mEtContent.setText(mPassedNoteRecord.getNoteContent());
+		}
 	}
 	
 	private void initDatas()
@@ -76,10 +78,14 @@ public class NoteDetailActivity extends Activity implements OnClickListener
 				mPassedNoteBookRecord = (NoteBookRecord) intent.getSerializableExtra("NoteBook");
 				mNoteBookName = mPassedNoteBookRecord.getNoteBookName();
 				Log.d(TAG, "NoteBookName is " + mNoteBookName);	
+				
+				mCreateDate = TimeUtil.getCurDate();
+		        Log.d(TAG, "note create tiem " +  mCreateDate);
 			}
 			else if (flagIntent == FLAG_EDIT)
 			{
 				mPassedNoteRecord = (NoteRecord) intent.getSerializableExtra("NoteRecord");
+				Log.d(TAG, "get noteRecord in edit mode");
 			}
 		}
 	}

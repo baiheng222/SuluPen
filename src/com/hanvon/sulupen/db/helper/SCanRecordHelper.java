@@ -17,7 +17,7 @@ public class SCanRecordHelper extends OrmLiteSqliteOpenHelper
 {
 	private final static String DATABASENAME = "hanvon2.db";
 	private final static int DATABASEVERSION = 1;
-	private Dao<ScanRecord, Integer> mDao = null;
+	//private Dao<ScanRecord, Integer> mDao = null;
 	private static SCanRecordHelper instance;
 	private Map<String, Dao> daos = new HashMap<String, Dao>();
 	public SCanRecordHelper(Context context) 
