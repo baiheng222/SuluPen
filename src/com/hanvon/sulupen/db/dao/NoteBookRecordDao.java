@@ -148,5 +148,39 @@ public class NoteBookRecordDao
     	
     	return noteBookRecord;
     }
+    
+    public NoteBookRecord getNoteBookRecordByName(String name)
+    {
+        NoteBookRecord notebook = null;
+        try 
+        {
+            mNoteBookRecordList = mNoteBookRecordDao.queryForAll();
+        } 
+        catch (SQLException e) 
+        {
+            e.printStackTrace();
+        }
+        /*
+        try
+        {
+            return mNoteBookRecordDao.queryBuilder().where().eq("noteBookName", name).query();
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+            return null;
+        }*/
+        
+        for (int i = 0; i <mNoteBookRecordList.size(); i++)
+        {
+            if (mNoteBookRecordList.get(i).getNoteBookName().equals(name))
+            {
+                notebook = mNoteBookRecordList.get(i);
+                break;
+            }
+        }
+        
+        return notebook;
+    }
 
 }

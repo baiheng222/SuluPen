@@ -99,7 +99,7 @@ public class BluetoothDetail extends Activity implements OnClickListener{
 		mFilter.addAction(BluetoothIntenAction.ACTION_EPEN_CLOSETIME_CHANGE);
 		this.registerReceiver(btMsgReceiver, mFilter);
 	}
-	
+
 	private void initView() {
 		TVelectricity = (TextView) this.findViewById(R.id.hw_electricity);
 		TVstatus = (TextView) this.findViewById(R.id.hw_status);
@@ -145,7 +145,7 @@ public class BluetoothDetail extends Activity implements OnClickListener{
 		
 		String serialnum = BluetoothSetting.getSeralNumber();
 		TVsn.setText(serialnum);
-	
+
 		String funcKeySetting = BluetoothSetting.getFuncKeyCode();
 		for (int i = 0; i < funcKeyArray.length; i++) {
 			if (funcKeyArray[i].equals(funcKeySetting)) {
@@ -253,24 +253,28 @@ public class BluetoothDetail extends Activity implements OnClickListener{
 		}
 		switch(v.getId()){
 		    case R.id.hw_break:
+		    	
 		    	AlertDialog.Builder dialog = new AlertDialog.Builder(this);
-		    	dialog.setTitle(R.string.comeback_tips);
-		    	dialog.setMessage(R.string.msg_stop_connected);
-		    	dialog.setCancelable(false);
-		    	dialog.setPositiveButton(R.string.button_cancel, new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface arg0, int arg1) {
-						// TODO Auto-generated method stub
-					}
-				});
-                dialog.setNegativeButton(R.string.ensure, new DialogInterface.OnClickListener() {		
-					@Override
-					public void onClick(DialogInterface arg0, int arg1) {
-						// TODO Auto-generated method stub
-						stopConnect();
-					}
-				});
-                dialog.show();
+				dialog.setMessage(R.string.msg_stop_connected);
+				dialog.setCancelable(false);
+				dialog.setNegativeButton(R.string.button_cancel,
+								new DialogInterface.OnClickListener() {
+
+									@Override
+									public void onClick(DialogInterface dialog,
+											int which) {
+
+									}
+								})
+						.setPositiveButton(R.string.ensure,
+								new DialogInterface.OnClickListener() {
+
+									@Override
+									public void onClick(DialogInterface dialog,
+											int which) {
+										stopConnect();
+									}
+								}).show();
 			    break;
 		    case R.id.hw_function:
 		    	createDlg(FUNC_KEY, funcKeyStrs, funcKeyCheckedItem);

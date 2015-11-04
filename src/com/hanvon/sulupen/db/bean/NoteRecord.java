@@ -73,7 +73,7 @@ public class NoteRecord implements Serializable	//Parcelable
 	 }
 	  
 	 /*获取笔记所包含的所有图片的集合*/
-	 public ArrayList<NotePhotoRecord> getNoteRecordList()
+	 public ArrayList<NotePhotoRecord> getNotePhotoList()
 	 {
 	     ArrayList<NotePhotoRecord> mNotesList = new ArrayList<NotePhotoRecord>(notePhotos);
 	     return mNotesList;

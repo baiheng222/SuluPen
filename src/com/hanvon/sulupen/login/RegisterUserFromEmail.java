@@ -14,11 +14,13 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.hanvon.sulupen.MainActivity;
@@ -35,8 +37,9 @@ public class RegisterUserFromEmail extends Activity implements OnClickListener{
 
 	private ClearEditText CEemail;
 	private ClearEditText CEpasswd;
-	private Button BTensure;
+	private ImageView BTensure;
 	private ImageView IVback;
+	private ImageView IVregisterPhone;
 
 	private String strEmail;
 	private String strPassword;
@@ -51,13 +54,15 @@ public class RegisterUserFromEmail extends Activity implements OnClickListener{
 
 		CEemail = (ClearEditText)findViewById(R.id.rgst_email_user);
 		CEpasswd = (ClearEditText)findViewById(R.id.rgst_email_pswd);
-		BTensure = (Button)findViewById(R.id.rgst_email_rgstbutton);
+		BTensure = (ImageView)findViewById(R.id.rgst_email_rgstbutton);
         IVback = (ImageView)findViewById(R.id.rgst_back);
+        IVregisterPhone = (ImageView)findViewById(R.id.email_register_phone_button);
 		
         CEemail.setOnClickListener(this);
         CEpasswd.setOnClickListener(this);
         BTensure.setOnClickListener(this);
         IVback.setOnClickListener(this);
+        IVregisterPhone.setOnClickListener(this);
 	}
 
 	@Override
@@ -100,7 +105,13 @@ public class RegisterUserFromEmail extends Activity implements OnClickListener{
 				}
 			    break;
 		    case R.id.rgst_back:
+		    	startActivity(new Intent(RegisterUserFromEmail.this, LoginActivity.class));
+		    	this.finish();
 			    break;
+		    case R.id.email_register_phone_button:
+		    	startActivity(new Intent(RegisterUserFromEmail.this, RegisterUserGetCodePhone.class));
+		    	this.finish();
+		    	break;
 		    default:
 			    break;
 		}
@@ -244,5 +255,16 @@ public class RegisterUserFromEmail extends Activity implements OnClickListener{
 	  	    result=RequestServerData.userRegister(JSuserInfoJson);
 	  	    return result;
 	    }
+	 
+	   @Override  
+		public boolean onKeyDown(int keyCode, KeyEvent event)
+		{
+		    if (keyCode == KeyEvent.KEYCODE_BACK )
+		    {
+		    	startActivity(new Intent(RegisterUserFromEmail.this, LoginActivity.class));
+		    	this.finish();
+		    }
+		    return false; 
+		}
 
 }

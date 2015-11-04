@@ -28,8 +28,8 @@ public class NoteDetailActivity extends Activity implements OnClickListener
     private EditText mEtContent;
     private EditText mEtTitle;
     private int flagIntent = -1;
-    private static int FLAG_CREATE = 2;
-    private static int FLAG_EDIT = 1;
+    private final static int FLAG_CREATE = 2;
+    private final static int FLAG_EDIT = 1;
     
     private NoteBookRecord mPassedNoteBookRecord;
     private NoteRecord mPassedNoteRecord;

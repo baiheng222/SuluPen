@@ -6,8 +6,8 @@ import java.util.regex.Pattern;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import com.hanvon.sulupen.application.HanvonApplication;
+import com.hanvon.sulupen.MainActivity;
 import com.hanvon.sulupen.R;
 import com.hanvon.sulupen.net.HttpClientHelper;
 import com.hanvon.sulupen.net.JsonData;
@@ -35,6 +35,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Base64;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.View.OnClickListener;
@@ -60,7 +61,6 @@ public class LoginActivity extends Activity implements OnClickListener {
 	private ImageView LLQQUser;
 	private ImageView LLWXUser;
 	
-	private ImageView IVloginImage;
 	private int userflag = 0;
 	public static LoginActivity instance = null;
 	public String flag;   // 0 从其他界面跳转 1 从云信息登陆跳转  2 从上传界面跳转
@@ -71,7 +71,7 @@ public class LoginActivity extends Activity implements OnClickListener {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_login);
 
-	    TVSkip = (TextView) findViewById(R.id.skip_button);
+	    TVSkip = (TextView) findViewById(R.id.login_quit);
 		ETUserName = (ClearEditText) findViewById(R.id.username_editText);
 		ETPassWord = (ClearEditText) findViewById(R.id.passwd_editText);
 		BTLogin = (Button) findViewById(R.id.login_button);
@@ -80,7 +80,6 @@ public class LoginActivity extends Activity implements OnClickListener {
 
 		LLQQUser = (ImageView)findViewById(R.id.login_qq);
 		LLWXUser = (ImageView)findViewById(R.id.login_weixin);
-        IVloginImage = (ImageView)findViewById(R.id.login_image);
 
 		TVSkip.setOnClickListener(this);
 		ETUserName.setOnClickListener(this);
@@ -103,7 +102,8 @@ public class LoginActivity extends Activity implements OnClickListener {
 
 	public void onClick(View v) {
 		switch (v.getId()) {
-		    case R.id.skip_button:
+		    case R.id.login_quit:
+		    	goHome();
 			    if (flag != null){
 					if (Integer.valueOf(flag) == 1){
 					//	startActivity(new Intent(LoginActivity.this, MyCloudActivity.class));
@@ -113,7 +113,7 @@ public class LoginActivity extends Activity implements OnClickListener {
 					 //   LoginActivity.this.finish();
 					}
 				}else{
-					goHome();
+				//	goHome();
 				}
 			    break;
             case R.id.login_button:
@@ -167,9 +167,9 @@ public class LoginActivity extends Activity implements OnClickListener {
 	}
 
 	private void goHome() {
-	//	Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-	//	LoginActivity.this.startActivity(intent);
-	//	LoginActivity.this.finish();
+		Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+		LoginActivity.this.startActivity(intent);
+		LoginActivity.this.finish();
 	}
 
 	public void judgeUserIsOk(){
@@ -390,6 +390,17 @@ public class LoginActivity extends Activity implements OnClickListener {
 	protected void onDestroy() {
 		LogUtil.i("INTO onDestroy!!!!!!!!");
 		super.onDestroy();
+	}
+	
+	@Override  
+	public boolean onKeyDown(int keyCode, KeyEvent event)
+	{
+	    if (keyCode == KeyEvent.KEYCODE_BACK )
+	    {
+	    	startActivity(new Intent(LoginActivity.this, MainActivity.class));
+	    	this.finish();
+	    }
+	    return false;                                                                  
 	}
 }
 

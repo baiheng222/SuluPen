@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+     Copyright (C) 2009 The Android Open Source Project
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+<keyboard
+    balloon="true"
+    height="25%p"
+    key_type="0"
+    repeat="false"
+    skb_cache_flag="true"
+    skb_template="@xml/skb_template1"
+    width="10%p" >
+
+    <row>
+        <keys
+            codes="8|9|10|11|12|13|14|15|16|7"
+            labels="1|2|3|4|5|6|7|8|9|0"
+            splitter="|" />
+    </row>
+    <row>
+        <key label="_" >
+           
+        </key>
+        <key
+            icon_popup="@drawable/dun_popup_icon"
+            label="/" >
+            
+        </key>
+        <key label="：" >
+            <toggle_state
+                label=":"
+                state_id="@string/toggle_en_sym1" />
+        </key>
+        <key label="；" >
+            <toggle_state
+                label=";"
+                state_id="@string/toggle_en_sym1" />
+        </key>
+
+        <keys
+            labels="(|)"
+            splitter="|" />
+
+        <key label="￥" >
+            <toggle_state
+                label="$"
+                state_id="@string/toggle_en_sym1" />
+        </key>
+        <key label="\@" >
+            <toggle_state
+                label="&amp;"
+                state_id="@string/toggle_en_sym1"
+            />
+            </key>
+        <key label="“" >
+            <toggle_state
+                label="\@"
+                state_id="@string/toggle_en_sym1" />
+        </key>
+        <key label="”" >
+            <toggle_state
+                label="”"
+                state_id="@string/toggle_en_sym1" />
+        </key>
+    </row>
+    <row width="10.205%p" >
+        <key
+            code="-5"
+            key_type="2"
+            label="\#+="
+            width="14.286%p" />
+        <key
+            icon_popup="@drawable/period_full_popup_icon"
+            key_type="0"
+            label="。" 
+            width="12%p">
+            <toggle_state
+                icon_popup="@drawable/period_popup_icon"
+                label="."
+                state_id="@string/toggle_en_sym1" />
+            <toggle_state
+                icon_popup="@drawable/period_popup_icon"
+                label="."
+                state_id="@string/toggle_en_upper" />
+        </key>
+        <key label="，"
+            width="12%p" >
+            <toggle_state
+                label=","
+                state_id="@string/toggle_en_sym1" />
+        </key>
+        <key
+            icon_popup="@drawable/dun_popup_icon"
+            label=" 、"
+            width="12%p" >
+            <toggle_state
+                label="/"
+                state_id="@string/toggle_en_sym1" />
+        </key>
+        <key label="？" 
+            width="12%p">
+            <toggle_state
+                label="\?"
+                state_id="@string/toggle_en_sym1" />
+        </key>
+        <key label="！"
+            width="12%p" >
+            <toggle_state
+                label="!"
+                state_id="@string/toggle_en_sym1" />
+        </key>
+        <key label="." width="12%p">
+            <toggle_state label="'"
+                state_id="@string/toggle_en_sym1" /></key>
+        <key id="3" />
+    </row>
+    <row
+        key_type="1"
+        width="14.696%p" >
+        <key
+            code="-2"
+            label="ABC"
+            repeat="true"
+            width="14.286%p" >
+            <toggle_state
+                code="-2"
+                label="ABC"
+                state_id="@string/toggle_en_sym1" />
+        </key>
+         <key id="8" />
+      <!-- <key
+            icon="@drawable/voice_normal"
+            icon_popup="@drawable/voice_press"
+            key_type="2"
+            state_id="@string/toggle_en_lower"
+            width="10%p" />-->
+      
+      
+        <key
+            code="62"
+            key_type="5"
+            label="space"
+            width="40.608%p" />
+         <key
+            code="-10"
+            icon="@drawable/chinese_translated"
+            icon_popup="@drawable/english_translated"
+            label="译"
+            width="10%p" />
+        <key id="1" />
+    </row>
+
+</keyboard>

@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" 
+    android:background="@android:color/darker_gray">
+  
+     <!-- ==========title============= -->
+    <include
+        android:id="@+id/share_title_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        layout="@layout/titilebar_share" />
+
+     <!-- ==========line============= -->
+    <View
+        android:id="@+id/line_first"
+        android:layout_width="fill_parent"
+        android:layout_height="1dip"
+        android:layout_below="@+id/share_title_bar"
+        android:background="#c0c0c0" />
+
+      <!-- ==========file name label============= -->
+       <TextView
+        android:id="@+id/textview1"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:padding="5dp"
+        android:layout_below="@+id/line_first"
+        android:gravity="center_vertical"
+        android:background="@android:color/darker_gray"
+        android:textColor="@android:color/white"
+        android:text="@string/share_filenamelabel" 
+        android:textSize="20sp"/>
+    
+       <TextView
+        android:id="@+id/textview2"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:padding="5dp"
+        android:gravity="center_vertical"
+        android:layout_below="@+id/textview1"
+        android:background="@android:color/white"
+        android:textColor="@color/gray"
+        android:text="纸牌屋" 
+        android:textSize="20sp"/>
+    
+        <!-- ==========share label============= -->
+        <TextView
+        android:id="@+id/textview3"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:padding="5dp"
+        android:layout_below="@+id/textview2"
+        android:gravity="center_vertical"
+        android:background="@android:color/darker_gray"
+        android:textColor="@android:color/white"
+        android:text="@string/share_name" 
+        android:textSize="20sp"/>
+        
+        <RelativeLayout
+        android:id="@+id/createlink"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_below="@+id/textview3"
+        android:background="@android:color/white"
+        android:orientation="horizontal"
+        android:padding="5dp" >
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_alignParentLeft="true"
+            android:gravity="center_vertical"
+            android:background="@android:color/white"
+            android:text="@string/create_link"
+            android:textColor="@color/gray"
+            android:textSize="20sp" />
+
+        <ImageView
+            android:id="@+id/createlinkarrow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:gravity="center_vertical"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/right_arrow" />
+    </RelativeLayout>
+        
+        
+       <View
+        android:id="@+id/line_second"
+        android:layout_width="fill_parent"
+        android:layout_height="1dip"
+        android:layout_below="@+id/createlink"
+        android:background="#c0c0c0" />
+   <!--      
+       <RelativeLayout
+        android:id="@+id/createdoc"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_below="@+id/line_second"
+        android:background="@android:color/white"
+        android:orientation="horizontal"
+        android:padding="5dp" >
+           
+           <TextView
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_alignParentLeft="true"
+            android:gravity="center_vertical"
+            android:background="@android:color/white"
+            android:text="@string/create_doc"
+            android:textColor="@color/gray"
+            android:textSize="20sp" />
+
+            <ImageView
+            android:id="@+id/createdocarrow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:gravity="center_vertical"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/right_arrow" />
+    </RelativeLayout>
+    -->
+       
+       
+       <!-- ==========upload label============= -->
+       
+       <TextView
+        android:id="@+id/textview4"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:padding="5dp"
+        android:layout_below="@+id/createlink"
+        android:gravity="center_vertical"
+        android:background="@android:color/darker_gray"
+        android:textColor="@android:color/white"
+        android:text="@string/update_label" 
+        android:textSize="20sp"/>
+
+       
+       
+        <TextView
+        android:id="@+id/textview5"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:padding="5dp"
+        android:gravity="center_vertical"
+        android:layout_below="@+id/textview4"
+        android:background="@android:color/white"
+        android:textColor="@color/gray"
+        android:text="汉王云" 
+        android:textSize="20sp"/>
+       
+        <!-- android:layout_marginTop="20dip" -->
+        <!-- android:layout_centerVertical="true"  --> 
+</RelativeLayout>

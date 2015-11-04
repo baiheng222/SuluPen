@@ -1,19 +1,32 @@
 package com.hanvon.bluetooth;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.util.zip.GZIPInputStream;
+
 import org.json.JSONException;
 import org.json.JSONObject;
-
+import com.hanvon.sulupen.ScanNoteActivity;
+import com.hanvon.sulupen.application.HanvonApplication;
+import com.hanvon.sulupen.datas.ScanRecordInfo;
+import com.hanvon.sulupen.db.bean.NoteRecord;
+import com.hanvon.sulupen.db.dao.NoteRecordDao;
+import com.hanvon.sulupen.helper.PreferHelper;
 import com.hanvon.sulupen.login.LoginActivity;
 import com.hanvon.sulupen.utils.LogUtil;
+import com.hanvon.sulupen.utils.TimeUtil;
 
 import android.app.ProgressDialog;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
+import android.preference.PreferenceManager;
+import android.util.Base64;
 import android.widget.Toast;
 
 /**
@@ -29,7 +42,30 @@ public class BluetoothService extends Service{
 	public int curBatteryPower = -1;
 	public int curBatteryStatus = -1;
 	// 1为盲扫模式，2为校对模式,3.输入法模式
-	public static int scanRecordMode = 1;
+	public static int scanRecordMode = 2;
+	
+	
+	public static byte[] unGZip(byte[] data) {
+		byte[] b = null;
+		try {
+			ByteArrayInputStream bais = new ByteArrayInputStream(data);
+			GZIPInputStream gzip = new GZIPInputStream(bais);
+			byte[] buf = new byte[1024];
+			int num = -1;
+			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			while ((num = gzip.read(buf, 0, buf.length)) != -1) {
+				baos.write(buf, 0, num);
+			}
+			b = baos.toByteArray();
+			baos.flush();
+			baos.close();
+			gzip.close();
+			bais.close();
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		return b;
+	}
 	/**
 	 * Handler 消息接收器
 	 * 
@@ -158,6 +194,59 @@ public class BluetoothService extends Service{
 							 * uncheckmode 3.is checkmode
 							 */
 							LogUtil.i("data:" + jsonData.toString());
+							LogUtil.i("mode:" + scanRecordMode);
+							/*
+							if (scanRecordMode == 1) {
+								String scanContent = jsonData.getString("scan_text");
+								String imageStr = jsonData.getString("scan_image");
+								
+								NoteRecord info = new NoteRecord();
+								long nowTime = TimeUtil.getNowTime();
+
+							//	NoteRecordDao mScanRecordAccess = new NoteRecordDao(
+							//			BluetoothService.this);
+				
+									info.setNoteTitle("");
+									info.setNoteContent(scanContent);
+									info.setInputType(1);
+								//	info.setCreateAddr(""
+								//			+ ((HanvonApplication) getApplication()).curAddress);
+								//	mScanRecordAccess.add(info);
+								// 校对模式
+							} else */if (scanRecordMode == 2 || scanRecordMode == 1) {
+								String scanContent = jsonData.getString("scan_text");
+								String imageStr = jsonData.getString("scan_image");
+								// LogUtil.i("scanRecordMode"+PreferHelper.getBoolean(DeviceDetailActivity.isReceiveImg,
+								// false));
+								if (ScanNoteActivity.scanNoteAct != null)
+									ScanNoteActivity.scanNoteAct
+											.appendText(scanContent);
+
+								if (ScanNoteActivity.scanNoteAct
+										.getIsSendScanImage()) {
+									if(imageStr.length() != 0)
+									{
+										byte[] imagebyte = Base64.decode(imageStr,
+												Base64.DEFAULT);
+										
+										//ungzip bmpByte
+										byte[] imagebyte_ungziped= unGZip(imagebyte);
+										Bitmap bmp = BitmapFactory.decodeByteArray(
+												imagebyte_ungziped, 0, imagebyte_ungziped.length);
+										if (bmp != null)
+											ScanNoteActivity.scanNoteAct.setScanImage(bmp);
+										//saveBitmapFile(bmp);
+									}
+						
+								}
+							}
+							// 输入法模式
+							else {
+						//		PinyinIME.pinyinIME.mHandler
+							//			.obtainMessage(
+							//					BluetoothChatService.BLUETOOTH_MESSAGE_READ,
+							//					jsonData).sendToTarget();
+							}
 							break;
 
 						case 104:
@@ -202,6 +291,19 @@ public class BluetoothService extends Service{
 						 */
 						case 107:
 							//盲扫模式
+							if (scanRecordMode == 1) {
+
+								//校对模式
+							} else if (scanRecordMode == 2) {
+								if (ScanNoteActivity.scanNoteAct != null)
+									ScanNoteActivity.scanNoteAct
+											.appendText(funcKeyCode());
+								//输入法模式
+							} else {
+								if (ScanNoteActivity.scanNoteAct != null)
+									ScanNoteActivity.scanNoteAct
+											.appendText(funcKeyCode());
+							}
 							break;
 						case 108:
 							//蓝牙返回的值
@@ -269,7 +371,9 @@ public class BluetoothService extends Service{
 	public void onCreate() {
 		super.onCreate();
 		mHanVonService = this;
+		PreferHelper.init(this);
 		blueService = new BluetoothChatService(this, msgHandler);
+		BluetoothSetting.getInstance(PreferenceManager.getDefaultSharedPreferences(getApplicationContext()));
 	}
 	/**
 	 * 开启服务
@@ -293,6 +397,21 @@ public class BluetoothService extends Service{
 
 		};
 	};
+	
+	private String funcKeyCode() {
+		String funcKeyCode = BluetoothSetting.getFuncKeyCode();
+		String textAppend = "";
+		if(funcKeyCode!=null&&funcKeyCode.length()>0){
+			textAppend = funcKeyCode;
+		}
+//		if (("0").equals(funcId)) {
+//			textAppend = "\n";
+//		}
+//		if (("1").equals(funcId)) {
+//			textAppend = "。";
+//		}
+		return textAppend;
+	}
 
 	/**
 	 * 获取服务实例

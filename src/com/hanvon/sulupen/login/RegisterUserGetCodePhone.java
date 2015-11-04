@@ -27,6 +27,8 @@ import android.content.SharedPreferences.Editor;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.View.OnClickListener;
@@ -41,8 +43,9 @@ public class RegisterUserGetCodePhone extends Activity implements OnClickListene
 	private ClearEditText CEphoneNumber;
 	private ClearEditText CEpassword;
 	private Button BTregist;
-	private TextView TVemailRegist;
 	private ImageView IVback;
+	private ImageView IVregisterPhone;
+	private ImageView IVregisterEmail;
 	
 	private String strPhoneNumber;
 	private String strPassword;
@@ -57,14 +60,16 @@ public class RegisterUserGetCodePhone extends Activity implements OnClickListene
 		CEphoneNumber = (ClearEditText)findViewById(R.id.rgst_user);
 		CEpassword = (ClearEditText)findViewById(R.id.rgst_pswd);
 		BTregist = (Button)findViewById(R.id.rgst_rgstbutton);
-		TVemailRegist = (TextView)findViewById(R.id.regist_emailuser);
         IVback = (ImageView)findViewById(R.id.rgst_back);
+        IVregisterEmail = (ImageView)findViewById(R.id.register_email_button);
+        IVregisterPhone = (ImageView)findViewById(R.id.register_phone_button);
 		
         CEphoneNumber.setOnClickListener(this);
         CEpassword.setOnClickListener(this);
         BTregist.setOnClickListener(this);
-        TVemailRegist.setOnClickListener(this);
         IVback.setOnClickListener(this);
+        IVregisterEmail.setOnClickListener(this);
+        IVregisterPhone.setOnClickListener(this);
 	}
 
 	@Override
@@ -109,12 +114,14 @@ public class RegisterUserGetCodePhone extends Activity implements OnClickListene
 					Toast.makeText(RegisterUserGetCodePhone.this, "网络连接不可用，请检查网络后再试", Toast.LENGTH_SHORT).show();
 				}
 			    break;
-		    case R.id.regist_emailuser:
+		    case R.id.register_email_button:
 		    	Intent intent = new Intent(RegisterUserGetCodePhone.this, RegisterUserFromEmail.class);
-		    	RegisterUserGetCodePhone.this.startActivity(intent);
-		    	RegisterUserGetCodePhone.this.finish();
+		    	this.startActivity(intent);
+		    	this.finish();
 		    	break;
-		    case R.id.resetpwd_back:
+		    case R.id.rgst_back:
+		    	startActivity(new Intent(RegisterUserGetCodePhone.this, LoginActivity.class));
+		    	this.finish();
 		    	break;
 		    default:
 		    	break;
@@ -223,6 +230,17 @@ public class RegisterUserGetCodePhone extends Activity implements OnClickListene
 		  	result=RequestServerData.getphoneauthcode(JSuserInfoJson);
 
 		  	return result;
+		}
+	 
+		@Override  
+		public boolean onKeyDown(int keyCode, KeyEvent event)
+		{
+		    if (keyCode == KeyEvent.KEYCODE_BACK )
+		    {
+		    	startActivity(new Intent(RegisterUserGetCodePhone.this, LoginActivity.class));
+		    	this.finish();
+		    }
+		    return false; 
 		}
 }
 

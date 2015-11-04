@@ -11,6 +11,7 @@ public class BluetoothSetting {
 	private static final String ANDPY_CONFS_IDENTCORE_KEY = "IdentCore";
 	private static final String ANDPY_CONFS_BLUEADDRESS_KEY = "BlueAddress";
 	
+	private static final String ANDPY_CONFS_SENDIMAGE_KEY = "BlueSendImage";
 
 	private static int    msleepCode;
 	private static int    mshutdownCode;
@@ -18,6 +19,7 @@ public class BluetoothSetting {
     private static String    mIdentCoreCode;
     private static String    mSerialNum;
     private static String    mAddress;
+    private static boolean isSendImage;
 	private static BluetoothSetting mInstance = null;
 
 	/**
@@ -58,6 +60,7 @@ public class BluetoothSetting {
 		editor.putString(ANDPY_CONFS_IDENTCORE_KEY, mIdentCoreCode);
 		editor.putString(ANDPY_CONFS_SERIAL_KEY, mSerialNum);
 		editor.putString(ANDPY_CONFS_BLUEADDRESS_KEY, mAddress);
+		editor.putBoolean(ANDPY_CONFS_SENDIMAGE_KEY, isSendImage);
 		editor.commit();
 	}
 
@@ -81,6 +84,7 @@ public class BluetoothSetting {
 		mIdentCoreCode = mSharedPref.getString(ANDPY_CONFS_IDENTCORE_KEY, "ch-eng");
 		mSerialNum = mSharedPref.getString(ANDPY_CONFS_IDENTCORE_KEY, "0000-0000-0000-0000");
 		mAddress = mSharedPref.getString(ANDPY_CONFS_BLUEADDRESS_KEY, "");
+	    isSendImage = mSharedPref.getBoolean(ANDPY_CONFS_SENDIMAGE_KEY, false);
 	}
 
 	
@@ -156,4 +160,13 @@ public class BluetoothSetting {
 		mAddress = address;
 	}
 	
+	
+	public static boolean getBlueIsSendImage(){
+		return isSendImage;
+	}
+	
+	
+	public static void setBlueIsSendImage(boolean sendImage) {
+		isSendImage = sendImage;
+	}
 }

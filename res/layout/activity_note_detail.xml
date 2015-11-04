@@ -5,6 +5,7 @@
     android:background="@color/frame_bg"
     android:orientation="vertical" >
 
+    
     <include
         android:id="@+id/app_title"
         android:layout_width="match_parent"
@@ -74,7 +75,7 @@
                     android:textColor="@color/gray"
                     android:textSize="18sp" />
             </LinearLayout>
-<!-- 
+
             <HorizontalScrollView
                 android:id="@+id/horScroll"
                 android:layout_width="match_parent"
@@ -90,7 +91,7 @@
                     android:minHeight="60dp"
                     android:scaleType="matrix" /> 
             </HorizontalScrollView>
- -->
+ 
             <View
                 android:layout_width="fill_parent"
                 android:layout_height="1dip"
@@ -131,59 +132,92 @@
         android:orientation="vertical"
         android:paddingBottom="5dp"
         android:paddingTop="5dp" >
-
-
-        <View
+      
+           <com.hanvon.sulupen.ui.view.MyGridView
+            android:id="@+id/gridview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:horizontalSpacing="3dp"
+            android:numColumns="4"
+            android:scrollbars="none"
+            android:verticalSpacing="5dp">
+          </com.hanvon.sulupen.ui.view.MyGridView> 
+          
+           <View
             android:layout_width="fill_parent"
             android:layout_height="1dip"
             android:layout_marginTop="10dp"
             android:background="#c0c0c0" />
-      
+        
            <RelativeLayout
-            android:id="@+id/note_bottom_bar"
-            android:layout_width="fill_parent"
-            android:layout_height="@dimen/bottom_bar_height"
-            android:background="@color/frame_bg"
-            android:orientation="vertical" >
+               android:id="@+id/note_bottom_bar"
+               android:layout_width="fill_parent"
+               android:layout_height="match_parent"
+               android:background="@color/frame_bg" >
+            
+               
+
+               
+               <!--  android:layout_height="@dimen/bottom_bar_height" -->
+          <View 
+            android:id="@+id/bisector"
+            android:layout_width="0dp"
+            android:layout_height="0dp" 
+            android:layout_centerHorizontal="true" />
+          
+          
+
+            
             <ImageView
             android:id="@+id/ivShare"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/blue_cricle"
+            android:background="@drawable/share_note"
             android:layout_alignParentLeft="true"
+            android:layout_marginTop="5dp"
+             android:layout_marginLeft="5dp"
+             android:layout_marginRight="15dp"
             />
-            
-            <!-- android:layout_centerVertical="true" />  -->
-            
-            <!--  
-            <TextView
-            android:id="@+id/tv_nd_scanAddress"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:ellipsize="end"
-            android:layout_below ="@id/ivShare"
-            android:text="分享"
-            android:textColor="@color/blue_black"
-            android:textSize="10sp" /> -->
-            
-            
-           <ImageView
-            android:id="@+id/ivScan"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true" 
-            android:background="@drawable/blue_cricle" />
-        
-                
-            <ImageView
-            android:id="@+id/ivScan1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-    
-            android:background="@drawable/blue_cricle"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true" />
+
+             <ImageView
+                 android:id="@+id/ivDelete"
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:layout_alignParentRight="true"
+                android:layout_marginTop="5dp"
+                 android:background="@drawable/delete_note" />
+
+
+
+               <ImageView
+                   android:id="@+id/ivChangelag"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:layout_alignParentTop="true"
+                   android:layout_marginLeft="34dp"
+                     android:layout_marginTop="5dp"
+                   android:layout_toRightOf="@+id/ivShare"
+                   android:background="@drawable/lag_note" />
+
+               <ImageView
+                   android:id="@+id/ivScan"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:layout_marginTop="5dp"
+                   android:layout_centerHorizontal="true"
+                   android:background="@drawable/scan_note" />
+
+               <ImageView
+                   android:id="@+id/ivInsertImage"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                   android:layout_marginRight="55dp"
+                   android:layout_toLeftOf="@+id/ivDelete"
+                   android:background="@drawable/image_note" />
+
             </RelativeLayout>
 
             <View
@@ -194,5 +228,29 @@
 
             
       </LinearLayout>
+      
+    <!--  
+       <LinearLayout
+        android:id="@+id/layout_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical"
+        android:paddingBottom="5dp"
+        android:paddingTop="5dp" >
+
+        <com.hanvon.sulupen.ui.view.MyGridView
+            android:id="@+id/gridview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:horizontalSpacing="3dp"
+            android:numColumns="4"
+            android:scrollbars="none"
+            android:verticalSpacing="5dp" >
+        </com.hanvon.sulupen.ui.view.MyGridView>
+        </LinearLayout>
+        -->
 
 </RelativeLayout>

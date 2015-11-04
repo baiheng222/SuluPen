@@ -1,0 +1,438 @@
+package com.hanvon.sulupen.datas;
+
+import java.util.List;
+
+import android.app.ActionBar.LayoutParams;
+import android.app.Dialog;
+import android.app.Service;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnDismissListener;
+import android.graphics.drawable.GradientDrawable;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemLongClickListener;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.PopupWindow;
+import android.widget.TextView;
+import com.hanvon.inputmethod.adapter.TopicLableListAdapter;
+import com.hanvon.inputmethod.adapter.TopicListAdapter;
+
+//import com.hanvon.inputmethod.db.TopicAccess;
+//import com.hanvon.inputmethod.db.bean.TopicBean;
+i//mport com.hanvon.inputmethod.db.dao.TopicDao;
+import com.hanvon.inputmethod.helper.EnvironmentHelper;
+import com.hanvon.inputmethod.pinyin.R;
+import com.hanvon.inputmethod.ui.view.HorizontalListView;
+import com.hanvon.inputmethod.utils.LogUtil;
+import com.hanvon.inputmethod.utils.UiUtil;
+
+/**
+ * @desc 主题对话框类
+ * @author  PengWenCai
+ * @time 2015-6-25 上午11:27:46
+ * @version
+ */
+public class TopicDialog {
+	private PopupWindow popupWindow;
+	private Dialog dialog;
+	private List<TopicBean> topicList;
+	private ListView lv;
+	private InputMethodManager imm;
+	private EditText etFolderName;
+	private TopicListAdapter topicListAdapter;
+	private TopicDao topicDao;
+	private HorizontalListView hlvTopicColors;
+	private TopicLableListAdapter topicLableAdapter;
+	private int choosedWhich = -1;
+	private Button bnCancel, bnConfirm;
+	private ImageView ivTopicColor, ivDialogOff;
+	private TextView tvDlgTitle;
+	private int modeDlg = -1;
+	private int curLongClickPos = -1;
+	private Context context;
+	private OnTopicSelectedListener topicListener;
+
+	public TopicDialog(Context context, List<TopicBean> topicList) {
+		this.context = context;
+		this.topicList = topicList;
+		initData(context);
+		initPopWinow();
+		initCreateTopicDlg();
+	}
+
+	/**
+	 * 初始化
+	 * 
+	 * @param context
+	 */
+	private void initData(Context context) {
+		imm = (InputMethodManager) context
+				.getSystemService(Context.INPUT_METHOD_SERVICE);
+		topicLableAdapter = new TopicLableListAdapter(context);
+		topicListAdapter = new TopicListAdapter(context, topicList);
+	}
+
+	/**
+	 * 主题选择列表框
+	 */
+	private void initPopWinow() {
+		LogUtil.i("");
+		View view = null;
+
+		if (popupWindow == null) {
+			LayoutInflater inflater = (LayoutInflater) context
+					.getSystemService(Service.LAYOUT_INFLATER_SERVICE);
+			view = inflater.inflate(R.layout.pop_list, null);
+			lv = (ListView) view.findViewById(R.id.lvTopicList);
+			View footerView = inflater.inflate(R.layout.pop_list_footer, null);
+
+			lv.addFooterView(footerView);
+			/**
+			 * 新建主题
+			 */
+			footerView.setOnClickListener(new View.OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					int topicCount = topicList.size();
+					LogUtil.e("size:" + topicCount);
+					if (topicCount >= 11) {
+						UiUtil.showToast(context, "您最多能拥有十个主题分类");
+					} else {
+						modeDlg = 1;
+						tvDlgTitle.setText(R.string.topic_create);
+						bnCancel.setText(R.string.cancel);
+						bnConfirm.setText(R.string.create);
+						for (int i = 1; i < topicList.size(); i++) {
+							int colorId = topicList.get(i).getTopicColor();
+							topicLableAdapter.setChoosedId(colorId);
+						}
+						//topicLableAdapter.notifyDataSetChanged();
+						setTopicColor(topicLableAdapter
+								.getOneUnchoosedColorId());
+						dialog.show();
+						topicLableAdapter.notifyDataSetChanged();
+						imm.showSoftInput(etFolderName,
+								InputMethodManager.SHOW_FORCED);
+					}
+
+				}
+			});
+			/**
+			 * 主题选择操作
+			 */
+			lv.setOnItemClickListener(new OnItemClickListener() {
+
+				@Override
+				public void onItemClick(AdapterView<?> parent, View view,
+						int position, long id) {
+					if((position==0)&&("请选择".equals(topicList.get(0).getTopicName()))){
+						
+					}else{
+						lv.setItemChecked(position, true);
+						lv.setSelection(position);
+						popupWindow.dismiss();
+						etFolderName.setText("");
+						//
+						if (topicListener != null) {
+							topicListener.topicItemSelected(position);
+						}
+					}
+				}
+			});
+			/**
+			 * 修改或删除主题操作
+			 */
+			lv.setOnItemLongClickListener(new OnItemLongClickListener() {
+
+				@Override
+				public boolean onItemLongClick(AdapterView<?> parent,
+						View view, int position, long id) {
+					if (position != 0) {
+						modeDlg = 2;
+						tvDlgTitle.setText(R.string.topic_title_edit);
+						bnCancel.setText(R.string.topic_bn_delete);
+						bnConfirm.setText(R.string.topic_bn_save);
+						GradientDrawable shape = (GradientDrawable) ivTopicColor
+								.getBackground();
+						int cId = topicList.get(position).getTopicColor();
+						int color = topicLableAdapter.getLablesList().get(cId)
+								.getColor();
+						shape.setColor(color);
+						String name = topicList.get(position).getTopicName();
+						etFolderName.setText(name);
+						etFolderName.setSelection(name.length());
+						for (int i = 1; i < topicList.size(); i++) {
+							int colorId = topicList.get(i).getTopicColor();
+							topicLableAdapter.setChoosedId(colorId);
+						}						
+						curLongClickPos = position;
+						topicLableAdapter.setCurrentChoosedPosition(topicList.get(curLongClickPos).getTopicColor());
+						choosedWhich = topicList.get(curLongClickPos).getTopicColor();
+						dialog.show();
+						topicLableAdapter.notifyDataSetChanged();
+					}
+					return true;
+				}
+			});
+
+			lv.setAdapter(topicListAdapter);
+			lv.setSelection(0);
+			lv.setItemChecked(0, true);
+			popupWindow = new PopupWindow(view);
+
+		}
+		popupWindow.setAnimationStyle(R.style.PopupWindowAnimation);
+		popupWindow.setHeight(LayoutParams.WRAP_CONTENT);
+		popupWindow.setWidth(((WindowManager)context.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getWidth()/3);
+		popupWindow.setBackgroundDrawable(context.getResources().getDrawable(
+				R.drawable.bg));
+		popupWindow.setOutsideTouchable(true);
+		popupWindow.setFocusable(true);
+		popupWindow.update();
+
+	}
+
+	/**
+	 * 显示对话框
+	 */
+	private void initCreateTopicDlg() {
+		if (dialog == null) {
+			dialog = new Dialog(context, R.style.NetDiskDialogThemes);
+		}
+		View dlgView = LayoutInflater.from(context).inflate(
+				R.layout.dialog_new_topic_layout, null);
+		dialog.setContentView(dlgView);
+		dialog.getWindow().setSoftInputMode(
+				WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE
+						| WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+		bnCancel = (Button) dlgView.findViewById(R.id.alertdialog_btn_cancel);
+		bnConfirm = (Button) dlgView.findViewById(R.id.alertdialog_btn_confirm);
+		ivDialogOff = (ImageView) dlgView.findViewById(R.id.iv_dialog_off);
+		tvDlgTitle = (TextView) dlgView
+				.findViewById(R.id.txt_confirmdialog_title);
+		ivTopicColor = (ImageView) dlgView.findViewById(R.id.ivTopicColor);
+		hlvTopicColors = (HorizontalListView) dlgView
+				.findViewById(R.id.hlvTopicColorsChoose);
+		etFolderName = (EditText) dlgView.findViewById(R.id.etTopicName);
+		etFolderName.addTextChangedListener(new TextWatcher() {
+			
+			@Override
+			public void onTextChanged(CharSequence s, int start, int before, int count) {
+			
+			}
+			
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count,
+					int after) {
+				
+			}
+			
+			@Override
+			public void afterTextChanged(Editable s) {
+				if(s.length()>5){
+					  int pos = s.length() - 1;
+					  s.delete(pos,pos+1);
+					  UiUtil.showToast(context, "主题长度不能大于5");
+					}				
+			}
+		});
+		//
+		hlvTopicColors.setSelection(0);
+		hlvTopicColors.setAdapter(topicLableAdapter);
+		dialog.setOnDismissListener(new OnDismissListener() {
+
+			@Override
+			public void onDismiss(DialogInterface arg0) {
+				topicLableAdapter.reSetStatus();
+
+			}
+		});
+//		hlvTopicColors.setOnItemClickListener(new OnItemClickListener() {
+//
+//			@Override
+//			public void onItemClick(AdapterView<?> parent, View view,
+//					int position, long id) {
+//				if (!topicLableAdapter.isChoosed(position)) {
+//					choosedWhich = position;
+//					topicLableAdapter.setChoosedId(position);
+//					GradientDrawable shape = (GradientDrawable) ivTopicColor
+//							.getBackground();
+//					int color = topicLableAdapter.getLablesList().get(position)
+//							.getColor();
+//					shape.setColor(color);
+//				} else {
+//					UiUtil.showToast(context, "不可重复使用主题代表色");
+//				}
+//
+//			}
+//		});
+
+		bnCancel.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View arg0) {
+    
+				if (modeDlg == 2) {
+						
+					if (topicDao == null) {
+						topicDao = new TopicDao(context);
+					}
+					topicDao.delete(topicList.get(curLongClickPos));
+					
+					topicList.remove(curLongClickPos);
+			
+					topicListAdapter.notifyDataSetChanged();
+				}
+				
+				if (dialog != null)
+					dialog.dismiss();
+				imm.hideSoftInputFromWindow(etFolderName.getWindowToken(), 0); // 强制隐藏键盘
+		
+			}
+		});
+		bnConfirm.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View arg0) {
+				String name = etFolderName.getText().toString();
+				if (!name.equals("")) {
+					TopicBean topic = new TopicBean();
+				
+					topic.setTopicName(name);
+					topic.setTopicColor(choosedWhich);
+					if (modeDlg == 1) {
+						topic.setTopicId(EnvironmentHelper.generateUUID()
+								.toString());
+						topicList.add(topic);
+						addTopicToDb(topic);
+					} else if (modeDlg == 2) {
+						TopicBean topic2 = topicList.get(curLongClickPos);
+						topic2.setTopicName(name);
+						if (choosedWhich != -1) {
+							topic2.setTopicColor(choosedWhich);
+						}
+						if (topicDao == null) {
+							topicDao = new TopicDao(context);
+						}
+						topicDao.update(topic2);
+
+					}
+
+					topicListAdapter.notifyDataSetChanged();
+					dialog.dismiss();
+					imm.hideSoftInputFromWindow(etFolderName.getWindowToken(),
+							0); // 强制隐藏键盘
+				} else {
+					UiUtil.showToast(context, "主题名不能为空!");
+				}
+
+			}
+		});
+		ivDialogOff.setOnClickListener(new OnClickListener(){
+			@Override
+			public void onClick(View arg0) {
+				dialog.dismiss();
+				imm.hideSoftInputFromWindow(etFolderName.getWindowToken(), 0); // 强制隐藏键盘
+				
+			}
+			
+		});
+
+	}
+
+	/**
+	 * 显示
+	 * 
+	 * @param view
+	 */
+	public void showTopicDlg(View view) {
+		if (popupWindow != null && popupWindow.isShowing()) {
+			popupWindow.dismiss();
+		} else {
+			popupWindow.showAsDropDown(view);
+		}
+	}
+
+	public void setInitSelected(int position) {
+		lv.setSelection(position);
+		lv.setItemChecked(position, true);
+	}
+
+	public List<TopicBean> getTopicList() {
+		return topicList;
+	}
+
+	/**
+	 * 设置一个默认主题颜色Id
+	 * 
+	 * @param OneOfunChoosedColor
+	 */
+	private void setTopicColor(int OneOfunChoosedColorId) {
+		if (OneOfunChoosedColorId != -1) {
+			GradientDrawable shape = (GradientDrawable) ivTopicColor
+					.getBackground();
+			shape.setColor(topicLableAdapter.getLablesList()
+					.get(OneOfunChoosedColorId).getColor());
+			choosedWhich = OneOfunChoosedColorId;
+		}
+
+	}
+
+	public int getColorById(int topicColorId) {
+		return topicLableAdapter.getLablesList().get(topicColorId).getColor();
+	}
+
+	/**
+	 * 保存主题
+	 * 
+	 * @param topic
+	 */
+	private void addTopicToDb(TopicBean topic) {
+		if (topicDao == null) {
+			topicDao = new TopicDao(context);
+		}
+		topicDao.add(topic);
+	}
+
+	/**
+	 * 删除主题
+	 * 
+	 * @param topicId
+	 */
+	private void deleteTopic(String topicId) {
+		LogUtil.i("");
+		
+		if (topicDao == null) {
+			topicDao = new TopicDao(context);
+		}
+		TopicBean mTopicBean=new TopicBean();
+		mTopicBean.setTopicId(topicId);
+		topicDao.delete(mTopicBean);
+		//更新记录表 主题id
+//		new ScanRecordAccess(context).ModifyTopicId(topicId);
+		//刷新主界面listview列表
+//		updateData();
+
+	}
+
+	public void setOnTopicSelectedListener(OnTopicSelectedListener listener) {
+		topicListener = listener;
+	}
+
+	public interface OnTopicSelectedListener {
+		/**
+		 * 主题选择操作
+		 */
+		public void topicItemSelected(int postion);
+	}
+}

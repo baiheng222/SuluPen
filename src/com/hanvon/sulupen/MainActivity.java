@@ -60,6 +60,7 @@ public class MainActivity extends Activity implements OnClickListener, OnLongCli
     
     public final static int FLAG_EDIT = 1;
 	public final static int FLAG_CREATE = 2;
+	public final static int FLAG_CREATE_NOTE_WITH_DEFAULT_NOTEBOOK = 3;
 	
 	private NoteBookRecordDao mNoteBookRecordDao;
 	private List<NoteBookRecord> mNoteBookList;
@@ -71,6 +72,7 @@ public class MainActivity extends Activity implements OnClickListener, OnLongCli
 	
 	private Handler mHandler = new Handler() {
 		public void handleMessage(android.os.Message msg) {
+			LogUtil.i("INTO Main handlemessage-------------------");
 			switch (msg.what) {
 			case BluetoothMsgReceive.BT_CONNECTED:
 				mEpen.setBackgroundResource(R.drawable.epen_manager);
@@ -98,21 +100,22 @@ public class MainActivity extends Activity implements OnClickListener, OnLongCli
     @Override
 	protected void onStart() {
 		super.onStart();
-		 IntentFilter mFilter = new IntentFilter(
-					BluetoothIntenAction.ACTION_EPEN_BATTERY_CHANGE);
+		 IntentFilter mFilter = new IntentFilter(BluetoothIntenAction.ACTION_EPEN_BATTERY_CHANGE);
 			mFilter.addAction(BluetoothIntenAction.ACTION_EPEN_BT_CONNECTED);
 			mFilter.addAction(BluetoothIntenAction.ACTION_EPEN_BT_DISCONNECT);
 			this.registerReceiver(btMsgReceiver, mFilter);
-		//	if (BluetoothService.getServiceInstance().getBluetoothChatService()
-		//			.getState() == BluetoothChatService.STATE_CONNECTED) {
-		//		mEpen.setBackgroundResource(R.drawable.epen_manager);
-		//	} else {
-		//		mEpen.setBackgroundResource(R.drawable.epen_manager_nor);
-		//	}
+			//if (BluetoothService.getServiceInstance() != null){
+			//    if (BluetoothService.getServiceInstance().getBluetoothChatService()
+			//		    .getState() == BluetoothChatService.STATE_CONNECTED) {
+			//	    mEpen.setBackgroundResource(R.drawable.epen_manager);
+			//    } else {
+			//	    mEpen.setBackgroundResource(R.drawable.epen_manager_nor);
+			//    }
 			
-		//	if (!isConnected()){
-		//	    BluetoothCheck();
-		//	}
+			 //   if (!isConnected()){
+			 //       BluetoothCheck();
+			 //   }
+			//}
 	}
     @TargetApi(Build.VERSION_CODES.ECLAIR) @SuppressLint("NewApi") public void BluetoothCheck(){
 		BluetoothAdapter adapter = BluetoothAdapter.getDefaultAdapter();
@@ -171,6 +174,23 @@ public class MainActivity extends Activity implements OnClickListener, OnLongCli
         mEpen.setOnClickListener(this);
         mEpen.setOnLongClickListener(this);
         
+        mNoteBookAdapter = new NoteBookListAdapter(this, mNoteBookList);
+        mBooksList.setAdapter(mNoteBookAdapter);
+        mBooksList.setOnItemClickListener(new OnItemClickListener()
+        {
+            @Override
+            public void onItemClick(AdapterView <?> parent, View view, int position, long id)
+            {
+                Log.d(TAG, "item " + position + " clicked");
+                NoteBookRecord noteBook = mNoteBookList.get(position);
+                Intent newIntent = new Intent(MainActivity.this, NoteBookListActivity.class);
+                //newIntent.setFlags(FLAG_CREATE);
+                newIntent.putExtra("NoteBook", noteBook);
+                //newIntent.putExtra("NoteBookName", noteBook.getNoteBookName());
+                startActivity(newIntent);
+            }
+        });
+        
         if (mNoteBookList.size() <= 0)
         {
         	mBooksList.setVisibility(View.GONE);
@@ -184,24 +204,7 @@ public class MainActivity extends Activity implements OnClickListener, OnLongCli
         	mEmptyNoteBook.setVisibility(View.GONE);
         	mBooksList.setVisibility(View.VISIBLE);
         	mEditNoteBook.setVisibility(View.VISIBLE);
-        	mSearchNoteBook.setVisibility(View.VISIBLE);
-        	
-        	mNoteBookAdapter = new NoteBookListAdapter(this, mNoteBookList);
-        	mBooksList.setAdapter(mNoteBookAdapter);
-        	mBooksList.setOnItemClickListener(new OnItemClickListener()
-        	{
-        	    @Override
-        	    public void onItemClick(AdapterView <?> parent, View view, int position, long id)
-        	    {
-        	        Log.d(TAG, "item " + position + " clicked");
-        	        NoteBookRecord noteBook = mNoteBookList.get(position);
-        	        Intent newIntent = new Intent(MainActivity.this, NoteBookListActivity.class);
-                    //newIntent.setFlags(FLAG_CREATE);
-        	        newIntent.putExtra("NoteBook", noteBook);
-                    //newIntent.putExtra("NoteBookName", noteBook.getNoteBookName());
-                    startActivity(newIntent);
-        	    }
-        	});
+        	mSearchNoteBook.setVisibility(View.VISIBLE);     	
         }
 
         btMsgReceiver = new BluetoothMsgReceive(mHandler);
@@ -230,8 +233,8 @@ public class MainActivity extends Activity implements OnClickListener, OnLongCli
             	NoteBookRecord defaultNoteBook = new NoteBookRecord();
             	defaultNoteBook.setNoteBookId(0);
             	defaultNoteBook.setNoteBookName("笔记本");
-                Intent newNoteIntent = new Intent(this, NoteDetailActivity.class);
-                newNoteIntent.setFlags(FLAG_CREATE);
+                Intent newNoteIntent = new Intent(this, ScanNoteActivity.class);
+                newNoteIntent.setFlags(FLAG_CREATE_NOTE_WITH_DEFAULT_NOTEBOOK);
                 newNoteIntent.putExtra("NoteBook", defaultNoteBook);
                 startActivityForResult(newNoteIntent, 1);
                 break;
@@ -274,9 +277,27 @@ public class MainActivity extends Activity implements OnClickListener, OnLongCli
 		super.onResume();
 		Log.d(TAG, "on resume here");
 		mNoteBookList = mNoteBookRecordDao.getAllNoteBooks();
+		Log.d(TAG, "note book size is " + mNoteBookList.size());
 		mNoteBookAdapter = new NoteBookListAdapter(this, mNoteBookList);
 		mBooksList.setAdapter(mNoteBookAdapter);
     	
+		
+		if (mNoteBookList.size() <= 0)
+        {
+            mBooksList.setVisibility(View.GONE);
+            mEmptyNoteBook.setVisibility(View.VISIBLE);
+            mEditNoteBook.setVisibility(View.GONE);
+            mSearchNoteBook.setVisibility(View.GONE);
+            
+        }
+        else
+        {
+            mEmptyNoteBook.setVisibility(View.GONE);
+            mBooksList.setVisibility(View.VISIBLE);
+            mEditNoteBook.setVisibility(View.VISIBLE);
+            mSearchNoteBook.setVisibility(View.VISIBLE);        
+        }
+		
     	mNoteBookAdapter.notifyDataSetChanged();
     }	
     

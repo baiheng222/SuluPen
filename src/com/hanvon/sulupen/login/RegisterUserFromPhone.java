@@ -13,6 +13,7 @@ import android.content.SharedPreferences.Editor;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.View.OnClickListener;
@@ -22,7 +23,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.hanvon.sulupen.application.HanvonApplication;
-import com.hanvon.sulupen.login.RegisterUserGetCodePhone.RequestTask;
 import com.hanvon.sulupen.net.JsonData;
 import com.hanvon.sulupen.net.RequestResult;
 import com.hanvon.sulupen.net.RequestServerData;
@@ -56,7 +56,7 @@ public class RegisterUserFromPhone extends Activity implements OnClickListener{
 		CEauthCode = (ClearEditText)findViewById(R.id.regist_user_getcode);
 		BTensure = (Button)findViewById(R.id.rgst_getcode_ensure);
 	//	BTtime = (Button)findViewById(R.id.rgst_getcode_time);
-        IVback = (ImageView)findViewById(R.id.rgst_user_secode__back);
+        IVback = (ImageView)findViewById(R.id.rgst_back);
 		
         CEauthCode.setOnClickListener(this);
         BTensure.setOnClickListener(this);
@@ -65,7 +65,7 @@ public class RegisterUserFromPhone extends Activity implements OnClickListener{
         
         Intent intent = getIntent();
 		if (intent != null){
-			strPassword = intent.getStringExtra("strPassword");
+			strPassword = intent.getStringExtra("password");
 			strPhoneNumber = intent.getStringExtra("phone");
 		}
 		TVregistPhone.setText(strPhoneNumber);
@@ -88,7 +88,9 @@ public class RegisterUserFromPhone extends Activity implements OnClickListener{
 			    break;
 		  //  case R.id.rgst_getcode_time:
 			//    break;
-		    case R.id.rgst_user_secode__back:
+		    case R.id.rgst_back:
+		    	startActivity(new Intent(RegisterUserFromPhone.this, LoginActivity.class));
+		    	this.finish();
 			    break;
 		    default:
 			    break;
@@ -192,6 +194,7 @@ public class RegisterUserFromPhone extends Activity implements OnClickListener{
 	}
 
 	public RequestResult  registerApi(){
+		LogUtil.i("user:"+strPhoneNumber+"    pwd:"+strPassword);
     	JSuserInfoJson = new JSONObject();
   	    try {
   	    	JSuserInfoJson.put("uid",HanvonApplication.AppUid);
@@ -209,5 +212,16 @@ public class RegisterUserFromPhone extends Activity implements OnClickListener{
   	    result=RequestServerData.userRegister(JSuserInfoJson);
   	    return result;
     }
+	
+	@Override  
+	public boolean onKeyDown(int keyCode, KeyEvent event)
+	{
+	    if (keyCode == KeyEvent.KEYCODE_BACK )
+	    {
+	    	startActivity(new Intent(RegisterUserFromPhone.this, LoginActivity.class));
+	    	this.finish();
+	    }
+	    return false; 
+	}
 
 }

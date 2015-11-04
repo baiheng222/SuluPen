@@ -55,6 +55,7 @@ public class BluetoothMsgReceive extends BroadcastReceiver{
 			Message msg = handler.obtainMessage(CLOSETIME_CHANGE, result, 0);
 			handler.sendMessage(msg);
 		} else if (action.equals(BluetoothIntenAction.ACTION_EPEN_RECEIVEIMG_CHANGE)) {
+			LogUtil.i("------------------------------------------------");
 			int result = intent.getIntExtra("result", 0);
 			Message msg = handler.obtainMessage(RECEIVEIMG_CHANGE, result, 0);
 			handler.sendMessage(msg);

@@ -10,6 +10,7 @@
 
     <dimen name="title_bar_height">30dip</dimen>
     <dimen name="bottom_bar_height">35dip</dimen>
+    
 
 
 </resources>

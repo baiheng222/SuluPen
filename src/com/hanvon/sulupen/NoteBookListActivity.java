@@ -103,23 +103,24 @@ public class NoteBookListActivity extends Activity implements OnClickListener
 		 mRightBtn.setOnClickListener(this);
 		 mNewNote.setOnClickListener(this);
 		 
+		 setNoteListAdapter();
+         
+         mLvNoteList.setOnItemClickListener(new OnItemClickListener()
+         {
+             @Override
+             public void onItemClick(AdapterView<?> arg0, View view, int position, long id)
+             {
+                 Log.d(TAG, "item " +  position + " clicked");
+                 startNoteDetailActivity(position);
+             }
+         });
+		 
 		 if (mNoteRecordList.size() > 0)
 		 {
 		     mRightBtn.setVisibility(View.VISIBLE);
 		     mLvNoteList.setVisibility(View.VISIBLE);
 		     mEmptyNoteTip.setVisibility(View.GONE);
-		     setNoteListAdapter();
 		     
-		     mLvNoteList.setOnItemClickListener(new OnItemClickListener()
-		     {
-		    	 @Override
-		    	 public void onItemClick(AdapterView<?> arg0, View view, int position, long id)
-		    	 {
-		    		 Log.d(TAG, "item " +  position + " clicked");
-		    		 startNoteDetailActivity(position);
-		    	 }
-		     }
-		     );
 		     
 		 }
 		 else
@@ -133,9 +134,11 @@ public class NoteBookListActivity extends Activity implements OnClickListener
 	 
 	 public void startNoteDetailActivity(int pos)
 	 {
-		 Intent intent = new Intent(this, NoteDetailActivity.class);
+		 Intent intent = new Intent(this, ScanNoteActivity.class);
 		 intent.setFlags(FLAG_EDIT);
-		 intent.putExtra("NoteRecord", mNoteRecordList.get(pos));
+		 //intent.putExtra("Note", mNoteRecordList.get(pos));
+		 Log.d(TAG, "note is : " +  mNoteRecordList.get(pos).toString());
+		 intent.putExtra("NoteRecordId", mNoteRecordList.get(pos).getId());
 		 startActivity(intent);
 	 }
 	 
@@ -157,7 +160,7 @@ public class NoteBookListActivity extends Activity implements OnClickListener
 		 	break;
                      
             case R.id.iv_newnote:
-            	Intent newNoteIntent = new Intent(this, NoteDetailActivity.class);
+            	Intent newNoteIntent = new Intent(this, ScanNoteActivity.class);
                 newNoteIntent.setFlags(FLAG_CREATE);
                 newNoteIntent.putExtra("NoteBook", mPassedNoteBook);
                 startActivity(newNoteIntent);
@@ -170,6 +173,20 @@ public class NoteBookListActivity extends Activity implements OnClickListener
 	 {
 	     super.onResume();
 	     setNoteListAdapter();
+	     if (mNoteRecordList.size() > 0)
+         {
+             mRightBtn.setVisibility(View.VISIBLE);
+             mLvNoteList.setVisibility(View.VISIBLE);
+             mEmptyNoteTip.setVisibility(View.GONE);
+             
+             
+         }
+         else
+         {
+             mRightBtn.setVisibility(View.GONE);
+             mLvNoteList.setVisibility(View.GONE);
+             mEmptyNoteTip.setVisibility(View.VISIBLE);
+         }
 	     mNoteListAdapter.notifyDataSetChanged();
 	 }
 	 
