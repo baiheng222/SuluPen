@@ -5,6 +5,7 @@
     <string name="action_settings">设置</string>
     <string name="title_notebook">笔记本</string>
     <string name="title_new_notebook">新建笔记本</string>
+    <string name="title_settings">设置</string>
     <string name="edit_new">新建</string>
     <string name="edit_edit">编辑</string>
     <string name="edit_search">搜索</string>
@@ -21,5 +22,13 @@
     <string name="note_tag">笔记本</string>
     <string name="note_title_hint">输入标题</string>
     <string name="note_content_hint">总要留下点什么吧！</string>
+    <string name="change_notebook">更换笔记本</string>
+    <string name="setting_item_inputmethod">速记输入法设置</string>
+	<string name="setting_item_upgrade">自动升级</string>
+	<string name="setting_item_clear_buffer">清空缓存</string>
+	<string name="setting_item_help_manual">帮助手册</string>
+	<string name="setting_item_feedback">意见反馈</string>
+	<string name="setting_item_about">关于我们</string>
+	<string name="setting_item_logout">退出登录</string>
     
 </resources>

@@ -22,7 +22,7 @@ public class ChooseNoteActivity extends Activity implements OnClickListener
 {
 	private final String TAG = "ChooseNoteActivity";
 	
-	private TextView mBack;
+	private ImageView mBack;
 	private TextView mTitle;
 	private TextView mCancelBtn;
 	private ListView mNotesList;
@@ -51,7 +51,7 @@ public class ChooseNoteActivity extends Activity implements OnClickListener
 	
 	private void initView()
 	{
-		mBack = (TextView) findViewById(R.id.tv_backbtn);
+		mBack = (ImageView) findViewById(R.id.tv_backbtn);
 		mTitle = (TextView) findViewById(R.id.tv_title_choose);
 		mCancelBtn = (TextView) findViewById(R.id.tv_cancel_btn);
 		

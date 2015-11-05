@@ -62,6 +62,9 @@ public class MainActivity extends Activity implements OnClickListener, OnLongCli
 
     SlidingMenu leftMenu;
     private ImageView mIvLogin;
+    private ImageView mIvSetting;
+    private ImageView mIvCloudSync;
+    private ImageView mIvCount;
     
     
     
@@ -183,7 +186,16 @@ public class MainActivity extends Activity implements OnClickListener, OnLongCli
     	
     	mIvLogin = (ImageView) findViewById(R.id.iv_login_icon);
     	mIvLogin.setOnClickListener(this);
-
+    	
+    	mIvSetting = (ImageView) findViewById(R.id.iv_setting_icon);
+    	mIvSetting.setOnClickListener(this);
+    	
+    	mIvCount = (ImageView) findViewById(R.id.iv_count_icon);
+    	mIvCount.setOnClickListener(this);
+    	 
+    	mIvCloudSync = (ImageView) findViewById(R.id.iv_cloud_icon);
+    	mIvCloudSync.setOnClickListener(this);
+    	
     }
 
     public void initDatas()
@@ -301,6 +313,19 @@ public class MainActivity extends Activity implements OnClickListener, OnLongCli
             	Intent newIntent1 = new Intent(this, LoginActivity.class);
     		    startActivity(newIntent1);
             break;
+            
+            case R.id.iv_setting_icon:
+                Intent settingItent = new Intent(this, SettingActivity.class);
+                startActivity(settingItent);
+            break;
+            
+            case R.id.iv_count_icon:
+                
+            break;
+            
+            case R.id.iv_cloud_icon:
+                
+            break;    
         }
     }
     
