@@ -1,6 +1,8 @@
 package com.hanvon.sulupen;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -9,6 +11,8 @@ import android.view.Window;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.hanvon.sulupen.db.dao.NoteRecordDao;
 
 public class SettingActivity extends Activity implements OnClickListener
 {
@@ -82,7 +86,28 @@ public class SettingActivity extends Activity implements OnClickListener
             break;
                 
             case R.id.rl_setting_clear:
-                    
+                AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+                dialog.setMessage("Delete all records?");
+                dialog.setNegativeButton(R.string.button_cancel, new DialogInterface.OnClickListener() 
+                {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) 
+                    {
+
+                    }
+                });
+                        
+                dialog.setPositiveButton(R.string.ensure, new DialogInterface.OnClickListener() 
+                {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) 
+                    {
+                        NoteRecordDao noteDao = new NoteRecordDao(SettingActivity.this);
+                        noteDao.deleteRecordsDB();
+                    }
+                });
+                
+                dialog.show();     
             break;
                 
             case R.id.tv_setting_logout:
