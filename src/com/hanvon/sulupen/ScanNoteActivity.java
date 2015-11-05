@@ -674,10 +674,24 @@ public class ScanNoteActivity extends Activity implements OnClickListener{
 	public void appendText(String str) {
 		LogUtil.i("AppendText:611--"+str);
 		EditText curEditText = (EditText) getCurrentFocus();
+		
 		int index = curEditText.getSelectionStart();
 		Editable edit = curEditText.getEditableText();
 //		int index = etScanContent.getSelectionStart();
 //		Editable edit = etScanContent.getEditableText();
+		 
+		if(str.length()>=1)
+		{
+			int iLast = str.length()-1;
+
+		    //如果是英文字母，需要在末尾追加空格
+		    if((str.charAt(iLast)>='a' && str.charAt(iLast)<='z') || (str.charAt(iLast)>='A' && str.charAt(iLast)<='Z'))
+		    {
+		        str += " ";
+		    }
+		}
+
+		
 		if ("\b".equals(str)) {
 			if (index == 0) {
 				return;
