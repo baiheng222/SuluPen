@@ -1,0 +1,48 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/roundcornerbottom_selector"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:maxHeight="50dp">
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="6.0dip"
+        android:layout_marginLeft="15.0dip"
+        android:layout_marginTop="6.0dip"
+        android:layout_weight="1.0" >
+	<LinearLayout
+		android:orientation="vertical"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content">
+		<TextView
+		    android:id="@android:id/title"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:ellipsize="marquee"
+		    android:fadingEdge="horizontal"
+		    android:singleLine="true"
+		    android:textColor="#ff000000"
+		    android:textSize="18.0sp" />
+		<TextView
+		    android:id="@android:id/summary"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:ellipsize="marquee"
+		    android:fadingEdge="horizontal"
+		    android:singleLine="true"
+		    android:textColor="#ff000000"
+		    android:textSize="12.0sp" />
+	</LinearLayout>
+        
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@android:id/widget_frame"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:gravity="center_vertical"
+        android:orientation="vertical" />
+
+</LinearLayout>

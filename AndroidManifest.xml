@@ -109,7 +109,30 @@
             android:value="fFpE1YWsXt0Ic4jVAkxyvBN7" />
          <!--   android:value="MlA6faMdjlFIkfgnPGFhAB3W" /> -->
            
-          
+        <!-- inputmethod -->
+        <service
+            android:name="com.hanvon.sulupen.pinyin.PinyinDecoderService"
+            android:exported="true" >
+            <intent-filter>
+                <action android:name="com.hanvon.sulupen.pinyin.Decoder_Service" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </service>
+        <service
+            android:name=".PinyinIME"
+            android:label="@string/ime_name"
+            android:permission="android.permission.BIND_INPUT_METHOD" >
+            <intent-filter>
+                <action android:name="android.view.InputMethod" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.view.im"
+                android:resource="@xml/method" />
+        </service>
+
+        
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTask"

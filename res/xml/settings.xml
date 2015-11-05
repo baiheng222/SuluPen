@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+     Copyright (C) 2009 The Android Open Source Project
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    android:title="@string/setting"
+     >
+     <!--  
+      <PreferenceCategory
+        android:layout="@layout/preference_layout_null"
+        android:title="@string/title_epen_setting"
+        android:key="location_category"
+        >
+         <Preference
+        android:layout="@layout/preference_top_layout"
+        android:key="@string/setting_clean_data_key"
+        android:persistent="false"
+        android:title="@string/setting_clean_data" />
+        <ListPreference
+        android:layout="@layout/preference_bottom_layout"
+        android:key="@string/setting_func_keycode_key"
+        android:summary="@string/setting_func_list_default_value"
+        android:entries="@array/func_keycode_list_keys"
+        android:entryValues="@array/func_keycode_list_values"
+        android:dialogTitle="@string/setting_func_dlg_title"
+        android:negativeButtonText="@string/button_cancel"
+        android:defaultValue="@string/setting_func_list_default_value"
+        android:title="@string/setting_func_keycode" />
+        </PreferenceCategory>
+        -->
+      <PreferenceCategory
+        android:layout="@layout/preference_layout_null"
+        android:title="@string/title_input_setting"
+        android:key="location_category"
+        >
+    <CheckBoxPreference
+        android:layout="@layout/preference_checkbox_top_layout"
+        android:widgetLayout="@layout/setting_checkbox"
+        android:key="@string/setting_sound_key"
+        android:persistent="true"
+        android:summaryOff="@string/setting_disabled"
+        android:summaryOn="@string/setting_enabled"
+        android:title="@string/setting_sound_key_title" />
+   
+    <CheckBoxPreference
+         android:layout="@layout/preference_checkbox_center_layout"
+         android:widgetLayout="@layout/setting_checkbox"
+        android:key="@string/setting_vibrate_key"
+        android:persistent="false"
+        android:summaryOff="@string/setting_disabled"
+        android:summaryOn="@string/setting_enabled"
+        android:title="@string/setting_vibrate_title" />
+    <CheckBoxPreference
+        android:layout="@layout/preference_checkbox_bottom_layout"
+        android:widgetLayout="@layout/setting_checkbox"
+        android:key="@string/setting_prediction_key"
+        android:persistent="true"
+        android:summaryOff="@string/setting_disabled"
+        android:summaryOn="@string/setting_enabled"
+        android:title="@string/setting_prediction_title" />
+    </PreferenceCategory>
+    
+     
+    <!-- Remove following entry to unbundle Google functionality -->
+    <!-- 
+    <PreferenceScreen
+        android:key="@string/setting_advanced_key"
+        android:summary="@string/setting_others_summary"
+        android:title="@string/setting_others" >
+        <intent android:action="com.android.inputmethod.pinyingoogleservice.SETTINGS" />
+    </PreferenceScreen>
+     <PreferenceCategory
+        android:layout="@layout/preference_layout_null"
+        android:title="@string/title_other_setting"
+        android:key="location_category"
+        >
+    <Preference
+        android:layout="@layout/preference_top_layout"
+        android:key="@string/setting_help_key"
+        android:persistent="false"
+        android:title="@string/setting_help_title" >
+     <intent
+            android:action="android.intent.action.MAIN"
+            android:targetPackage="com.hanvon.inputmethod.pinyin"
+            android:targetClass="com.hanvon.inputmethod.ui.HelpActivity" />
+    </Preference>
+    <Preference
+        android:layout="@layout/preference_center_layout"
+        android:key="@string/setting_feedback_key"
+        android:persistent="false"
+        android:title="@string/setting_feedback_title" >
+     <intent
+            android:action="android.intent.action.MAIN"
+            android:targetPackage="com.hanvon.inputmethod.pinyin"
+            android:targetClass="com.hanvon.inputmethod.ui.FeedbackActivity" />
+    </Preference>
+      <Preference
+        android:layout="@layout/preference_center_layout"
+        android:key="@string/setting_about_us_key"
+        android:persistent="false"
+        android:title="@string/setting_about_us_title" >
+     <intent
+            android:action="android.intent.action.MAIN"
+            android:targetPackage="com.hanvon.inputmethod.pinyin"
+            android:targetClass="com.hanvon.inputmethod.ui.AboutUsActivity" />
+    </Preference>
+   <Preference
+        android:layout="@layout/preference_bottom_layout"
+        android:key="@string/setting_version_key"
+        android:persistent="false"
+        android:title="@string/setting_version_title" />
+   </PreferenceCategory>
+   -->
+</PreferenceScreen>

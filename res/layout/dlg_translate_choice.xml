@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/voice_panel_bg"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="10dp"
+        android:paddingTop="5dp"
+        android:paddingRight="10dp"
+        android:paddingBottom="5dp"
+         >
+   <TextView 
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:text="@string/translate_switch"
+       android:layout_centerVertical="true"
+       android:textColor="@color/black"
+       android:textSize="22sp"/>
+        <!-- 去掉 CheckBox
+            android:id="@+id/cbx_translate_switch"
+            style="@style/Widget_Button_Checkbox"
+            android:layout_width="70dip"
+            android:layout_height="50dip"
+            android:layout_alignParentRight="true"
+             /> -->
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/layout_transType"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" 
+        android:paddingBottom="5dp">
+
+        <Button
+            android:id="@+id/bn_trans"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:padding="3dp"
+            android:text="翻译"
+            android:textSize="15sp"
+            android:visibility="gone"
+             />
+
+        <RadioGroup
+            android:id="@+id/rg_languageType"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@+id/bn_trans"
+            android:gravity="center_vertical"
+            android:orientation="horizontal" >
+
+            <RadioButton
+                android:id="@+id/rbn_originalLan"
+                style="@style/FounctionBar_RadioButton"
+                android:text="源语言:" />
+
+            <RadioButton
+                android:id="@+id/rbn_targetLan"
+                style="@style/FounctionBar_RadioButton"
+                android:text="目标语言:" />
+        </RadioGroup>
+    </RelativeLayout>
+
+    <GridView
+        android:id="@+id/gv_languageList"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:columnWidth="90dp"
+        android:descendantFocusability="blocksDescendants"
+        android:horizontalSpacing="5dp"
+        android:numColumns="4"
+        android:verticalSpacing="5dp" >
+    </GridView>
+
+</LinearLayout>

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
+    <string name="ime_settings_activity_name">汉王拼音输入法</string>
+    <string name="ime_name">汉王速记输入法</string>
     <string name="app_name">SuluPen</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
@@ -21,15 +22,15 @@
     <string name="msg_openingBT">蓝牙开启中...</string>
     <string name="title_openingBT">打开蓝牙</string>
     <string name="scanning">搜索中...</string>
-    <string name="msg_searching">查找设备中...</string>
+    <string name="msg_searching">亲，正在玩命寻找附近可用设备，请耐心等待哦！</string>
      <string name="none_found">亲，没有发现可连设备哦！</string>
     <string name="button_scan">再次扫描</string>
     <string name="button_cancel">取消</string>
      <string name="bnTryAgain">再试一次</string>
-     <string name="msg_fail">连接失败，请重新尝试！</string>
+     <string name="msg_fail">亲，木有连接成功，请重新尝试！</string>
      <string name="bn_reconnect">重新连接</string>
      <string name="bnSearchNewDevice">搜索新设备</string>
-     <string name="msg_wait_connect">连接中，请稍后...</string>
+     <string name="msg_wait_connect">亲，正在努力连接，请耐心等候哦！</string>
      <string name="msg_stop_connected">确定与速录笔断开连接吗？</string>
 
     <string name="button_save">保存</string>
@@ -118,4 +119,48 @@
     <string name="toggle_row_emailaddress">15</string>
     <string name="toggle_phone_sym">3</string>
       
+    
+    <string name="translate_switch">翻译模式</string>
+    <string name="auto">自动检测</string>
+    <string name="orignal_language">源语言:</string>
+    <string name="target_language">目标语言:</string>
+    <string name="translate_failed">翻译失败</string>
+    <string name="translate_connect_failed">网络连接失败，请检查网络</string>
+    
+
+    <!-- setting title -->
+    <string name="setting">设置</string>
+    <string name="setting_sound_key_title">按键声音</string>
+    <string name="setting_vibrate_title">按键震动</string>
+    <string name="setting_prediction_title">联想输入</string>
+    <string name="setting_switch_title">中英文切换</string>
+    <string name="setting_version_title">版本更新</string>
+    <string name="setting_feedback_title">意见反馈</string>
+    <string name="setting_help_title">帮助</string>
+    <string name="setting_about_us_title">关于我们</string>
+    <string name="setting_switch_shift_space_title">Shift-space</string>
+    
+        <!-- Setting -->
+    <string name="title_feedback">意见反馈</string>
+    <string name="title_help">帮助手册</string>
+    <string name="title_aboutUs">关于我们</string>
+    <string name="title_chooseFilies">选择文档</string>
+    <string name="title_device_detail">蓝牙速录笔设置</string>
+    <string name="title_other_setting">其他</string>
+    <string name="title_input_setting">输入相关</string>
+    <string name="title_epen_setting">速录笔相关</string>
+    <string name="title_start_hanvoninput">启用汉王输入法</string>
+    <string name="title_keyboard_setting">按键设置</string>
+    
+    <!-- settings related -->
+    <string name="setting_sound_key">setting_sound_key</string>
+    <string name="setting_vibrate_key">setting_vibrate_key</string>
+    <string name="setting_prediction_key">setting_prediction_key</string>
+    <string name="setting_switch_key">setting_switch_key</string>
+    <string name="setting_advanced_key">setting_advanced_key</string>
+    
+        <!-- epen setting summary -->
+    <string name="setting_enabled">开启</string>
+    <string name="setting_disabled">关闭</string>
+
 </resources>

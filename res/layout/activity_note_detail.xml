@@ -67,7 +67,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="2"
-                    android:drawableRight="@drawable/arrow_down_gray"
+                    android:drawableLeft="@drawable/notebook_label"
                     android:gravity="center_vertical|right"
                     android:paddingRight="10dp"
                     android:singleLine="true"

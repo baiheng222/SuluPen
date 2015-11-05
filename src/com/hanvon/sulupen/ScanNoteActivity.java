@@ -93,6 +93,8 @@ public class ScanNoteActivity extends Activity implements OnClickListener{
     private TextView tvScanContent;
     private TextView tvNoteTitle;
     
+    private TextView tvNewNote;
+    
     private HorizontalScrollView hsvLayoutScanImage;
     private ImageView ivScanBmp;
     
@@ -241,11 +243,12 @@ public class ScanNoteActivity extends Activity implements OnClickListener{
 		mInsertImag = (ImageView) findViewById(R.id.ivInsertImage);
 		mDeleteImage = (ImageView) findViewById(R.id.ivDelete);
 		
+		
 		hsvLayoutScanImage = (HorizontalScrollView) this
 				.findViewById(R.id.horScroll);
 		ivScanBmp = (ImageView) this.findViewById(R.id.ivScanImage);
 		
-	
+		tvNewNote = (TextView) this.findViewById(R.id.newNote);
 		etScanContent = (EditText) this.findViewById(R.id.etNoteContent);
 		etNoteTitle = (EditText) this.findViewById(R.id.etNoteTitle);
 		tvScanContent = (TextView) this.findViewById(R.id.tvNoteContent);
@@ -354,6 +357,7 @@ public class ScanNoteActivity extends Activity implements OnClickListener{
 			} 
 			else 
 			{
+				tvNewNote.setText("");
 			    int noteid = intent.getIntExtra("NoteRecordId", -1);
 			    Log.d(TAG, "get noteid: " + noteid);
 			    if (noteid != -1)
@@ -772,20 +776,26 @@ public class ScanNoteActivity extends Activity implements OnClickListener{
 	            
    */
 	            case R.id.ivChangelag:
-	            	//initData();
+	            	startChangeNoteBook();
 	            	break;
 	            	
 	    		case R.id.come_back:
 	    			saveNoteToDb();
+	    			finish();
 	    			break;
 	    			
 	    		case R.id.tvMyTopic:
-	    		    Log.d(TAG, "current notebook is " + mNoteBookRecord.toString());
-	    		    Intent changeIntent = new Intent(this, ChangNoteBookActivity.class);
-	    		    changeIntent.putExtra("NoteBook", mNoteBookRecord);
-	    		    startActivityForResult(changeIntent, RESULT_CHAGNE_NOTEBOOK);
+	    			startChangeNoteBook();
 	    		    break;
 	        }
+	}
+	
+	private void startChangeNoteBook()
+	{
+	    Log.d(TAG, "current notebook is " + mNoteBookRecord.toString());
+	    Intent changeIntent = new Intent(this, ChangNoteBookActivity.class);
+	    changeIntent.putExtra("NoteBook", mNoteBookRecord);
+	    startActivityForResult(changeIntent, RESULT_CHAGNE_NOTEBOOK);
 	}
 	
 	

@@ -25,4 +25,33 @@
         <item >1.5小时</item>
         <item >2小时</item>
     </string-array>
+    
+        <string-array name="language_type_items">
+        <item>中文</item>
+        <item>英语</item>
+        <item>日语</item>
+        <item>韩语</item>
+        <item>西班牙语</item>
+        <item>法语</item>
+        <item>泰语</item>
+        <item>俄罗斯语</item>
+        <item>葡萄牙语</item>
+        <item>自动检测</item>
+        <item>德语</item>
+        <item>意大利语</item>
+    </string-array>
+       <string-array name="language_translate_type_items">
+        <item>zh</item>
+        <item>en</item>
+        <item>jp</item>
+        <item>kor</item>
+        <item>spa</item>
+        <item>fra</item>
+        <item>th</item>
+        <item>ru</item>
+        <item>pt</item>
+        <item>auto</item>
+        <item>de</item>
+        <item>it</item>
+    </string-array>
 </resources>

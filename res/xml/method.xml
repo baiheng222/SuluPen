@@ -16,5 +16,5 @@
 <!-- The attributes in this XML file provide configuration information -->
 <!-- for the Search Manager. -->
 <input-method xmlns:android="http://schemas.android.com/apk/res/android"
-        android:settingsActivity="com.hanvon.inputmethod.pinyin.SettingsActivity"
+        android:settingsActivity="com.hanvon.sulupen.pinyin.SettingsActivity"
 />
