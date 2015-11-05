@@ -39,6 +39,8 @@ import com.hanvon.sulupen.db.dao.NoteBookRecordDao;
 import com.hanvon.sulupen.utils.LogUtil;
 import com.hanvon.sulupen.NoteBookListActivity;
 import com.hanvon.sulupen.login.LoginActivity;
+import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
+
 
 import java.util.List;
 import java.util.Set;
@@ -48,7 +50,7 @@ public class MainActivity extends Activity implements OnClickListener, OnLongCli
 {
     private final String TAG = "MainActivity";
     private TextView mTitle;
-    private TextView mLeftBtn;
+    private ImageView mLeftBtn;
     private TextView mRightBtn;
     private ImageView mNewNoteBook;
     private ImageView mEditNoteBook;
@@ -57,6 +59,11 @@ public class MainActivity extends Activity implements OnClickListener, OnLongCli
     private ListView mBooksList;
     private TextView mEmptyNoteBook;
     private ImageView mEpen;
+
+    SlidingMenu leftMenu;
+    private ImageView mIvLogin;
+    
+    
     
     public final static int FLAG_EDIT = 1;
 	public final static int FLAG_CREATE = 2;
@@ -92,6 +99,8 @@ public class MainActivity extends Activity implements OnClickListener, OnLongCli
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_main);
 
+        initLeftMenu();
+        
         initDatas();
         
         initViews();
@@ -145,6 +154,37 @@ public class MainActivity extends Activity implements OnClickListener, OnLongCli
 			MainActivity.this.startActivity(intent);
 		}
 	}
+    
+    
+    public void initLeftMenu()
+    {
+    	// configure the SlidingMenu
+    	leftMenu = new SlidingMenu(this);
+    	leftMenu.setMode(SlidingMenu.LEFT);
+    	//设置触摸屏幕的模式
+    			
+    	leftMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
+    	leftMenu.setShadowWidthRes(R.dimen.shadow_width);
+    	leftMenu.setShadowDrawable(R.drawable.shadow);
+
+    	//设置滑动菜单视图的宽度
+    	leftMenu.setBehindOffsetRes(R.dimen.slidingmenu_offset);
+    	//设置渐入渐出效果的值
+    	leftMenu.setFadeDegree(0.35f);
+    	
+    	/**
+    	 * SLIDING_WINDOW will include the Title/ActionBar in the content
+		 *section of the SlidingMenu, while SLIDING_CONTENT does not.
+    	*/
+    	//把滑动菜单添加进所有的Activity中，可选值SLIDING_CONTENT ， SLIDING_WINDOW
+    	leftMenu.attachToActivity(this, SlidingMenu.SLIDING_CONTENT);
+    	//为侧滑菜单设置布局
+    	leftMenu.setMenu(R.layout.leftmenu);
+    	
+    	mIvLogin = (ImageView) findViewById(R.id.iv_login_icon);
+    	mIvLogin.setOnClickListener(this);
+
+    }
 
     public void initDatas()
     {
@@ -157,7 +197,7 @@ public class MainActivity extends Activity implements OnClickListener, OnLongCli
     public void initViews()
     {
         mTitle = (TextView) findViewById(R.id.tv_title);
-        mLeftBtn = (TextView) findViewById(R.id.tv_leftbtn);
+        mLeftBtn = (ImageView) findViewById(R.id.tv_leftbtn);
         mRightBtn = (TextView) findViewById(R.id.tv_rightbtn);
         
         mNewNoteBook = (ImageView) findViewById(R.id.tv_newnotebook);
@@ -252,9 +292,15 @@ public class MainActivity extends Activity implements OnClickListener, OnLongCli
             	}
             	break;
             case R.id.tv_leftbtn:
-                Intent newIntent1 = new Intent(this, LoginActivity.class);
-    		    startActivity(newIntent1);
+            	leftMenu.toggle();
+                //Intent newIntent1 = new Intent(this, LoginActivity.class);
+    		    //startActivity(newIntent1);
     		break;
+    		
+            case R.id.iv_login_icon:
+            	Intent newIntent1 = new Intent(this, LoginActivity.class);
+    		    startActivity(newIntent1);
+            break;
         }
     }
     

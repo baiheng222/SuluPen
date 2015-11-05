@@ -14,15 +14,14 @@
     android:layout_height="45dp"
     android:layout_alignParentTop="true" >
     
-    	<TextView
+    	<ImageView
         android:id="@+id/tv_leftbtn"
     	android:layout_width="wrap_content"
-    	android:layout_height="match_parent"
+    	android:layout_height="wrap_content"
     	android:layout_alignParentLeft="true"
     	android:layout_marginLeft="8dp"
     	android:layout_marginRight="8dp"
-    	android:text="login"
-    	android:textSize="16sp"
+    	android:src="@drawable/main_left"
     	android:gravity="center_vertical"/>
     
         <ImageView
