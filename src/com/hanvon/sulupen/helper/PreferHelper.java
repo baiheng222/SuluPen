@@ -10,7 +10,7 @@ import android.content.SharedPreferences;
  * @version
  */
 public class PreferHelper {
-	private static final String PREFERENCES_NAME = "com.hanvon.inputmethod.pinyin";
+	private static final String PREFERENCES_NAME = "com.hanvon.sulupen";
 	private static SharedPreferences prefer = null;
 
 	public synchronized static void init(Context context) {

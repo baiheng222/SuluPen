@@ -135,7 +135,7 @@ public class RememberPassword extends Activity implements OnClickListener{
 	  	    	JSuserInfoJson.put("uid", HanvonApplication.AppUid);
 	  	    	JSuserInfoJson.put("sid", HanvonApplication.AppSid);
 	  	  	    JSuserInfoJson.put("ver", HanvonApplication.AppVer);
-	  	  	    JSuserInfoJson.put("user", strUserCode);
+	  	  	//    JSuserInfoJson.put("user", strUserCode);
 	  	  	    JSuserInfoJson.put("phone", strUserCode);
 	  	    } catch (JSONException e) {
 	  		    e.printStackTrace();
@@ -143,7 +143,8 @@ public class RememberPassword extends Activity implements OnClickListener{
 
 	  	    LogUtil.i(JSuserInfoJson.toString());
 	  	    RequestResult result=new RequestResult();
-	  	    result=RequestServerData.getauthcodeForRmbPasswd(JSuserInfoJson);
+	  //	    result=RequestServerData.getauthcodeForRmbPasswd(JSuserInfoJson);
+	  	  result=RequestServerData.getphoneauthcode(JSuserInfoJson);
 
 	  	    return result;
 	    }
@@ -172,7 +173,7 @@ public class RememberPassword extends Activity implements OnClickListener{
 
 			   final List<NameValuePair> parameters=new ArrayList<NameValuePair>();
 		       parameters.add(new BasicNameValuePair("userName", strUserCode));
-			   parameters.add(new BasicNameValuePair("email", strUserCode));
+			   parameters.add(new BasicNameValuePair("email", ""));
 				final String url = "https://account.hw99.com/user/checkUserNameEmail.action";
 				final int result = 0;
 				new Thread() {

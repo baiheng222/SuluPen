@@ -246,6 +246,7 @@ public class RegisterUserFromEmail extends Activity implements OnClickListener{
 	  	    	JSuserInfoJson.put("user", strEmail);
 	  	    	JSuserInfoJson.put("pwd", strPassword);
 	  	    	JSuserInfoJson.put("email", strEmail);
+	  	    	JSuserInfoJson.put("registeWay","0");
 	  	    } catch (JSONException e) {
 	  		    e.printStackTrace();
 	  	    }

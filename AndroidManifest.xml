@@ -112,6 +112,7 @@
           
         <activity
             android:name=".MainActivity"
+            android:launchMode="singleTask"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -128,7 +129,7 @@
         <activity  android:name="com.hanvon.bluetooth.BluetoothSearch"
                    android:label="蓝牙"
                    android:screenOrientation="portrait"
-                android:theme="@android:style/Theme.Dialog"  />
+                   android:theme="@style/CusterDialog"/>
 
         <activity android:name="NoteDetailActivity">
         </activity>
@@ -184,6 +185,11 @@
         <activity  android:name="com.hanvon.sulupen.login.RmbPwdCheckCode">
         </activity>
         <activity  android:name="com.hanvon.bluetooth.BluetoothDetail">
+        </activity>
+        
+        <activity android:name="com.hanvon.sulupen.UpdateAppService" >
+        </activity>
+        <activity android:name="com.hanvon.sulupen.SoftUpdate" >
         </activity>
          
           

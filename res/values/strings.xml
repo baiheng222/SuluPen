@@ -21,15 +21,15 @@
     <string name="msg_openingBT">蓝牙开启中...</string>
     <string name="title_openingBT">打开蓝牙</string>
     <string name="scanning">搜索中...</string>
-    <string name="msg_searching">亲，正在玩命寻找附近可用设备，请耐心等待哦！</string>
+    <string name="msg_searching">查找设备中...</string>
      <string name="none_found">亲，没有发现可连设备哦！</string>
     <string name="button_scan">再次扫描</string>
     <string name="button_cancel">取消</string>
      <string name="bnTryAgain">再试一次</string>
-     <string name="msg_fail">亲，木有连接成功，请重新尝试！</string>
+     <string name="msg_fail">连接失败，请重新尝试！</string>
      <string name="bn_reconnect">重新连接</string>
      <string name="bnSearchNewDevice">搜索新设备</string>
-     <string name="msg_wait_connect">亲，正在努力连接，请耐心等候哦！</string>
+     <string name="msg_wait_connect">连接中，请稍后...</string>
      <string name="msg_stop_connected">确定与速录笔断开连接吗？</string>
 
     <string name="button_save">保存</string>

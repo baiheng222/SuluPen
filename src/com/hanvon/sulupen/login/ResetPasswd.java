@@ -154,7 +154,7 @@ public class ResetPasswd  extends Activity implements OnClickListener{
 	    	JSuserInfoJson.put("sid", HanvonApplication.AppSid);
 	    	JSuserInfoJson.put("ver", HanvonApplication.AppVer);
 	    	JSuserInfoJson.put("user", strUsername);
-	  	    JSuserInfoJson.put("authcode", strAuthCode);
+	  	    JSuserInfoJson.put("phone", strUsername);
 	    	JSuserInfoJson.put("repwd", strNewPwd);
 	    } catch (JSONException e) {
 	    	pd.dismiss();

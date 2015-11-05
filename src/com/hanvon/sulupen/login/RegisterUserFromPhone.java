@@ -145,6 +145,7 @@ public class RegisterUserFromPhone extends Activity implements OnClickListener{
 					}
 			    }else if (flagTask == 2){
 			    	if (json.get("code").equals("0")) {
+			    		HanvonApplication.isActivity = true;
 				    	SharedPreferences mSharedPreferences=getSharedPreferences("BitMapUrl", Activity.MODE_MULTI_PROCESS);
 						Editor mEditor=	mSharedPreferences.edit();
 						mEditor.putString("username", strPhoneNumber);
@@ -203,6 +204,7 @@ public class RegisterUserFromPhone extends Activity implements OnClickListener{
   	    	JSuserInfoJson.put("pwd", strPassword);
   	    	JSuserInfoJson.put("mobile", strPhoneNumber);
   	    	JSuserInfoJson.put("nickname", strPhoneNumber);
+  	    	JSuserInfoJson.put("registeWay","1");
   	    } catch (JSONException e) {
   		    e.printStackTrace();
   	    }

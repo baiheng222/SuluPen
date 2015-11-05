@@ -2,18 +2,22 @@ package com.hanvon.bluetooth;
 
 import java.util.ArrayList;
 
+import com.hanvon.sulupen.MainActivity;
 import com.hanvon.sulupen.R;
 import com.hanvon.sulupen.utils.LogUtil;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.style.BackgroundColorSpan;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -49,7 +53,6 @@ public class BluetoothSearch extends Activity implements OnClickListener{
 				break;
 			case BluetoothMsgReceive.BT_DISCONNECT:
 				setProgressBarIndeterminateVisibility(false);
-				setTitle("连接失败....");
 				setMessage(R.string.msg_fail);
 				bnLeft.setVisibility(View.VISIBLE);
 				layoutRight.setVisibility(View.VISIBLE);
@@ -60,7 +63,7 @@ public class BluetoothSearch extends Activity implements OnClickListener{
 		};
 	};
 
-	@SuppressLint("NewApi") @Override
+	@SuppressLint({ "NewApi", "ResourceAsColor" }) @Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
@@ -198,8 +201,7 @@ public class BluetoothSearch extends Activity implements OnClickListener{
 						tryConnect();
 					break;
 				case BluetoothAdapter.STATE_TURNING_ON:
-					setTitle(R.string.title_openingBT);
-					setMessage(R.string.msg_openingBT);
+					setMessage(R.string.msg_openingBT);	
 					LogUtil.i("STATE_TURNING_ON");
 					break;
 				case BluetoothAdapter.STATE_OFF:
@@ -276,7 +278,6 @@ public class BluetoothSearch extends Activity implements OnClickListener{
 			openBlueTooth();
 		} else {
 			setProgressBarIndeterminateVisibility(true);
-			setTitle("连接中....");
 			setMessage(R.string.msg_wait_connect);
 
 			bnLeft.setVisibility(View.GONE);
@@ -290,14 +291,13 @@ public class BluetoothSearch extends Activity implements OnClickListener{
 	/**
 	 * 开始搜索扫描
 	 */
-	private void doDiscovery() {
+	@SuppressLint({ "NewApi", "ResourceAsColor" }) private void doDiscovery() {
 
 		if (!mBtAdapter.isEnabled()) {
 			isDoDiscovery = true;
 			openBlueTooth();
 		} else {
 			setProgressBarIndeterminateVisibility(true);
-			setTitle(R.string.scanning);
 			if (mBtAdapter.isDiscovering()) {
 				mBtAdapter.cancelDiscovery();
 			}

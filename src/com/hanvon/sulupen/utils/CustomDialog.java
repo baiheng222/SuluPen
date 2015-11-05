@@ -25,6 +25,7 @@ import com.hanvon.sulupen.R;
 
 
 public class CustomDialog extends Dialog {
+	
 	public CustomDialog(Context context, int theme) {
 		super(context, theme);
 	}
@@ -70,7 +71,7 @@ public class CustomDialog extends Dialog {
 		private boolean PositiveButtonAutoDismiss = true,
 				NegativeButtonAutoDismiss = true,
 				NeutralButtonAutoDismiss = true;
-
+		
 		public Builder(Context context) {
 			this.context = context;
 		}
@@ -791,7 +792,6 @@ public class CustomDialog extends Dialog {
 			dialog.show();
 			return dialog;
 		}
-
 	}
 
 }

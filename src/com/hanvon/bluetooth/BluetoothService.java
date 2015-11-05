@@ -370,6 +370,7 @@ public class BluetoothService extends Service{
 	@Override
 	public void onCreate() {
 		super.onCreate();
+		LogUtil.i("-----------------1--------------------------");
 		mHanVonService = this;
 		PreferHelper.init(this);
 		blueService = new BluetoothChatService(this, msgHandler);
@@ -384,6 +385,8 @@ public class BluetoothService extends Service{
 	public static boolean startService(Context context) {
 		if (mHanVonService != null)
 			return false;
+		
+		LogUtil.i("-----------------2--------------------------");
 		Intent intent = new Intent();
 		intent.setClass(context, BluetoothService.class);
 		context.startService(intent);

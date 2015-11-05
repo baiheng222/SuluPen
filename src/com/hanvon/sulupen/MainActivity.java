@@ -95,6 +95,12 @@ public class MainActivity extends Activity implements OnClickListener, OnLongCli
         initDatas();
         
         initViews();
+
+        boolean autoUpdateflag = Settings.getKeyVersionUpdate(MainActivity.this);
+		if (autoUpdateflag){
+            SoftUpdate updateInfo = new SoftUpdate(this,0);
+	        updateInfo.checkVersion();
+		}
     }
 
     @Override
@@ -104,18 +110,16 @@ public class MainActivity extends Activity implements OnClickListener, OnLongCli
 			mFilter.addAction(BluetoothIntenAction.ACTION_EPEN_BT_CONNECTED);
 			mFilter.addAction(BluetoothIntenAction.ACTION_EPEN_BT_DISCONNECT);
 			this.registerReceiver(btMsgReceiver, mFilter);
-			//if (BluetoothService.getServiceInstance() != null){
-			//    if (BluetoothService.getServiceInstance().getBluetoothChatService()
-			//		    .getState() == BluetoothChatService.STATE_CONNECTED) {
-			//	    mEpen.setBackgroundResource(R.drawable.epen_manager);
-			//    } else {
-			//	    mEpen.setBackgroundResource(R.drawable.epen_manager_nor);
-			//    }
+		/*	if (BluetoothService.getServiceInstance().getBluetoothChatService()
+					  .getState() == BluetoothChatService.STATE_CONNECTED) {
+				mEpen.setBackgroundResource(R.drawable.epen_manager);
+			} else {
+				mEpen.setBackgroundResource(R.drawable.epen_manager_nor);
+			}
 			
-			 //   if (!isConnected()){
-			 //       BluetoothCheck();
-			 //   }
-			//}
+			if (!isConnected()){
+			   BluetoothCheck();
+			}*/
 	}
     @TargetApi(Build.VERSION_CODES.ECLAIR) @SuppressLint("NewApi") public void BluetoothCheck(){
 		BluetoothAdapter adapter = BluetoothAdapter.getDefaultAdapter();

@@ -77,7 +77,9 @@ public class HanvonApplication extends FrontiaApplication {
 	private JSONObject obj;
 	private String City;
 	public static  String mWeather;
-		public static String path;
+	public static String path;
+	
+	public static boolean isActivity;
 	@Override
 	public void onCreate() {
 

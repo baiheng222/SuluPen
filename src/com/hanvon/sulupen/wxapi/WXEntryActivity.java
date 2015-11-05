@@ -10,6 +10,7 @@ import org.json.JSONObject;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
@@ -38,6 +39,13 @@ import cn.sharesdk.wechat.utils.WechatHandlerActivity;
 
 /** 微信客户端回调activity示例 */
 public class WXEntryActivity extends WechatHandlerActivity implements IWXAPIEventHandler{
+
+	private ProgressDialog pd;
+	private String openid;
+	private String wxName;
+	private String figureurl;
+	
+	private char flag;   // 0 从登陆界面跳转 1 从云信息登陆跳转  2 从上传界面跳转
 
 	/**
 	 * 处理微信发出的向第三方应用请求app message
@@ -73,12 +81,6 @@ public class WXEntryActivity extends WechatHandlerActivity implements IWXAPIEven
 
 
 //public class WXEntryActivity extends Activity { 
-	//private ProgressDialog pd1;
-	private String openid;
-	private String wxName;
-	private String figureurl;
-	
-	private char flag;   // 0 从登陆界面跳转 1 从云信息登陆跳转  2 从上传界面跳转
 	@Override  
 	protected void onCreate(Bundle savedInstanceState) { 
 	    super.onCreate(savedInstanceState);   
@@ -117,7 +119,11 @@ public class WXEntryActivity extends WechatHandlerActivity implements IWXAPIEven
 	 	parameters.add(new BasicNameValuePair("grant_type", "authorization_code"));
 	    final String url = "https://api.weixin.qq.com/sns/oauth2/access_token?";
 
-	 //	pd1 = ProgressDialog.show(WXEntryActivity.this, "", "正在获取用户资料.......");
+	 //	pd = ProgressDialog.show(WXEntryActivity.this, "", "正在获取用户资料.......");
+	    pd = new SafeProgressDialog(this);
+	    pd.setMessage("正在获取用户资料.......");
+	    pd.show();
+
 	 	new Thread() {
 	 		@Override
 	 		public void run() {
@@ -125,8 +131,8 @@ public class WXEntryActivity extends WechatHandlerActivity implements IWXAPIEven
 	 			String result = httpsClient.HttpsRequest(url, parameters);
 	 			if (result == null){
 	 				Toast.makeText(WXEntryActivity.this, "获取用户凭证失败，请稍后重试", Toast.LENGTH_SHORT).show();
-	 				//pd1.dismiss();
-	 				 LoginActivity.instance.finish();
+	 				pd.dismiss();
+	 				LoginActivity.instance.finish();
 	 				startActivity(new Intent(WXEntryActivity.this, LoginActivity.class));
 	 				WXEntryActivity.this.finish();
 	 				return;
@@ -162,7 +168,7 @@ public class WXEntryActivity extends WechatHandlerActivity implements IWXAPIEven
 	 			String result = httpsClient.HttpsRequest(url, parameters);
 	 			if (result == null){
 	 				Toast.makeText(WXEntryActivity.this, "获取微信用户资料失败，请稍后重试", Toast.LENGTH_SHORT).show();
-	 				//pd1.dismiss();
+	 				pd.dismiss();
 	 				 LoginActivity.instance.finish();
 	 				startActivity(new Intent(WXEntryActivity.this, LoginActivity.class));
 	 				WXEntryActivity.this.finish();
@@ -210,7 +216,7 @@ public class WXEntryActivity extends WechatHandlerActivity implements IWXAPIEven
 	  		if (result == null){
 	  			if (result == null){
 	 				Toast.makeText(WXEntryActivity.this, "注册汉王云失败，请稍后重试", Toast.LENGTH_SHORT).show();
-	 				//pd1.dismiss();
+	 				pd.dismiss();
 	 				startActivity(new Intent(WXEntryActivity.this, LoginActivity.class));
 	 				WXEntryActivity.this.finish();
 	 				return;
@@ -226,6 +232,7 @@ public class WXEntryActivity extends WechatHandlerActivity implements IWXAPIEven
 	  				if (json.getString("code").equals("0")){
 			    		String wxNickname = json.getString("nickname");
 			    		String username = json.getString("user");
+			    		HanvonApplication.isActivity = true;
 			            SharedPreferences mSharedPreferences=WXEntryActivity.this.getSharedPreferences("BitMapUrl", Activity.MODE_MULTI_PROCESS);
 				        Editor mEditor=	mSharedPreferences.edit();
 				        mEditor.putString("username", username);
@@ -249,20 +256,21 @@ public class WXEntryActivity extends WechatHandlerActivity implements IWXAPIEven
 				        }else{
 				        	WXEntryActivity.this.startActivity(new Intent(WXEntryActivity.this, MainActivity.class));
 				        }
-		               // pd1.dismiss();
+		               pd.dismiss();
 		                LoginActivity.instance.finish();
 			    	}else if (json.getString("code").equals("426")){
 			    		new RequestTask(2).execute();
 			    	}else if(json.getString("code").equals("520")){
 			    		Toast.makeText(WXEntryActivity.this, "服务器忙，请稍后重试", Toast.LENGTH_SHORT).show();
-			    	  //  pd1.dismiss();
+			    	    pd.dismiss();
 			    	}else{
 			    		Toast.makeText(WXEntryActivity.this, "注册汉王云失败，请稍后重试", Toast.LENGTH_SHORT).show();
-			    	  //  pd1.dismiss();
+			    	    pd.dismiss();
 			    	}
 	  			}else if (flagTask == 2){
 	  			    if (json.getString("code").equals("0") || json.getString("code").equals("422")){
 	  			        String hvnName = json.getString("username");
+	  			        HanvonApplication.isActivity = true;
 	  			        SharedPreferences mSharedPreferences=WXEntryActivity.this.getSharedPreferences("BitMapUrl", Activity.MODE_MULTI_PROCESS);
 	  				    Editor mEditor=	mSharedPreferences.edit();
 	  				    mEditor.putString("username", hvnName);
@@ -286,11 +294,11 @@ public class WXEntryActivity extends WechatHandlerActivity implements IWXAPIEven
 				        }else{
 				        	WXEntryActivity.this.startActivity(new Intent(WXEntryActivity.this, MainActivity.class));
 				        }
-	  		           // pd1.dismiss();
+	  		            pd.dismiss();
 	  		            LoginActivity.instance.finish();
 	  			}else{
 	  				Toast.makeText(WXEntryActivity.this, "注册汉王云失败，请稍后重试", Toast.LENGTH_SHORT).show();
-	 				//pd1.dismiss();
+	 				pd.dismiss();
 	  			}
 	  			}
 	  		} catch (JSONException e) {
@@ -328,5 +336,25 @@ public class WXEntryActivity extends WechatHandlerActivity implements IWXAPIEven
 	 	result=RequestServerData.getUserInfo(paramJson);
 	 	LogUtil.i(result.toString());
 	  	return result;
+    }
+    
+    
+    class SafeProgressDialog extends ProgressDialog
+    {
+       Activity mParentActivity;
+       public SafeProgressDialog(Context context)
+       {
+           super(context);
+           mParentActivity = (Activity) context;
+       }
+
+        @Override
+        public void dismiss()
+        {
+            if (mParentActivity != null && !mParentActivity.isFinishing())
+            {
+                super.dismiss();    //调用超类对应方法
+            }
+        }
     }
 }

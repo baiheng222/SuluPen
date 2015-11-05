@@ -183,6 +183,7 @@ public class LoginUtil {
 			    	if (json.getString("code").equals("0")){
 			    		String qqNickname = json.getString("nickname");
 			    		String username = json.getString("user");
+			    		HanvonApplication.isActivity = true;
 			            SharedPreferences mSharedPreferences=mContext.getSharedPreferences("BitMapUrl", Activity.MODE_MULTI_PROCESS);
 				        Editor mEditor=	mSharedPreferences.edit();
 				        mEditor.putString("username", username);
@@ -220,6 +221,7 @@ public class LoginUtil {
 			    }else if (flagTask == 2){
 			        if (json.getString("code").equals("0") || json.getString("code").equals("422")){
 			    	    String qqName = json.getString("username");
+			    	    HanvonApplication.isActivity = true;
 			            SharedPreferences mSharedPreferences=mContext.getSharedPreferences("BitMapUrl", Activity.MODE_MULTI_PROCESS);
 				        Editor mEditor=	mSharedPreferences.edit();
 				        mEditor.putString("username", qqName);
@@ -289,6 +291,7 @@ public class LoginUtil {
 
 	public void QQLoginOut(){
 		HanvonApplication.mTencent.logout(mContext);
+		HanvonApplication.isActivity = false;
 	}
 }
 

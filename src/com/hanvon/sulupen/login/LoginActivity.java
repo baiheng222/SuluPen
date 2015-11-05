@@ -193,7 +193,7 @@ public class LoginActivity extends Activity implements OnClickListener {
 				paramJson.put("user", strUserName);
 				paramJson.put("pwd", strPassWord);
 				LogUtil.i(paramJson.toString());
-				String responce = HttpClientHelper.sendPostRequest("http://dpi.hanvon.com/rt/ap/v1/user/login", paramJson.toString());
+				String responce = HttpClientHelper.sendPostRequest("http://cloud.hwyun.com/dws-cloud/rt/ap/v1/user/login", paramJson.toString());
 
 				Message message = new Message();
 				Bundle bundle = new Bundle();
@@ -257,12 +257,16 @@ public class LoginActivity extends Activity implements OnClickListener {
 			    	String email = json.getString("email");
 			    	String phone = json.getString("phone");
                     String nickname = json.getString("nickname");
+                    if(json.getString("isActive").equals("1")){
+                    	HanvonApplication.isActivity = true;
+                    }else{
+                    	HanvonApplication.isActivity = false;
+                    }
                     if(nickname.equals("")){
                     	nickname = strUserName;
                     	isHasNick = false;
                     }
                     String username = json.getString("user");
-
 			    	SharedPreferences mSharedPreferences=getSharedPreferences("BitMapUrl", Activity.MODE_MULTI_PROCESS);
 					Editor mEditor=	mSharedPreferences.edit();
 					mEditor.putString("nickname", nickname);
@@ -357,6 +361,7 @@ public class LoginActivity extends Activity implements OnClickListener {
 
 	public void weiXinUserLogin(){
 		LogUtil.i("INTO WeixinUserLogin!!!!!!!!");
+		pd = ProgressDialog.show(LoginActivity.this, "", "");
 		if (new ConnectionDetector(LoginActivity.this).isConnectingTOInternet()) {
 			HanvonApplication.userFlag = 2;
 			final SendAuth.Req req = new SendAuth.Req();

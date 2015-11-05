@@ -1,5 +1,9 @@
 package com.hanvon.sulupen.utils;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -12,6 +16,9 @@ import com.hanvon.sulupen.datas.ImageItem;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.provider.MediaStore.Images.Media;
 import android.provider.MediaStore.Images.Thumbnails;
 import android.util.Log;
@@ -190,6 +197,54 @@ public class ImageFetcher
 			}
 			while (cur.moveToNext());
 		}
+	}
+	
+	
+	/**
+	 * 
+	 * @desc 根据输入的图片路径获取同比例压缩后图片路径
+	 * @return
+	 */
+	public String getCompressImagePath(String srcPath){
+		if (srcPath == null){
+			return null;
+		}
+
+		String dstPath = srcPath.substring(0, srcPath.lastIndexOf(".")-1)+"_1"+srcPath.substring(srcPath.lastIndexOf("."));
+		LogUtil.i("INTO getCompressImagePath,srcPath:"+srcPath+"    dstPath:"+dstPath);
+		Bitmap rawBitmap = BitmapFactory.decodeFile(srcPath,null); 
+        int w = rawBitmap.getWidth();
+        int h = rawBitmap.getHeight();
+        LogUtil.i("w:"+w+"         h:"+h);
+        if (w > 800 || h > 800){
+        	float hh = 800f;//这里设置高度为800f
+            float ww = 800f;//这里设置宽度为480f
+            float be = 1;
+            if ((w > h) && (w > ww)) {//如果宽度大的话根据宽度固定大小缩放
+            	be = (float)(ww/w);
+            } else if ((w < h) && (h > hh)) {//如果高度高的话根据宽度固定大小缩放
+            	be = (float)(hh/h);
+            }
+            if (be <= 0)
+                be = 1;
+            Matrix matrix = new Matrix();
+            matrix.postScale(be, be);
+            Bitmap bitmap = Bitmap.createBitmap(rawBitmap, 0, 0, w, h,matrix,true);
+
+            File file=new File(dstPath);//将要保存图片的路径  头像文件
+            try {
+                BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(file));
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 40, bos);
+                bos.flush();
+                bos.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }else{
+        	dstPath = srcPath;
+        }
+
+		return dstPath;
 	}
 
 }
