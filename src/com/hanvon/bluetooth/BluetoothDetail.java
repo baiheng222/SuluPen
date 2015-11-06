@@ -97,6 +97,8 @@ public class BluetoothDetail extends Activity implements OnClickListener{
 		mFilter.addAction(BluetoothIntenAction.ACTION_EPEN_LANGUAGE_CHANGE);
 		mFilter.addAction(BluetoothIntenAction.ACTION_EPEN_DEFAULTSET_CHANGE);
 		mFilter.addAction(BluetoothIntenAction.ACTION_EPEN_CLOSETIME_CHANGE);
+		mFilter.addAction(BluetoothIntenAction.ACTION_EPEN_BT_CONNECTED);
+		mFilter.addAction(BluetoothIntenAction.ACTION_EPEN_BT_DISCONNECT);
 		this.registerReceiver(btMsgReceiver, mFilter);
 	}
 

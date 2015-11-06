@@ -90,8 +90,18 @@ public class UpdateAppService extends Service{
     	        int length = conn.getContentLength();
     	        InputStream is = conn.getInputStream();
     	        if (updateType == 1){
+    	        	 File f = new File(Environment.getExternalStorageDirectory()+"EpenAssistant.apk");
+    	        	 if (f.exists()){
+    	        		 LogUtil.i("---Environment:PATH---"+Environment.getExternalStorageDirectory()+"/EpenAssistant.apk");
+    	        		 f.delete();
+    	        	 }
     	        	 file = new File(Environment.getExternalStorageDirectory(), "EpenAssistant.apk");
     	        }else if (updateType == 2){
+    	        	 File f = new File(Environment.getExternalStorageDirectory()+"/"+HanvonApplication.HardUpdateName);
+   	        	     if (f.exists()){
+   	        	    	LogUtil.i("---Environment:PATH---"+Environment.getExternalStorageDirectory()+"/"+HanvonApplication.HardUpdateName);
+   	        		    f.delete();
+   	        	     }
     	        	 file = new File(Environment.getExternalStorageDirectory(), HanvonApplication.HardUpdateName);
     	        }
     	        LogUtil.i("---Environment:PATH---"+Environment.getExternalStorageDirectory());

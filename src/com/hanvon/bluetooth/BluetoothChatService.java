@@ -19,6 +19,7 @@ import com.hanvon.sulupen.utils.LogUtil;
 
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -30,6 +31,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import android.view.WindowManager;
 
 public class BluetoothChatService {
 
@@ -43,7 +45,10 @@ public class BluetoothChatService {
 	public static final int MESSAGE_TOAST = 5;
 	public static final String DEVICE_NAME = "device_name";
 	public static final String TOAST = "toast";
-
+ 
+	public static final int BLUETOOTH_MESSAGE_SEND_TIME = 10;
+	public static final int BLUETOOTH_DIALOG_SHOW_TIME = 11;
+	
 	public static final int STATE_NONE = 0;
 	public static final int STATE_LISTEN = 1;
 	public static final int STATE_CONNECTING = 2;
@@ -604,7 +609,7 @@ public class BluetoothChatService {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-
+					
 					LogUtil.i("000 fileLen:" + fileLen);
 					while ((size = fis.read(buffer)) != -1) {
 						dOutStream.write(buffer, 0, size);
@@ -623,7 +628,6 @@ public class BluetoothChatService {
 					
 					mHandler.obtainMessage(MESSAGE_WRITE, dataType, 105)
 							.sendToTarget();
-
 				} catch (FileNotFoundException e) {
 					isSendSuccess = false;
 					LogUtil.i(dataStr+" file is not find!");
@@ -633,7 +637,6 @@ public class BluetoothChatService {
 					LogUtil.i(" when read file file is error!");
 					e.printStackTrace();
 				}
-
 			}
 			// 非文件数据
 			if (dataType == 2) {

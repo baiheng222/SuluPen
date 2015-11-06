@@ -71,9 +71,15 @@ public class CustomDialog extends Dialog {
 		private boolean PositiveButtonAutoDismiss = true,
 				NegativeButtonAutoDismiss = true,
 				NeutralButtonAutoDismiss = true;
+		private boolean flag;
 		
 		public Builder(Context context) {
 			this.context = context;
+		}
+		
+		public Builder(Context context,boolean flag) {
+			this.context = context;
+			this.flag = flag;
 		}
 
 		public Builder setIcon(int icon) {
@@ -787,9 +793,36 @@ public class CustomDialog extends Dialog {
 		}
 
 		public CustomDialog show() {
-			CustomDialog dialog = create();
+			CustomDialog dialog ;
+			if (flag){
+				dialog = CustomDialogcreate();
+			}else{
+				dialog = create();
+			}
 			dialog.setCanceledOnTouchOutside(false);
 			dialog.show();
+			flag = false;
+			return dialog;
+		}
+		
+		
+		/*************************************************************************/
+		public CustomDialog CustomDialogcreate() {
+			LayoutInflater inflater = (LayoutInflater) context
+					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+			// instantiate the dialog with the custom Theme
+			final CustomDialog dialog = new CustomDialog(context,
+					R.style.Dialog);
+			View layout = inflater.inflate(R.layout.cusrom_dialog, null);
+		//	dialog.addContentView(layout, new LayoutParams(
+			//		LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
+
+			// set the content message
+			if (message != null) {
+				((TextView) layout.findViewById(R.id.message1)).setText(message);
+			} 
+			dialog.setContentView(layout);
+			dialog.setCanceledOnTouchOutside(false);
 			return dialog;
 		}
 	}

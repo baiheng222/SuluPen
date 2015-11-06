@@ -51,7 +51,7 @@ public class HanvonApplication extends FrontiaApplication {
 	
 	
 	
-	public static String strName;
+	public static String strName = "";
 	public static String strEmail;
 	public static String strPhone;
 	public static int userFlag;/* 0  汉王用户   1 QQ账号   2 微信账号   3 微博账号*/
@@ -63,7 +63,7 @@ public class HanvonApplication extends FrontiaApplication {
 	public static String hvnName;//第三方登陆时对应于汉王用户名称，汉王用户登陆时对应于邮箱
 	public static int cloudType;//云类型，0 未登录 1汉王云 2百度云
 	public static String noteCreateTime="";
-	public static String AppSid = "EpenAssistant_Alpha";
+	public static String AppSid = "SuluPen_Software";
 	public static String AppUid = "";
 	public static String AppVer = "";
 	public static String AppDeviceId = "";

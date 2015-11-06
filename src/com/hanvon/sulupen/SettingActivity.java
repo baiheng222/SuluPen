@@ -3,6 +3,9 @@ package com.hanvon.sulupen;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -12,7 +15,10 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.hanvon.sulupen.application.HanvonApplication;
 import com.hanvon.sulupen.db.dao.NoteRecordDao;
+import com.hanvon.sulupen.login.ShowUserMessage;
+import com.hanvon.sulupen.utils.LoginUtil;
 
 public class SettingActivity extends Activity implements OnClickListener
 {
@@ -74,15 +80,18 @@ public class SettingActivity extends Activity implements OnClickListener
             break;
             
             case R.id.rl_setting_about:
-                
+                Intent about = new Intent(this, AboutActivity.class);
+                startActivity(about);
             break;
             
             case R.id.rl_setting_feedback:
-                
+            	Intent feedback = new Intent(this, FeedBackActivity.class);
+                startActivity(feedback);
             break;
             
             case R.id.rl_setting_help:
-                
+                Intent help = new Intent(this, HelpActivity.class);
+                startActivity(help);
             break;
                 
             case R.id.rl_setting_clear:
@@ -111,11 +120,12 @@ public class SettingActivity extends Activity implements OnClickListener
             break;
                 
             case R.id.tv_setting_logout:
-                    
+            	UserLoginOut();  
             break;
                 
             case R.id.rl_setting_upgrade:
-                    
+            	SoftUpdate updateInfo = new SoftUpdate(this,1);
+    	        updateInfo.checkVersion();
             break;
             
             case R.id.tv_backbtn:
@@ -124,4 +134,34 @@ public class SettingActivity extends Activity implements OnClickListener
             break;
         }
     }
+    
+	public void UserLoginOut(){
+		HanvonApplication.strName = "";
+		HanvonApplication.hvnName = "";
+		HanvonApplication.BitHeadImage = null;
+		SharedPreferences mSharedPreferences=getSharedPreferences("BitMapUrl", Activity.MODE_MULTI_PROCESS);
+		int flag =mSharedPreferences.getInt("flag", 0);
+		if (flag == 0){
+		}else if(flag == 1){
+		    LoginUtil loginUtil = new LoginUtil(SettingActivity.this,SettingActivity.this);
+		    loginUtil.QQLoginOut();
+	    }else if (flag == 2){
+	    }
+		Editor mEditor=	mSharedPreferences.edit();
+		mEditor.putInt("status", 0);
+		mEditor.commit();
+
+		SharedPreferences mSharedCloudPreferences=getSharedPreferences("Cloud_Info", Activity.MODE_MULTI_PROCESS);
+		int cloudFlag = mSharedCloudPreferences.getInt("cloudtype", 0);
+		if (cloudFlag != 2){
+		    Editor mCloudEditor = mSharedCloudPreferences.edit();
+		    mCloudEditor.putString("token", "");
+		    mCloudEditor.putInt("cloudtype", 0);
+	        HanvonApplication.cloudType = 0;
+	        mCloudEditor.commit();
+		}
+
+		startActivity(new Intent(SettingActivity.this, MainActivity.class));
+		SettingActivity.this.finish();
+	}
 }

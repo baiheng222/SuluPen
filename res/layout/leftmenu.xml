@@ -4,31 +4,45 @@
     android:background="@drawable/leftmenu_bkg"
     android:orientation="vertical" >
 
-    <RelativeLayout
+       <LinearLayout 
         android:id="@+id/rl_login"
         android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:padding="5dp"
+        android:orientation="horizontal">
+        <com.hanvon.sulupen.utils.CircleImageView  
+        android:id="@+id/iv_login_icon"
+        android:layout_width="40dip"
+        android:layout_height="40dip"
+        android:layout_marginTop="5dip"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="15dp"
+        android:background="@drawable/logicon" />
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent" 
+        android:layout_marginTop="5dp"
+        android:orientation="vertical">
+    <TextView 
+        android:id="@+id/ivUserName"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:layout_marginTop="5dp" >
-
-        <ImageView
-            android:id="@+id/iv_login_icon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_marginLeft="15dp"
-            android:src="@drawable/logicon" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="7dp"
-            android:layout_toRightOf="@id/iv_login_icon"
-            android:gravity="center"
-            android:text="Login!" />
-    </RelativeLayout>
-
+        android:layout_marginLeft="10dp"
+        android:gravity="center_vertical"
+        android:text="未登录" 
+        android:textColor="@color/white"
+        android:textSize="15sp"/>
+    <TextView 
+        android:id="@+id/ivhvnUserName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:gravity="center_vertical"
+        android:textColor="@color/white"
+        android:textSize="15sp"/>
+    </LinearLayout>
+    </LinearLayout>
+    
     <TextView
         android:id="@+id/separator1"
         android:layout_width="match_parent"
@@ -61,7 +75,7 @@
             android:layout_marginLeft="7dp"
             android:layout_toRightOf="@id/iv_count_icon"
             android:gravity="center"
-            android:text="Count" />
+            android:text="@string/leftmenu_count" />
     </RelativeLayout>
 
     <TextView
@@ -96,7 +110,7 @@
             android:layout_marginLeft="7dp"
             android:layout_toRightOf="@id/iv_setting_icon"
             android:gravity="center"
-            android:text="Setting" />
+            android:text="@string/leftmenu_setting" />
     </RelativeLayout>
 
     <TextView
@@ -131,7 +145,7 @@
             android:layout_marginLeft="7dp"
             android:layout_toRightOf="@id/iv_cloud_icon"
             android:gravity="center"
-            android:text="Setting" />
+            android:text="@string/leftmenu_cloud" />
     </RelativeLayout>
 
     <TextView

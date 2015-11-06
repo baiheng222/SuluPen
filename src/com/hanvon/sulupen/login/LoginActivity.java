@@ -271,6 +271,8 @@ public class LoginActivity extends Activity implements OnClickListener {
 					Editor mEditor=	mSharedPreferences.edit();
 					mEditor.putString("nickname", nickname);
 					mEditor.putString("username", username);
+					HanvonApplication.hvnName = username;
+			        HanvonApplication.strName = nickname;
 					mEditor.putBoolean("isHasNick", isHasNick);
 					
 					if (!email.equals("")){

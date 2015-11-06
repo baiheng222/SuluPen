@@ -156,6 +156,13 @@ public class UrlBankUtil {
 	public static String getphoneauthcode(){
 		return  HanvanApkIp + "/user/getphoneauthcode";
 	}
+	
+	/**
+	 * 汉王用户通过邮箱注册获取激活邮件
+	 */
+	public static String getActivityEmai(){
+		return  HanvanApkIp + "/user/sendActiveEmail";
+	}
 
 	/**
 	 * 汉王用户通过手机注册获取验证码

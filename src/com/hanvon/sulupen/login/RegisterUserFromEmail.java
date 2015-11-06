@@ -172,7 +172,10 @@ public class RegisterUserFromEmail extends Activity implements OnClickListener{
 			    }else if (flagTask == 2){
 			    	if (json.get("code").equals("0")) {
 					    new RequestTask(3).execute();
-				    } 
+				    }else{
+				    	pd.dismiss();
+					    Toast.makeText(RegisterUserFromEmail.this, "发送激活邮件失败，请稍后重试!", Toast.LENGTH_SHORT).show();
+				    }
 			    }else if (flagTask == 3){
 			    	if (json.get("code").equals("0")) {
 				    	SharedPreferences mSharedPreferences=getSharedPreferences("BitMapUrl", Activity.MODE_MULTI_PROCESS);
@@ -188,7 +191,7 @@ public class RegisterUserFromEmail extends Activity implements OnClickListener{
 					    startActivity(new Intent(RegisterUserFromEmail.this, MainActivity.class));
 					    RegisterUserFromEmail.this.finish();
 					    pd.dismiss();
-					    Toast.makeText(RegisterUserFromEmail.this, "注册成功，请进入邮箱激活!", Toast.LENGTH_SHORT).show();
+					    Toast.makeText(RegisterUserFromEmail.this, "注册成功，请进入邮箱激活!", Toast.LENGTH_LONG).show();
 				    } else if (json.get("code").equals("520")){
 				    	pd.dismiss();
 					    Toast.makeText(RegisterUserFromEmail.this, "服务器异常，请稍后再试!", Toast.LENGTH_SHORT).show();
@@ -223,16 +226,17 @@ public class RegisterUserFromEmail extends Activity implements OnClickListener{
 	 public RequestResult SendCodetoEmail(){
 			JSONObject JSuserInfoJson = new JSONObject();
 		  	try {
-		  		JSuserInfoJson.put("uid", HanvonApplication.AppUid);
-		  		JSuserInfoJson.put("sid", HanvonApplication.AppSid);
-		  	  	JSuserInfoJson.put("ver", HanvonApplication.AppVer);
+		  	//	JSuserInfoJson.put("uid", HanvonApplication.AppUid);
+		  	//	JSuserInfoJson.put("sid", HanvonApplication.AppSid);
+		  	 // 	JSuserInfoJson.put("ver", HanvonApplication.AppVer);
+		  		JSuserInfoJson.put("user", strEmail);
 		  	}catch (JSONException e) {
 		  		e.printStackTrace();
 		  	}
 
 		  	LogUtil.i(JSuserInfoJson.toString());
 		  	RequestResult result=new RequestResult();
-	//	  	result=RequestServerData.getphoneauthcode(JSuserInfoJson);
+		  	result=RequestServerData.getActivityEmail(JSuserInfoJson);
 		  	return result;
 		}
 	 

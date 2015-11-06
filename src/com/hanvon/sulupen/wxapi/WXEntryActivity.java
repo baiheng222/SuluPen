@@ -237,6 +237,8 @@ public class WXEntryActivity extends WechatHandlerActivity implements IWXAPIEven
 				        Editor mEditor=	mSharedPreferences.edit();
 				        mEditor.putString("username", username);
 				        mEditor.putString("nickname", wxNickname);
+				        HanvonApplication.hvnName = wxNickname;
+				        HanvonApplication.strName = username;
 				        mEditor.putString("figureurl", figureurl);
 				        mEditor.putInt("flag", 2);
 				        mEditor.putInt("status", 1);
@@ -275,6 +277,8 @@ public class WXEntryActivity extends WechatHandlerActivity implements IWXAPIEven
 	  				    Editor mEditor=	mSharedPreferences.edit();
 	  				    mEditor.putString("username", hvnName);
 	  				    mEditor.putString("nickname", wxName);
+	  				  HanvonApplication.hvnName = hvnName;
+				        HanvonApplication.strName = wxName;
 	  				    mEditor.putString("figureurl", figureurl);
 	  				    mEditor.putInt("flag", 2);
 	  				    mEditor.putInt("status", 1);

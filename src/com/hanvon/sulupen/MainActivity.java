@@ -11,6 +11,7 @@ import android.bluetooth.BluetoothDevice;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -25,7 +26,9 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.hanvon.bluetooth.BluetoothChatService;
 import com.hanvon.bluetooth.BluetoothDetail;
@@ -34,19 +37,22 @@ import com.hanvon.bluetooth.BluetoothMsgReceive;
 import com.hanvon.bluetooth.BluetoothSearch;
 import com.hanvon.bluetooth.BluetoothService;
 import com.hanvon.sulupen.adapter.NoteBookListAdapter;
+import com.hanvon.sulupen.application.HanvonApplication;
 import com.hanvon.sulupen.db.bean.NoteBookRecord;
 import com.hanvon.sulupen.db.dao.NoteBookRecordDao;
-import com.hanvon.sulupen.utils.LogUtil;
-import com.hanvon.sulupen.NoteBookListActivity;
 import com.hanvon.sulupen.login.LoginActivity;
+import com.hanvon.sulupen.utils.CircleImageView;
+import com.hanvon.sulupen.utils.LogUtil;
+import com.hanvon.sulupen.login.ShowUserMessage;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
-
+import com.lidroid.xutils.BitmapUtils;
+import com.lidroid.xutils.bitmap.BitmapCommonUtils;
 
 import java.util.List;
 import java.util.Set;
 
 
-public class MainActivity extends Activity implements OnClickListener, OnLongClickListener
+@SuppressLint("NewApi") public class MainActivity extends Activity implements OnClickListener, OnLongClickListener
 {
     private final String TAG = "MainActivity";
     private TextView mTitle;
@@ -61,11 +67,12 @@ public class MainActivity extends Activity implements OnClickListener, OnLongCli
     private ImageView mEpen;
 
     SlidingMenu leftMenu;
-    private ImageView mIvLogin;
-    private ImageView mIvSetting;
-    private ImageView mIvCloudSync;
-    private ImageView mIvCount;
-    
+    private CircleImageView mIvLogin;
+    private TextView TVusername;
+    private TextView TVnickname;
+    private RelativeLayout mRlSetting;
+    private RelativeLayout mRlCloudSync;
+    private RelativeLayout mRlCount;
     
     
     public final static int FLAG_EDIT = 1;
@@ -118,20 +125,32 @@ public class MainActivity extends Activity implements OnClickListener, OnLongCli
     @Override
 	protected void onStart() {
 		super.onStart();
+		LogUtil.i("---------MAIN---1---------------------"+HanvonApplication.strName);
 		 IntentFilter mFilter = new IntentFilter(BluetoothIntenAction.ACTION_EPEN_BATTERY_CHANGE);
 			mFilter.addAction(BluetoothIntenAction.ACTION_EPEN_BT_CONNECTED);
 			mFilter.addAction(BluetoothIntenAction.ACTION_EPEN_BT_DISCONNECT);
 			this.registerReceiver(btMsgReceiver, mFilter);
-		/*	if (BluetoothService.getServiceInstance().getBluetoothChatService()
-					  .getState() == BluetoothChatService.STATE_CONNECTED) {
-				mEpen.setBackgroundResource(R.drawable.epen_manager);
-			} else {
+			if (BluetoothService.getServiceInstance() != null){
+		    	if (BluetoothService.getServiceInstance().getBluetoothChatService()
+			    		  .getState() == BluetoothChatService.STATE_CONNECTED) {
+				    mEpen.setBackgroundResource(R.drawable.epen_manager);
+			    } else {
+				    mEpen.setBackgroundResource(R.drawable.epen_manager_nor);
+			    }
+		//	if (!isConnected()){
+		//	   BluetoothCheck();
+		//	}
+			}else{
 				mEpen.setBackgroundResource(R.drawable.epen_manager_nor);
 			}
-			
-			if (!isConnected()){
-			   BluetoothCheck();
-			}*/
+
+			if (!HanvonApplication.strName.equals("")){
+        	    ShowUserInfo();
+        	}else{
+        		TVusername.setText("未登录");
+		    	 TVnickname.setText("");
+        		mIvLogin.setBackgroundResource(R.drawable.logicon);
+        	}
 	}
     @TargetApi(Build.VERSION_CODES.ECLAIR) @SuppressLint("NewApi") public void BluetoothCheck(){
 		BluetoothAdapter adapter = BluetoothAdapter.getDefaultAdapter();
@@ -155,6 +174,9 @@ public class MainActivity extends Activity implements OnClickListener, OnLongCli
 			intent.putExtra("device", deviceInfo);
 			intent.setClass(MainActivity.this, BluetoothSearch.class);  
 			MainActivity.this.startActivity(intent);
+		}else{
+			Intent blueSearchIntent = new Intent(this, BluetoothSearch.class);
+    		startActivity(blueSearchIntent);
 		}
 	}
     
@@ -184,20 +206,82 @@ public class MainActivity extends Activity implements OnClickListener, OnLongCli
     	//为侧滑菜单设置布局
     	leftMenu.setMenu(R.layout.leftmenu);
     	
-    	mIvLogin = (ImageView) findViewById(R.id.iv_login_icon);
+    	mIvLogin = (CircleImageView) findViewById(R.id.iv_login_icon);
     	mIvLogin.setOnClickListener(this);
+
+    	TVusername = (TextView)findViewById(R.id.ivUserName);
+    	TVnickname = (TextView)findViewById(R.id.ivhvnUserName);
     	
-    	mIvSetting = (ImageView) findViewById(R.id.iv_setting_icon);
-    	mIvSetting.setOnClickListener(this);
+    	mRlSetting = (RelativeLayout) findViewById(R.id.rl_setting);
+    	mRlSetting.setOnClickListener(this);
     	
-    	mIvCount = (ImageView) findViewById(R.id.iv_count_icon);
-    	mIvCount.setOnClickListener(this);
+    	mRlCount = (RelativeLayout) findViewById(R.id.rl_count);
+    	mRlCount.setOnClickListener(this);
     	 
-    	mIvCloudSync = (ImageView) findViewById(R.id.iv_cloud_icon);
-    	mIvCloudSync.setOnClickListener(this);
-    	
+    	mRlCloudSync = (RelativeLayout) findViewById(R.id.rl_cloud);
+    	mRlCloudSync.setOnClickListener(this);
+
+    	ShowUserInfo();
     }
 
+    @TargetApi(Build.VERSION_CODES.GINGERBREAD) @SuppressLint("NewApi") public void ShowUserInfo(){
+    	String email = null,phone = null,hvnname = null,figureurl = null;
+		SharedPreferences mSharedPreferences=this.getSharedPreferences("BitMapUrl", Activity.MODE_MULTI_PROCESS);
+		int flag = mSharedPreferences.getInt("flag", 0);
+		HanvonApplication.userFlag = flag;
+		String nickname=mSharedPreferences.getString("nickname", "");
+		boolean isHasNick = mSharedPreferences.getBoolean("isHasNick", true);
+		if (flag == 0){
+		    email = mSharedPreferences.getString("email", "");
+		    phone = mSharedPreferences.getString("phone", "");
+		}else{
+		    figureurl=mSharedPreferences.getString("figureurl", "");	
+		    hvnname = mSharedPreferences.getString("username", "");
+		}
+		int status = mSharedPreferences.getInt("status", 0);
+		LogUtil.i("flag:"+flag+"  nickname:"+nickname+"   isHasNick:"+isHasNick+"  username:"+hvnname+"  figureurl:"+figureurl);
+
+		if (status == 1){
+		    if (flag == 0){
+			    if(!nickname.isEmpty()){
+			    	TVusername.setText(nickname);
+				     if (isHasNick){
+				         if (email.equals("")){
+				        	 TVnickname.setText(phone);
+				         }else{
+				        	 TVnickname.setText(email);
+				         }
+				     }
+				     HanvonApplication.strName = nickname;
+				     HanvonApplication.strEmail = email;
+				     HanvonApplication.strPhone = phone;
+				     mIvLogin.setBackgroundResource(R.drawable.login_head_default);
+				     LogUtil.i("emai:"+email+"  phone:"+phone);
+			    }
+			 //   figureurl = mSharedPreferences.getString("drawable", "");
+			 //   if (!figureurl.equals("")){
+			 //   	mIvLogin.setImageDrawable(byteToDrawable(figureurl));
+			//    }
+		    }
+		    if (flag == 1 || flag == 2){
+			    if(!nickname.isEmpty()){
+			    	 TVusername.setText(nickname);
+			    	 TVnickname.setText(hvnname);
+				     HanvonApplication.strName = nickname;
+				     HanvonApplication.hvnName = hvnname;
+			    }
+			    if(!figureurl.isEmpty()){
+				    BitmapUtils  bitmapUtils = new  BitmapUtils(this);
+		            bitmapUtils.configDefaultLoadingImage(R.drawable.logicon);
+		            bitmapUtils.configDefaultBitmapMaxSize(BitmapCommonUtils.getScreenSize(
+		        		    this).scaleDown(3));
+		            bitmapUtils.configDefaultShowOriginal(true);
+				    bitmapUtils.display(((ImageView)findViewById(R.id.iv_login_icon)),figureurl);
+			    }
+		    }
+		}
+    }
+    
     public void initDatas()
     {
     	mNoteBookRecordDao = new NoteBookRecordDao(this);
@@ -299,8 +383,9 @@ public class MainActivity extends Activity implements OnClickListener, OnLongCli
             	    Intent blueDetailIntent = new Intent(this, BluetoothDetail.class);
         	    	startActivity(blueDetailIntent);
             	}else{
-            		Intent blueSearchIntent = new Intent(this, BluetoothSearch.class);
-            		startActivity(blueSearchIntent);
+            		BluetoothCheck();
+            	//	Intent blueSearchIntent = new Intent(this, BluetoothSearch.class);
+            	//	startActivity(blueSearchIntent);
             	}
             	break;
             case R.id.tv_leftbtn:
@@ -310,20 +395,25 @@ public class MainActivity extends Activity implements OnClickListener, OnLongCli
     		break;
     		
             case R.id.iv_login_icon:
-            	Intent newIntent1 = new Intent(this, LoginActivity.class);
-    		    startActivity(newIntent1);
+            	if (HanvonApplication.strName.equals("")){
+            	    Intent newIntent1 = new Intent(this, LoginActivity.class);
+    		        startActivity(newIntent1);
+            	}else{
+            		Intent newIntent1 = new Intent(this, ShowUserMessage.class);
+    		        startActivity(newIntent1);
+            	}
             break;
             
-            case R.id.iv_setting_icon:
+            case R.id.rl_setting:
                 Intent settingItent = new Intent(this, SettingActivity.class);
                 startActivity(settingItent);
             break;
             
-            case R.id.iv_count_icon:
+            case R.id.rl_count:
                 
             break;
             
-            case R.id.iv_cloud_icon:
+            case R.id.rl_cloud:
                 
             break;    
         }

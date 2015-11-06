@@ -159,7 +159,8 @@ public class BluetoothSearch extends Activity implements OnClickListener{
 				if (noPairedDeviceList.size() == 0){
 				    if (deviceInfo != null){
 					    // 自动连接
-					    tryConnect();
+					 //   tryConnect();
+					    noPairedDeviceList.add(deviceInfo);
 				    }else{
 				    	setMessage(R.string.none_found);
 						bnLeft.setVisibility(View.VISIBLE);

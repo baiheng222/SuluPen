@@ -1,0 +1,146 @@
+package com.hanvon.sulupen.login;
+
+import com.hanvon.sulupen.MainActivity;
+import com.hanvon.sulupen.R;
+import com.hanvon.sulupen.application.HanvonApplication;
+import com.hanvon.sulupen.utils.LoginUtil;
+import android.app.Activity;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
+import android.os.Bundle;
+import android.view.KeyEvent;
+import android.view.View;
+import android.view.Window;
+import android.view.View.OnClickListener;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+import android.widget.Toast;
+
+public class ShowUserMessage extends Activity implements OnClickListener{
+
+	private TextView TVuserName;
+	private TextView TVnickName;
+	private ImageView IVmodifyNick;
+	private TextView TVaccountSafety;
+	private RelativeLayout RLmodifyPwd;
+	private ImageView IVmodifyPwd;
+	private TextView TVthirdLogin;
+	private RelativeLayout RLthird;
+	private ImageView IVthirdBind;
+//	private TextView TVLoginOut;
+	
+	private ImageView TVback;
+
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
+		setContentView(R.layout.usermessage);
+
+		if (HanvonApplication.userFlag != 0){
+			findViewById(R.id.safety).setVisibility(View.GONE);
+			findViewById(R.id.modify_pwd_id).setVisibility(View.GONE);
+		}else{
+			findViewById(R.id.third_login).setVisibility(View.GONE);
+			findViewById(R.id.third).setVisibility(View.GONE);
+		}
+		
+		
+	    TVuserName = (TextView) findViewById(R.id.show_uesrname);
+	    TVnickName = (TextView) findViewById(R.id.show_nickname);
+	    IVmodifyNick = (ImageView) findViewById(R.id.modify_nickname);
+	    TVaccountSafety = (TextView) findViewById(R.id.safety);
+	    RLmodifyPwd = (RelativeLayout) findViewById(R.id.modify_pwd_id);
+	    IVmodifyPwd = (ImageView) findViewById(R.id.modify_password);
+	    TVthirdLogin = (TextView) findViewById(R.id.third_login);
+	    RLthird = (RelativeLayout) findViewById(R.id.third);
+	    IVthirdBind = (ImageView) findViewById(R.id.third_bind);
+	//    TVLoginOut = (TextView) findViewById(R.id.quit_login);
+        TVback = (ImageView)findViewById(R.id.usermessage_back);
+        
+	    IVmodifyNick.setOnClickListener(this);
+	    IVmodifyPwd.setOnClickListener(this);
+	    IVthirdBind.setOnClickListener(this);
+	//    TVLoginOut.setOnClickListener(this);
+	    TVback.setOnClickListener(this);
+	    
+	    ShowUserInfo();
+	}
+	
+	@Override
+	public void onClick(View v) {
+		// TODO Auto-generated method stub
+		switch(v.getId()){
+		    case R.id.modify_nickname:
+		    	Toast.makeText(this, "功能 未实现，请期待下个版本！", Toast.LENGTH_LONG).show();
+		    	break;
+		    case R.id.modify_password:
+		    	Toast.makeText(this, "功能 未实现，请期待下个版本！", Toast.LENGTH_LONG).show();
+		    	break;
+		    case R.id.third_bind:
+		    	Toast.makeText(this, "功能 未实现，请期待下个版本！", Toast.LENGTH_LONG).show();
+		    	break;
+		//    case R.id.quit_login:
+		 //   	UserLoginOut();
+		  //  	break;
+		    case R.id.usermessage_back:
+		    	startActivity(new Intent(ShowUserMessage.this, MainActivity.class));
+				ShowUserMessage.this.finish();
+		    	break;
+		}
+		
+	}
+	
+	public void ShowUserInfo(){
+		TVuserName.setText(HanvonApplication.hvnName);
+		if (!HanvonApplication.strName.equals("")){
+			TVnickName.setText(HanvonApplication.strName);
+		}
+	}
+	
+	public void UserLoginOut(){
+		HanvonApplication.strName = "";
+		HanvonApplication.hvnName = "";
+		HanvonApplication.BitHeadImage = null;
+		SharedPreferences mSharedPreferences=getSharedPreferences("BitMapUrl", Activity.MODE_MULTI_PROCESS);
+		int flag =mSharedPreferences.getInt("flag", 0);
+		if (flag == 0){
+		}else if(flag == 1){
+		    LoginUtil loginUtil = new LoginUtil(ShowUserMessage.this,ShowUserMessage.this);
+		    loginUtil.QQLoginOut();
+	    }else if (flag == 2){
+	    }
+		Editor mEditor=	mSharedPreferences.edit();
+		mEditor.putInt("status", 0);
+		mEditor.commit();
+
+		SharedPreferences mSharedCloudPreferences=getSharedPreferences("Cloud_Info", Activity.MODE_MULTI_PROCESS);
+		int cloudFlag = mSharedCloudPreferences.getInt("cloudtype", 0);
+		if (cloudFlag != 2){
+		    Editor mCloudEditor = mSharedCloudPreferences.edit();
+		    mCloudEditor.putString("token", "");
+		    mCloudEditor.putInt("cloudtype", 0);
+	        HanvonApplication.cloudType = 0;
+	        mCloudEditor.commit();
+		}
+
+		startActivity(new Intent(ShowUserMessage.this, MainActivity.class));
+		ShowUserMessage.this.finish();
+	}
+
+	@Override  
+	public boolean onKeyDown(int keyCode, KeyEvent event)
+	{
+	    if (keyCode == KeyEvent.KEYCODE_BACK )
+	    {
+	    	startActivity(new Intent(ShowUserMessage.this, MainActivity.class));
+			ShowUserMessage.this.finish();
+	    }
+	    return false; 
+	}
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+	}
+}

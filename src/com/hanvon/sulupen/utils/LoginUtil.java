@@ -187,6 +187,8 @@ public class LoginUtil {
 			            SharedPreferences mSharedPreferences=mContext.getSharedPreferences("BitMapUrl", Activity.MODE_MULTI_PROCESS);
 				        Editor mEditor=	mSharedPreferences.edit();
 				        mEditor.putString("username", username);
+				        HanvonApplication.hvnName = username;
+				        HanvonApplication.strName = qqNickname;
 				        mEditor.putString("nickname", qqNickname);
 				        mEditor.putString("figureurl", figureurl);
 				        mEditor.putInt("flag", 1);
@@ -224,6 +226,8 @@ public class LoginUtil {
 			    	    HanvonApplication.isActivity = true;
 			            SharedPreferences mSharedPreferences=mContext.getSharedPreferences("BitMapUrl", Activity.MODE_MULTI_PROCESS);
 				        Editor mEditor=	mSharedPreferences.edit();
+				        HanvonApplication.hvnName = qqName;
+				        HanvonApplication.strName = nickname;
 				        mEditor.putString("username", qqName);
 				        mEditor.putString("nickname", nickname);
 				        mEditor.putString("figureurl", figureurl);

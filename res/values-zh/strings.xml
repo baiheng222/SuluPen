@@ -6,6 +6,7 @@
     <string name="title_notebook">笔记本</string>
     <string name="title_new_notebook">新建笔记本</string>
     <string name="title_settings">设置</string>
+    <string name="title_about">关于我们</string>
     <string name="edit_new">新建</string>
     <string name="edit_edit">编辑</string>
     <string name="edit_search">搜索</string>
@@ -30,5 +31,20 @@
 	<string name="setting_item_feedback">意见反馈</string>
 	<string name="setting_item_about">关于我们</string>
 	<string name="setting_item_logout">退出登录</string>
-    
+	<string name="leftmenu_count">统计</string>
+	<string name="leftmenu_setting">设置</string>
+	<string name="leftmenu_cloud">云同步</string>
+	<string name="feedback_thanks">感谢您对速录笔的关注与支持，我们会认真处理您的反馈，尽快修复和完善相关功能能</string>
+    <string name="feedback_tip_question">问题和意见</string>
+    <string name="feedback_tip_email">您的邮件</string>
+    <string name="feedback_tip_inputs_question">请简要描述您的问题</string>
+    <string name="feedback_tip_inputs_email">选填，用于解决问题后对您的回复</string>
+    <string name="feedback_commit">提交</string>
+    <string name="feedback_upload">提交反馈</string>
+    <string name="feedback_content_null">请完善您的反馈内容</string>
+    <string name="feedback_mail_null">请填写您的邮箱</string>
+    <string name="feedback_mail_addr_err">邮箱格式错误</string>
+    <string name="feedback_progress">正在发送反馈意见，请稍候...</string>
+    <string name="feedback_error">网络连接异常，您的反馈信息已保存，请稍后重试。</string>
+    <string name="feedback_upload_done">提交成功！感谢您的宝贵意见。</string>
 </resources>

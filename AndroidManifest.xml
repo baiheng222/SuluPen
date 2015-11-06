@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.hanvon.sulupen"
-    android:versionCode="10"
-    android:versionName="1.0.1.001" >
+    android:versionCode="12"
+    android:versionName="1.0.1.003" >
 
     <uses-sdk
         android:minSdkVersion="8"
@@ -172,6 +172,15 @@
         <activity android:name="SettingActivity">
         </activity>
         
+        <activity android:name="AboutActivity">
+        </activity>
+        
+         <activity android:name="FeedBackActivity">
+        </activity>
+        
+         <activity android:name="HelpActivity">
+        </activity>
+        
         
         <activity
                 android:name="com.hanvon.sulupen.login.LoginActivity"
@@ -203,6 +212,8 @@
         <activity  android:name="com.hanvon.sulupen.login.RegisterUserFromPhone">
         </activity>
         <activity  android:name="com.hanvon.sulupen.login.RegisterUserGetCodePhone">
+        </activity>
+        <activity  android:name="com.hanvon.sulupen.login.ShowUserMessage">
         </activity>
         <activity  android:name="com.hanvon.sulupen.login.RememberPassword">
         </activity>

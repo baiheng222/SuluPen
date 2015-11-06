@@ -2,6 +2,8 @@ package com.hanvon.bluetooth;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.zip.GZIPInputStream;
 
 import org.json.JSONException;
@@ -13,12 +15,18 @@ import com.hanvon.sulupen.db.bean.NoteRecord;
 import com.hanvon.sulupen.db.dao.NoteRecordDao;
 import com.hanvon.sulupen.helper.PreferHelper;
 import com.hanvon.sulupen.login.LoginActivity;
+import com.hanvon.sulupen.utils.CustomDialog;
 import com.hanvon.sulupen.utils.LogUtil;
 import com.hanvon.sulupen.utils.TimeUtil;
 
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.app.Service;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -27,6 +35,7 @@ import android.os.IBinder;
 import android.os.Message;
 import android.preference.PreferenceManager;
 import android.util.Base64;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 /**
@@ -44,6 +53,9 @@ public class BluetoothService extends Service{
 	// 1为盲扫模式，2为校对模式,3.输入法模式
 	public static int scanRecordMode = 2;
 	
+	private static AlertDialog d;
+	private static Timer sendFileTimer;
+	private static Timer dialogShowTimer;
 	
 	public static byte[] unGZip(byte[] data) {
 		byte[] b = null;
@@ -73,6 +85,38 @@ public class BluetoothService extends Service{
 	 */
 	public void handlerMsg(Message msg) {
 		switch (msg.what) {
+		/**
+		 * 蓝牙升级文件传输时间限制
+		 */
+		case BluetoothChatService.BLUETOOTH_MESSAGE_SEND_TIME:
+			int time = msg.arg1;
+			if (time <= 0){
+				sendFileTimer.cancel();
+				
+				d.setMessage("升级失败");
+				dialogShowTimer = new Timer();
+				TimerTask timerTask = new TimerTask() {
+					 int i = 5;
+	                 @Override 
+	                 public void run() {
+	                	 Message msg = new Message(); 
+	                     msg.what = BluetoothChatService.BLUETOOTH_DIALOG_SHOW_TIME; 
+	                     msg.arg1 = i--;
+	                     msgHandler.sendMessage(msg);
+	                 }
+	             };
+	             dialogShowTimer.schedule(timerTask, 1000, 1000);// 1秒后开始倒计时，倒计时间隔为1秒  
+			}
+			break;
+			
+		case BluetoothChatService.BLUETOOTH_DIALOG_SHOW_TIME:
+			int showtime = msg.arg1;
+			if (showtime <= 0){
+				d.dismiss();
+			//	Toast.makeText(this, "升级失败", Toast.LENGTH_LONG).show();
+				dialogShowTimer.cancel();
+			}
+			break;
 		/**
 		 * 蓝牙模块
 		 */
@@ -154,12 +198,20 @@ public class BluetoothService extends Service{
 							LogUtil.i("tong========&&&&&&&&&=======add db"+jsonData.toString());
 							LogUtil.i("----deviceinfo:"+jsonData.toString());
 							String serialNum = jsonData.getString("device_serialNum");
+							String isSendImage = jsonData.getString("device_isSendImage");
+							if(isSendImage.equals("0")){
+								BluetoothSetting.setBlueIsSendImage(false);
+							}else{
+								BluetoothSetting.setBlueIsSendImage(true);
+							}
+							
 							BluetoothSetting.setSeralNumber(serialNum);
 							/********************add by chenxzhuang*****************/
-							String version = jsonData.getString("device_version");
+							String device_version = jsonData.getString("device_version");
+							String version = device_version.substring(device_version.indexOf(".")+1, device_version.lastIndexOf("."));
 							LogUtil.i("----device_version:"+version);
-					//		HardUpdate hardUpdate = new HardUpdate(HanVonService.this);
-					//		hardUpdate.checkVersionUpdate(version);
+							HardUpdate hardUpdate = new HardUpdate(BluetoothService.this);
+							hardUpdate.checkVersionUpdate(version);
 							/**********************add end*************************/
 							break;
 
@@ -262,20 +314,47 @@ public class BluetoothService extends Service{
 							int resultCode = jsonObject.getInt("result");
 							LogUtil.i("------------resultcode-------"+resultCode);
 							if (resultCode == 11) {
-							//	mProgressDialog = ProgressDialog.show(this,"提示", "正在进行硬件升级，大概需要4-5分钟，请不要进行按键操作，请耐心等候!",true,false);
+								d = new AlertDialog.Builder(this).
+										setMessage("正在进行硬件升级，大概需要4-5分钟，请不要进行按键操作，请耐心等候!").
+										create();
+								d.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
+								d.show();
+								sendFileTimer = new Timer();
+								TimerTask timerTask = new TimerTask() {
+									 int i = 60*60;
+					                 @Override 
+					                 public void run() {
+					                	 Message msg = new Message(); 
+					                     msg.what = BluetoothChatService.BLUETOOTH_MESSAGE_SEND_TIME; 
+					                     msg.arg1 = i--;
+					                     msgHandler.sendMessage(msg);
+					                 }
+					             };
+					             sendFileTimer.schedule(timerTask, 3000, 1000);// 3秒后开始倒计时，倒计时间隔为1秒  
 								// create a thread and start it to send upgrade file.
 								new Thread(new Runnable() {
 									@Override
 									public void run() {
-									//	getBluetoothChatService().sendBTData(1,
-									//			"/mnt/sdcard/upgradeTest.zip");
-									//			"/sdcard/"+HanvonApplication.HardUpdateName);
+										getBluetoothChatService().sendBTData(1,
+												"/sdcard/"+HanvonApplication.HardUpdateName);
+										LogUtil.i("Hard send name:"+"/sdcard/"+HanvonApplication.HardUpdateName);
 									}
 								}).start();
 							} else if (resultCode == 31){
-							//	mProgressDialog.dismiss();
-								Toast.makeText(this, "扫描笔升级即将完成，将在5s后重启!", Toast.LENGTH_SHORT).show();
-								// UiUtil.showToast(this, "响应结果:"+resultCode);
+								d.setMessage("扫描笔升级即将完成，将在5s后重启!");
+								sendFileTimer.cancel();
+								dialogShowTimer = new Timer();
+								TimerTask timerTask = new TimerTask() {
+									 int i = 5;
+					                 @Override 
+					                 public void run() {
+					                	 Message msg = new Message(); 
+					                     msg.what = BluetoothChatService.BLUETOOTH_DIALOG_SHOW_TIME; 
+					                     msg.arg1 = i--;
+					                     msgHandler.sendMessage(msg);
+					                 }
+					             };
+					             dialogShowTimer.schedule(timerTask, 1000, 1000);// 1秒后开始倒计时，倒计时间隔为1秒  
 							}
 							break;
 						case 106:
@@ -290,11 +369,8 @@ public class BluetoothService extends Service{
 						 * 功能键
 						 */
 						case 107:
-							//盲扫模式
-							if (scanRecordMode == 1) {
-
-								//校对模式
-							} else if (scanRecordMode == 2) {
+							//校对模式
+							 if (scanRecordMode == 2 || scanRecordMode == 1) {
 								if (ScanNoteActivity.scanNoteAct != null)
 									ScanNoteActivity.scanNoteAct
 											.appendText(funcKeyCode());

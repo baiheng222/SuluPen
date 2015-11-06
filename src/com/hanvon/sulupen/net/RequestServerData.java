@@ -190,6 +190,11 @@ public class RequestServerData {
 		return simpleRequest(HTTPTYPE.POST, UrlBankUtil.getphoneauthcode(),json);
 	}
 	
+	/*汉王用户通过邮箱注册获取激活邮件*/
+	public static RequestResult getActivityEmail(JSONObject json) {
+		return simpleRequest(HTTPTYPE.POST, UrlBankUtil.getActivityEmai(),json);
+	}
+	
 	/*汉王用户通过手机找回密码获取验证码*/
 	public static RequestResult getauthcodeForRmbPasswd(JSONObject json) {
 		return simpleRequest(HTTPTYPE.POST, UrlBankUtil.getcodeForPasswd(),json);
