@@ -47,4 +47,14 @@
     <string name="feedback_progress">正在发送反馈意见，请稍候...</string>
     <string name="feedback_error">网络连接异常，您的反馈信息已保存，请稍后重试。</string>
     <string name="feedback_upload_done">提交成功！感谢您的宝贵意见。</string>
+    <string name="start_input">启用汉王输入法</string>
+	<string name="open_guide_first">选择汉王输入法</string>
+    <string name="open_guide_second">切换到汉王输入法</string>
+    <string name="open_bn_choose">去勾选></string>
+    <string name="open_bn_choosed">已勾选</string>
+    <string name="open_bn_switch">去切换></string>
+    <string name="open_bn_switched">已切换</string>
+    <string name="setting_sound_key_title">按键声音</string>
+    <string name="setting_vibrate_title">按键震动</string>
+    <string name="setting_prediction_title">联想输入</string>
 </resources>

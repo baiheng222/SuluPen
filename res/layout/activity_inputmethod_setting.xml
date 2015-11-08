@@ -1,0 +1,293 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#e1e1e1" >
+
+    <RelativeLayout
+        android:id="@+id/rl_title"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_alignParentTop="true"
+        android:background="#f6f6f6" >
+
+        <ImageView
+            android:id="@+id/iv_comeback"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:src="@drawable/back" />
+
+        <TextView
+            android:id="@+id/tv_cancel_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:gravity="center_vertical"
+            android:text="@string/edit_cancel"
+            android:textColor="#3b8989"
+            android:textSize="13sp"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/setting_item_inputmethod"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerHorizontal="true"
+            android:gravity="center_vertical|center_horizontal"
+            android:text="@string/setting_item_inputmethod"
+            android:textColor="#4d4d4d"
+            android:textSize="20sp" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_start_input"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_below="@id/rl_title"
+        android:layout_marginTop="10dp"
+        android:background="#f6f6f6" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="12dp"
+            android:gravity="center_vertical"
+            android:text="@string/start_input"
+            android:textColor="#959595"
+            android:textSize="13sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="12dp"
+            android:gravity="center_vertical"
+            android:text=">"
+            android:textColor="#959595"
+            android:textSize="13sp" 
+            android:visibility="gone"/>
+    </RelativeLayout>
+
+    
+        <RelativeLayout
+        android:id="@+id/rl_separator1"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/rl_start_input"
+        android:background="#f6f6f6" >
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="1dp"
+            android:background="#e1e1e1" />
+        </RelativeLayout>
+    
+    
+    <RelativeLayout
+        android:id="@+id/rl_select_input"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_below="@id/rl_separator1"
+        android:layout_marginBottom="0dp"
+        android:background="#f6f6f6" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="12dp"
+            android:gravity="center_vertical"
+            android:text="@string/open_guide_first"
+            android:textColor="#959595"
+            android:textSize="13sp" />
+
+        <TextView
+            android:id="@+id/tv_choose"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="12dp"
+            android:gravity="center_vertical"
+            android:text="@string/open_bn_choose"
+            android:textColor="#959595"
+            android:textSize="13sp" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_separator2"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/rl_select_input"
+        android:background="#f6f6f6" >
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="1dp"
+            android:background="#e1e1e1" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_change_input"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_below="@id/rl_separator2"
+        android:layout_marginBottom="0dp"
+        android:layout_marginTop="0dp"
+        android:background="#f6f6f6" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="12dp"
+            android:gravity="center_vertical"
+            android:text="@string/open_guide_second"
+            android:textColor="#959595"
+            android:textSize="13sp" />
+
+        <TextView
+            android:id="@+id/tv_switch"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="12dp"
+            android:gravity="center_vertical"
+            android:text="@string/open_bn_switch"
+            android:textColor="#959595"
+            android:textSize="13sp" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_input_voice"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_below="@id/rl_change_input"
+        android:layout_marginBottom="0dp"
+        android:layout_marginTop="20dp"
+        android:background="#f6f6f6" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="12dp"
+            android:gravity="center_vertical"
+            android:text="@string/setting_sound_key_title"
+            android:textColor="#959595"
+            android:textSize="13sp" />
+
+        <ImageView
+            android:id="@+id/setting_sound_switch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="12dp"
+            android:background="@drawable/switch_on"
+            android:gravity="center_vertical" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_separator3"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/rl_input_voice"
+        android:background="#f6f6f6" >
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="1dp"
+            android:background="#e1e1e1" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_input_vibrate"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_below="@id/rl_separator3"
+        android:layout_marginBottom="0dp"
+        android:layout_marginTop="0dp"
+        android:background="#f6f6f6" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="12dp"
+            android:gravity="center_vertical"
+            android:text="@string/setting_vibrate_title"
+            android:textColor="#959595"
+            android:textSize="13sp" />
+
+        <ImageView
+            android:id="@+id/setting_vibrate_switch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/switch_on"
+            android:layout_marginRight="12dp"
+            android:gravity="center_vertical" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_separator4"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/rl_input_vibrate"
+        android:background="#f6f6f6" >
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="1dp"
+            android:background="#e1e1e1" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_input_prediction"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_below="@id/rl_separator4"
+        android:layout_marginBottom="0dp"
+        android:layout_marginTop="0dp"
+        android:background="#f6f6f6" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="12dp"
+            android:gravity="center_vertical"
+            android:text="@string/setting_prediction_title"
+            android:textColor="#959595"
+            android:textSize="13sp" />
+
+        <ImageView
+            android:id="@+id/setting_predication_switch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/switch_on"
+            android:layout_marginRight="12dp"
+            android:gravity="center_vertical"
+/>
+    </RelativeLayout>
+
+
+
+</RelativeLayout>

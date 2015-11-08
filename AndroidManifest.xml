@@ -120,7 +120,7 @@
             </intent-filter>
         </service>
         <service
-            android:name=".PinyinIME"
+            android:name="com.hanvon.sulupen.pinyin.PinyinIME"
             android:label="@string/ime_name"
             android:permission="android.permission.BIND_INPUT_METHOD" >
             <intent-filter>
@@ -172,6 +172,9 @@
         <activity android:name="SettingActivity">
         </activity>
         
+       <activity android:name="com.hanvon.sulupen.SuLuInputActivity" />
+
+         
         <activity android:name="AboutActivity">
         </activity>
         
