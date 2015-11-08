@@ -340,6 +340,8 @@ public class ScanNoteActivity extends Activity implements OnClickListener{
                 tvTopic.setText(mNoteBookRecord.getNoteBookName());     
                 HanvonApplication.noteCreateTime = TimeUtil.getcurTime(TimeUtil.FORMAT_FULL);
                 curAddress = ((HanvonApplication) getApplication()).getAddrDetail();
+                
+                mScanRecord = new NoteRecord();
 			}
 			else if (flagIntent == FLAG_CREATE ) 
 			{
@@ -354,6 +356,8 @@ public class ScanNoteActivity extends Activity implements OnClickListener{
 
 				HanvonApplication.noteCreateTime = TimeUtil.getcurTime(TimeUtil.FORMAT_FULL);
 				curAddress = ((HanvonApplication) getApplication()).getAddrDetail();
+				
+				mScanRecord = new NoteRecord();
 			} 
 			else 
 			{
@@ -564,7 +568,7 @@ public class ScanNoteActivity extends Activity implements OnClickListener{
 			}
 			
 			//new a NoteRecord object to be saved in database
-			NoteRecord note = new NoteRecord();
+			NoteRecord note = mScanRecord;//new NoteRecord();
 			//get NoteBookRecord object include in NoteRecord
             NoteBookRecord noteBook = mNoteBookRecord;//= new NoteBookRecord();
 			noteBook.setNoteBookName(notebookName);
