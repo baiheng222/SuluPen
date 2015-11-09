@@ -1,24 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
-    
-    <TextView 
+    android:layout_height="43dp" >
+
+    <TextView
         android:id="@+id/tv_notebook_name"
-        android:layout_height="match_parent"
         android:layout_width="wrap_content"
+        android:layout_height="match_parent"
         android:layout_alignParentLeft="true"
-        android:layout_marginLeft="8dp"
+        android:layout_marginLeft="20dp"
+        android:gravity="center_vertical"
         android:text="NoteBookName"
-        android:textSize="20sp"/>
-    
-    <TextView 
+        android:textColor="#333333"
+        android:textSize="16sp" />
+
+    <TextView
         android:id="@+id/tv_notes_in_notebook"
-        android:layout_height="match_parent"
         android:layout_width="wrap_content"
+        android:layout_height="match_parent"
         android:layout_alignParentRight="true"
-        android:layout_marginRight="8dp"
+        android:layout_marginRight="20dp"
+        android:gravity="center_vertical"
         android:text="16"
-        android:textSize="16sp"/>	
+        android:textColor="#959595"
+        android:textSize="12sp" />
 
 </RelativeLayout>

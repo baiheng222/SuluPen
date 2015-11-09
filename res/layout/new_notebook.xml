@@ -7,18 +7,19 @@
     android:id="@+id/rl_title"
     android:layout_width="match_parent"
     android:layout_height="48dp"
-    android:layout_alignParentTop="true" >
+    android:layout_alignParentTop="true"
+    android:background="#f6f6f6" >
     
     	<TextView
         android:id="@+id/tv_cancel_btn"
     	android:layout_width="wrap_content"
     	android:layout_height="match_parent"
     	android:layout_alignParentLeft="true"
-    	android:layout_marginLeft="8dp"
+    	android:layout_marginLeft="15dp"
     	android:layout_marginRight="8dp"
     	android:textColor="#3b8989"
     	android:text="@string/edit_cancel"
-    	android:textSize="16sp"
+    	android:textSize="14sp"
     	android:gravity="center_vertical"/>
     
         <TextView
@@ -27,9 +28,9 @@
     	android:layout_height="match_parent"
     	android:layout_alignParentRight="true"
     	android:layout_marginLeft="8dp"
-    	android:layout_marginRight="8dp"
+    	android:layout_marginRight="15dp"
     	android:text="@string/edit_done"
-    	android:textSize="16sp"
+    	android:textSize="14sp"
     	android:textColor="#3b8989"
     	android:gravity="center_vertical"/>
         
@@ -39,9 +40,12 @@
             android:layout_height="match_parent"
             android:layout_toLeftOf="@id/tv_done_btn"
             android:layout_toRightOf="@id/tv_cancel_btn"
+            android:layout_centerHorizontal="true"
+           	android:layout_centerVertical="true"
             android:gravity="center_vertical|center_horizontal"
             android:text="@string/title_new_notebook"
-            android:textSize="20sp"/>        
+            android:textColor="#4d4d4d"
+            android:textSize="16sp"/>        
 	</RelativeLayout>
 	
     <RelativeLayout 
@@ -56,10 +60,10 @@
     	android:layout_width="wrap_content"
     	android:layout_height="match_parent"
     	android:layout_alignParentLeft="true"
-    	android:layout_marginLeft="8dp"
-    	android:layout_marginRight="8dp"
+    	android:layout_marginLeft="15dp"
+    	android:layout_marginRight="15dp"
     	android:text="@string/new_notebook_tips"
-    	android:textSize="16sp"
+    	android:textSize="10sp"
     	android:textColor="#959595"
     	android:gravity="center_vertical"/>
     
@@ -82,7 +86,7 @@
        	    android:layout_height="match_parent"
        	    android:textColor="#c8c8c8"
        	    android:background="@null"
-       	    android:paddingLeft="7dp"
+       	    android:paddingLeft="16dp"
        	    android:text="@string/default_notebookname" />
         
     </RelativeLayout>

@@ -15,11 +15,11 @@
     	android:layout_width="wrap_content"
     	android:layout_height="match_parent"
     	android:layout_alignParentLeft="true"
-    	android:layout_marginLeft="8dp"
+    	android:layout_marginLeft="15dp"
     	android:layout_marginRight="8dp"
     	android:textColor="#3b8989"
     	android:text="@string/edit_cancel"
-    	android:textSize="16sp"
+    	android:textSize="14sp"
     	android:gravity="center_vertical"/>
     
         <TextView
@@ -28,9 +28,9 @@
     	android:layout_height="match_parent"
     	android:layout_alignParentRight="true"
     	android:layout_marginLeft="8dp"
-    	android:layout_marginRight="8dp"
+    	android:layout_marginRight="15dp"
     	android:text="@string/edit_done"
-    	android:textSize="16sp"
+    	android:textSize="14sp"
     	android:textColor="#3b8989"
     	android:gravity="center_vertical"/>
         
@@ -42,21 +42,29 @@
             android:layout_toRightOf="@id/tv_back_btn"
             android:gravity="center_vertical|center_horizontal"
             android:text="@string/change_notebook"
-            android:textSize="20sp"/>        
+            android:textSize="16sp"
+            android:textColor="#4d4d4d"/>        
 	</RelativeLayout>
 	
     <RelativeLayout 
+        android:id="@+id/seperator"
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:background="#e2e2e2"
+        android:layout_below="@id/rl_title"
+        ></RelativeLayout>
+    
+    <RelativeLayout 
         android:id="@+id/rl_tips"
         android:layout_width="match_parent"
-        android:layout_height="30dp"
-        android:background="#e2e2e2"
-        android:layout_below="@id/rl_title">
+        android:layout_height="43dp"
+        android:layout_below="@id/seperator">
         
         <ImageView 
             android:id="@+id/iv_add_new_notebook"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="7dp"
+            android:layout_marginLeft="19dp"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
             android:src="@drawable/new_notebook"
@@ -67,20 +75,29 @@
     	android:layout_width="wrap_content"
     	android:layout_height="match_parent"
     	android:layout_toRightOf="@id/iv_add_new_notebook"
-    	android:layout_marginLeft="8dp"
+    	android:layout_marginLeft="14dp"
     	android:layout_marginRight="8dp"
     	android:text="@string/title_new_notebook"
-    	android:textSize="16sp"
-    	android:textColor="#959595"
+    	android:textSize="14sp"
+    	android:textColor="#3b8989"
+    	android:layout_centerVertical="true"
     	android:gravity="center_vertical"/>
     
 
         
     </RelativeLayout>
     
+    <RelativeLayout 
+        android:id="@+id/seperator2"
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:background="#e2e2e2"
+        android:layout_below="@id/rl_tips"
+        ></RelativeLayout>
+    
     <ListView
         android:id="@+id/lv_list_of_change_notebook"
-        android:layout_below="@id/rl_tips"
+        android:layout_below="@id/seperator2"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
                 >

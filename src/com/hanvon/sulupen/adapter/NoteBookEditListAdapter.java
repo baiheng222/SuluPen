@@ -90,7 +90,7 @@ public class NoteBookEditListAdapter extends BaseAdapter
 		//mContext.delNoteBook(pos);
 		
 		AlertDialog.Builder dialog = new AlertDialog.Builder(mContext);
-		dialog.setMessage("Delete NoteBook?");
+		dialog.setMessage(mContext.getString(R.string.del_notebook_tip));
 		dialog.setNegativeButton(R.string.button_cancel, new DialogInterface.OnClickListener() 
 		{
 			@Override

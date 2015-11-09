@@ -2,38 +2,35 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.hanvon.sulupen.MainActivity" >
-    
-    <RelativeLayout 
-    android:id="@+id/rl_title"
-    android:layout_width="match_parent"
-    android:layout_height="45dp"
-    android:layout_alignParentTop="true" >
-    
-    	<ImageView
-        android:id="@+id/tv_leftbtn"
-    	android:layout_width="wrap_content"
-    	android:layout_height="wrap_content"
-    	android:layout_alignParentLeft="true"
-    	android:layout_marginLeft="8dp"
-    	android:layout_marginRight="8dp"
-    	android:src="@drawable/main_left"
-    	android:gravity="center_vertical"/>
-    
+
+    <RelativeLayout
+        android:id="@+id/rl_title"
+        android:layout_width="fill_parent"
+        android:layout_height="48dp"
+        android:layout_alignParentTop="true"
+        android:background="#f6f6f6" >
+
         <ImageView
-        android:id="@+id/iv_rightbtn"
-    	android:layout_width="wrap_content"
-    	android:layout_height="wrap_content"
-    	android:layout_alignParentRight="true"
-    	android:layout_marginLeft="8dp"
-    	android:layout_marginRight="8dp"
-    	android:src="@drawable/epen_manager_nor"
-    	android:gravity="center_vertical"/>
-        
+            android:id="@+id/tv_leftbtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="8dp"
+            android:src="@drawable/main_left" />
+
+        <ImageView
+            android:id="@+id/iv_rightbtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="15dp"
+            android:src="@drawable/epen_manager_nor" />
+
         <TextView
             android:id="@+id/tv_title"
             android:layout_width="wrap_content"
@@ -42,103 +39,136 @@
             android:layout_toRightOf="@id/tv_leftbtn"
             android:gravity="center_vertical|center_horizontal"
             android:text="@string/title_notebook"
-            android:textSize="20sp"/>        
-	</RelativeLayout>
-	
-    <RelativeLayout 
+            android:textColor="#4d4d4d"
+            android:textSize="16sp" />
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/separator"
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/rl_title"
+        android:background="#e2e2e2" />
+
+    <RelativeLayout
         android:id="@+id/rl_edit"
         android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:layout_below="@id/rl_title">
-        
-        <ImageView
-        android:id="@+id/tv_newnotebook"
-    	android:layout_width="wrap_content"
-    	android:layout_height="match_parent"
-    	android:layout_alignParentLeft="true"
-    	android:layout_marginLeft="8dp"
-    	android:layout_marginRight="8dp"
-    	android:text="@string/edit_new"
-    	android:textSize="16sp"
-    	android:src="@drawable/main_new_notebook"
-    	android:gravity="center_vertical"/>
-    
-        <ImageView
-        android:id="@+id/tv_searchbtn"
-    	android:layout_width="wrap_content"
-    	android:layout_height="match_parent"
-    	android:layout_alignParentRight="true"
-    	android:layout_marginLeft="8dp"
-    	android:layout_marginRight="8dp"
-    	android:text="@string/edit_search"
-    	android:textSize="16sp"
-    	android:src="@drawable/main_search"
-    	android:gravity="center_vertical"/>
-        
-        <ImageView
-            android:id="@+id/tv_editnotebook"
-            android:layout_width="30dp"
-            android:layout_height="match_parent"
-            android:layout_toLeftOf="@id/tv_searchbtn"
-            android:layout_toRightOf="@id/tv_newnotebook"
-            android:gravity="center_vertical|center_horizontal"
-            android:src="@drawable/main_edit_notebook"
-            android:text="@string/edit_edit"
-            android:textSize="16sp" />
-        
+        android:layout_height="75dp"
+        android:layout_below="@id/separator"
+        android:layout_marginTop="28dp" >
+
+        <LinearLayout
+            android:id="@+id/ll_new"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="40dp"
+            android:orientation="vertical" >
+
+            <ImageView
+                android:id="@+id/tv_newnotebook"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/main_new_notebook" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="35dp"
+                android:layout_gravity="center_horizontal"
+                android:gravity="center_horizontal|center_vertical"
+                android:text="@string/edit_new"
+                android:textColor="#666666"
+                android:textSize="10sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="40dp"
+            android:orientation="vertical" >
+
+            <ImageView
+                android:id="@+id/tv_searchbtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/main_search" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="35dp"
+                android:layout_gravity="center_horizontal"
+                android:gravity="center_horizontal|center_vertical"
+                android:text="@string/edit_search"
+                android:textColor="#666666"
+                android:textSize="10sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_edit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:orientation="vertical" >
+
+            <ImageView
+                android:id="@+id/tv_editnotebook"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/main_edit_notebook" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="35dp"
+                android:layout_gravity="center_horizontal"
+                android:gravity="center_horizontal|center_vertical"
+                android:text="@string/edit_edit"
+                android:textColor="#666666"
+                android:textSize="10sp" />
+        </LinearLayout>
     </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/rl_newnote"
-        android:background="#e2e2e2" 
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:layout_alignParentBottom="true"
-        >
-       	
-<!--         <ImageView  -->
-<!--             android:id="@+id/iv_newnote" -->
-<!--             android:layout_width="45dp" -->
-<!--             android:layout_height="45dp" -->
-<!--             android:layout_centerInParent="true" -->
-<!--             android:src="@drawable/blue_cricle"/>             -->
+        android:background="#e2e2e2" >
     </RelativeLayout>
-    
-    <ImageView 
-            android:id="@+id/iv_newnote"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerInParent="true"
-            android:layout_marginBottom="10dp"
-            android:src="@drawable/add_new_note"/>
-    
+
+    <ImageView
+        android:id="@+id/iv_newnote"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerInParent="true"
+        android:layout_marginBottom="10dp"
+        android:src="@drawable/add_new_note" />
+
     <RelativeLayout
         android:id="@+id/rl_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/rl_edit"
-        android:layout_above="@id/rl_newnote">
-        
-       	<TextView
-       	    android:id="@+id/tv_showempty"
-       	    android:layout_width="match_parent"
-       	    android:layout_height="match_parent"
-       	    android:gravity="center_vertical|center_horizontal"
-       	    android:text="@string/hello_world" />
-       	<ListView 
-       	    android:id="@+id/lv_notebooklist"
-       	    android:layout_width="match_parent"
-       	    android:layout_height="match_parent"
-       	    android:visibility="gone"
-       	    >
-       	    
-       	</ListView>
-        
+        android:layout_above="@id/rl_newnote"
+        android:layout_below="@id/rl_edit" >
+
+        <TextView
+            android:id="@+id/tv_showempty"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical|center_horizontal"
+            android:text="@string/hello_world" />
+
+        <ListView
+            android:id="@+id/lv_notebooklist"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:divider="#e2e2e2"
+            android:dividerHeight="1px"
+            android:visibility="gone" >
+        </ListView>
     </RelativeLayout>
-    
-    
-
-
 
 </RelativeLayout>

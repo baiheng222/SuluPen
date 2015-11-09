@@ -2,91 +2,105 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
-    
-    <RelativeLayout 
-    android:id="@+id/rl_title"
-    android:layout_width="match_parent"
-    android:layout_height="48dp"
-    android:background="#f6f6f6"
-    android:layout_alignParentTop="true" >
-    
-    	<TextView
-        android:id="@+id/tv_cancel_notebook_rename"
-    	android:layout_width="wrap_content"
-    	android:layout_height="match_parent"
-    	android:layout_alignParentLeft="true"
-    	android:layout_marginLeft="12dp"
-    	android:layout_marginRight="12dp"
-    	android:text="@string/edit_cancel"
-    	android:textSize="13sp"
-    	android:textColor="#3b8989"
-    	android:gravity="center_vertical"/>
-    
+
+    <RelativeLayout
+        android:id="@+id/rl_title"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_alignParentTop="true"
+        android:background="#f6f6f6" >
+
         <TextView
-        android:id="@+id/tv_done_notebook_rename"
-    	android:layout_width="wrap_content"
-    	android:layout_height="match_parent"
-    	android:layout_alignParentRight="true"
-    	android:layout_marginLeft="12dp"
-    	android:layout_marginRight="12dp"
-    	android:text="@string/edit_done"
-    	android:textSize="13sp"
-    	android:textColor="#3b8989"
-    	android:gravity="center_vertical"/>
-        
+            android:id="@+id/tv_cancel_notebook_rename"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="12dp"
+            android:gravity="center_vertical"
+            android:text="@string/edit_cancel"
+            android:textColor="#3b8989"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/tv_done_notebook_rename"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_marginLeft="12dp"
+            android:layout_marginRight="15dp"
+            android:gravity="center_vertical"
+            android:text="@string/edit_done"
+            android:textColor="#3b8989"
+            android:textSize="14sp" />
+
         <TextView
             android:id="@+id/tv_title_rename"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
             android:layout_toLeftOf="@id/tv_done_notebook_rename"
             android:layout_toRightOf="@id/tv_cancel_notebook_rename"
-            android:textColor="#4d4d4d"
             android:gravity="center_vertical|center_horizontal"
             android:text="@string/title_notebook"
-            android:textSize="20sp"/>
-                
-	</RelativeLayout>
-	
-    <TextView
-        android:id="@+id/tv_rename_tip"
+            android:textColor="#4d4d4d"
+            android:textSize="16sp" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_tips"
         android:layout_width="match_parent"
         android:layout_height="30dp"
         android:layout_below="@id/rl_title"
-        android:layout_centerHorizontal="false"
-        android:layout_centerInParent="false"
-        android:layout_centerVertical="false"
-        android:layout_marginLeft="23dp"
-        android:gravity="center_vertical"
-        android:text="name" />
-    
-    
-     <RelativeLayout
+        android:background="#e2e2e2" >
+
+        <TextView
+            android:id="@+id/tv_rename_tip"
+            android:layout_width="wrap_content"
+    	android:layout_height="match_parent"
+    	android:layout_alignParentLeft="true"
+    	android:layout_marginLeft="15dp"
+    	android:layout_marginRight="15dp"
+    	android:text="@string/new_notebook_tips"
+    	android:textSize="10sp"
+    	android:textColor="#959595"
+    	android:gravity="center_vertical"/>
+    </RelativeLayout>
+
+    <RelativeLayout
         android:id="@+id/rl_input"
         android:layout_width="match_parent"
         android:layout_height="43dp"
-        android:layout_below="@id/tv_rename_tip"
-        >
-        
-        <ImageView 
+        android:layout_below="@id/rl_tips" >
+
+        <ImageView
             android:id="@+id/iv_delchar_icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:layout_marginRight="12dp"
             android:layout_centerVertical="true"
-            android:src="@drawable/del_char"
-            />
-        
+            android:layout_marginRight="17dp"
+            android:src="@drawable/del_char" />
+
         <EditText
             android:id="@+id/et_input_new_notebook_name"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@null"
             android:layout_alignParentLeft="true"
             android:layout_centerInParent="false"
             android:layout_centerVertical="false"
+            android:textColor="#c8c8c8"
+       	    android:background="@null"
+       	    android:paddingLeft="16dp"
             android:hint="input here" />
-        
     </RelativeLayout>
+    
+    <RelativeLayout 
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:background="#e2e2e2"
+        android:layout_below="@id/rl_input"
+        ></RelativeLayout>
 
 </RelativeLayout>

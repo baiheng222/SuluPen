@@ -27,7 +27,7 @@ public class NoteBookListActivity extends Activity implements OnClickListener
 	
 	private String mNoteBookName = "NoteBook";
 	
-	private TextView mBack;
+	private ImageView mBack;
 	private TextView mTitle;
 	private TextView mRightBtn;
 	private TextView mEmptyNoteTip;
@@ -89,7 +89,7 @@ public class NoteBookListActivity extends Activity implements OnClickListener
 	
 	 private void initViews()
 	 {
-		 mBack = (TextView) findViewById(R.id.tv_backbtn);
+		 mBack = (ImageView) findViewById(R.id.tv_backbtn);
 		 mTitle = (TextView) findViewById(R.id.tv_title);
 		 mRightBtn = (TextView) findViewById(R.id.tv_rightbtn);
 		 mInput = (EditText) findViewById(R.id.ed_search_input);

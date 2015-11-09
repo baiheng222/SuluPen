@@ -41,7 +41,8 @@
     <string name="feedback_progress">Sending...</string>
     <string name="feedback_error">Network error</string>
     <string name="feedback_upload_done">Commit success</string>
-	
+	<string name="del_notebook_tip">Delete NoteBook?</string>
+    
 	<string name="about_advertise">速录笔,有你的日子,学习生活更简单,更轻松,更便捷！</string>
 	
     <string name="bluetooth_connected">蓝牙连接中...</string>

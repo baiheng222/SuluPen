@@ -15,10 +15,10 @@
     	android:layout_width="wrap_content"
     	android:layout_height="match_parent"
     	android:layout_alignParentLeft="true"
-    	android:layout_marginLeft="12dp"
+    	android:layout_marginLeft="15dp"
     	android:layout_marginRight="12dp"
     	android:text="@string/edit_cancel"
-    	android:textSize="13sp"
+    	android:textSize="14sp"
     	android:textColor="#3b8989"
     	
     	android:gravity="center_vertical"/>
@@ -29,9 +29,9 @@
     	android:layout_height="match_parent"
     	android:layout_alignParentRight="true"
     	android:layout_marginLeft="12dp"
-    	android:layout_marginRight="12dp"
+    	android:layout_marginRight="15dp"
     	android:text="@string/edit_done"
-    	android:textSize="13sp"
+    	android:textSize="14sp"
     	android:textColor="#3b8989"
     	android:gravity="center_vertical"/>
         
@@ -44,7 +44,7 @@
             android:textColor="#4d4d4d"
             android:gravity="center_vertical|center_horizontal"
             android:text="@string/title_notebook"
-            android:textSize="20sp"/>        
+            android:textSize="16sp"/>        
 	</RelativeLayout>
 	
     
@@ -53,7 +53,8 @@
        	    android:layout_width="match_parent"
        	    android:layout_height="match_parent"
        	    android:layout_below="@id/rl_title"
-       	    
+       	    android:divider="#e2e2e2"
+            android:dividerHeight="1px"
        	    >
         
     </ListView> 

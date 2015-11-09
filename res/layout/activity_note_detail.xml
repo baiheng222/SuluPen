@@ -3,14 +3,49 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/frame_bg"
-    android:orientation="vertical" >
-
+    android:orientation="vertical" >    
     
-    <include
+    <RelativeLayout
         android:id="@+id/app_title"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        layout="@layout/titilebar_note" />
+        android:layout_height="48dp"
+        android:layout_alignParentTop="true"
+        android:background="#f6f6f6" >
+
+        <ImageView
+            android:id="@+id/come_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="8dp"
+            android:src="@drawable/back" />
+
+        <TextView
+            android:id="@+id/tv_rightbtn"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="15dp"
+            android:gravity="center_vertical"
+            android:text="@string/choose_notes"
+            android:textColor="#3b8989"
+            android:textSize="14sp"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:gravity="center_vertical|center_horizontal"
+            android:text="@string/new_note"
+            android:textColor="#4d4d4d"
+            android:textSize="16sp" />
+    </RelativeLayout>
 
     <View
         android:id="@+id/line_first"
