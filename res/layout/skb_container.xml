@@ -14,7 +14,7 @@
      See the License for the specific language governing permissions and
      limitations under the License.
 -->
-<com.hanvon.inputmethod.pinyin.SkbContainer xmlns:android="http://schemas.android.com/apk/res/android"
+<com.hanvon.sulupen.pinyin.SkbContainer xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:background="@drawable/skb_container_bg"
@@ -26,14 +26,14 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true" >
 
-        <com.hanvon.inputmethod.pinyin.SoftKeyboardView
+        <com.hanvon.sulupen.pinyin.SoftKeyboardView
             android:id="@+id/alpha_view1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
-        <com.hanvon.inputmethod.pinyin.SoftKeyboardView
+        <com.hanvon.sulupen.pinyin.SoftKeyboardView
             android:id="@+id/alpha_view2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
     </ViewFlipper>
-</com.hanvon.inputmethod.pinyin.SkbContainer>
+</com.hanvon.sulupen.pinyin.SkbContainer>

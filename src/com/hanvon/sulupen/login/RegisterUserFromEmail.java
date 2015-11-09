@@ -37,7 +37,7 @@ public class RegisterUserFromEmail extends Activity implements OnClickListener{
 
 	private ClearEditText CEemail;
 	private ClearEditText CEpasswd;
-	private ImageView BTensure;
+	private Button BTensure;
 	private ImageView IVback;
 	private ImageView IVregisterPhone;
 
@@ -54,7 +54,7 @@ public class RegisterUserFromEmail extends Activity implements OnClickListener{
 
 		CEemail = (ClearEditText)findViewById(R.id.rgst_email_user);
 		CEpasswd = (ClearEditText)findViewById(R.id.rgst_email_pswd);
-		BTensure = (ImageView)findViewById(R.id.rgst_email_rgstbutton);
+		BTensure = (Button)findViewById(R.id.rgst_email_rgstbutton);
         IVback = (ImageView)findViewById(R.id.rgst_back);
         IVregisterPhone = (ImageView)findViewById(R.id.email_register_phone_button);
 		
@@ -170,7 +170,7 @@ public class RegisterUserFromEmail extends Activity implements OnClickListener{
 					    new RequestTask(3).execute();
 				    }else{
 				    	pd.dismiss();
-					    Toast.makeText(RegisterUserFromEmail.this, "发送激活邮件失败，请稍后重试!", Toast.LENGTH_SHORT).show();
+					    Toast.makeText(RegisterUserFromEmail.this, "用户注册失败,请稍后重试!", Toast.LENGTH_SHORT).show();
 				    }
 			    }else if (flagTask == 3){
 			    	if (json.get("code").equals("0")) {
@@ -178,8 +178,10 @@ public class RegisterUserFromEmail extends Activity implements OnClickListener{
 						Editor mEditor=	mSharedPreferences.edit();
 						mEditor.putString("nickname", "");
 						mEditor.putString("username", strEmail);
-						mEditor.putString("email", strEmail);
-						mEditor.putString("phone", "");
+					//	mEditor.putString("email", strEmail);
+					//	mEditor.putString("phone", "");
+						HanvonApplication.hvnName = strEmail;
+						HanvonApplication.strName = "";
 					    mEditor.putInt("flag", 0);
 					    mEditor.putInt("status", 1);
 					    mEditor.commit();

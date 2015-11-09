@@ -254,16 +254,19 @@ public class LoginActivity extends Activity implements OnClickListener {
 			    LogUtil.i(json.toString());
 			    if (json.getString("code").equals("0") ){
 			    	boolean isHasNick = true;
-			    	String email = json.getString("email");
-			    	String phone = json.getString("phone");
+			    //	String email = json.getString("email");
+			    //	String phone = json.getString("phone");
                     String nickname = json.getString("nickname");
+                    if (nickname.equals("null")){
+                    	nickname ="";
+                    }
                     if(json.getString("isActive").equals("1")){
                     	HanvonApplication.isActivity = true;
                     }else{
                     	HanvonApplication.isActivity = false;
                     }
                     if(nickname.equals("")){
-                    	nickname = strUserName;
+                    //	nickname = strUserName;
                     	isHasNick = false;
                     }
                     String username = json.getString("user");
@@ -275,14 +278,14 @@ public class LoginActivity extends Activity implements OnClickListener {
 			        HanvonApplication.strName = nickname;
 					mEditor.putBoolean("isHasNick", isHasNick);
 					
-					if (!email.equals("")){
-						mEditor.putString("email", email);
-						HanvonApplication.strEmail = email;
-					}
-					if (!phone.equals("")){
-						mEditor.putString("phone", phone);
-						HanvonApplication.strPhone = phone;
-					}
+				//	if (!email.equals("")){
+				//		mEditor.putString("email", email);
+				//		HanvonApplication.strEmail = email;
+				//	}
+				//	if (!phone.equals("")){
+				//		mEditor.putString("phone", phone);
+				//		HanvonApplication.strPhone = phone;
+				//	}
 					mEditor.putString("passwd", strPassWord);
 					mEditor.putInt("flag", 0);
 					mEditor.putInt("status", 1);
@@ -298,7 +301,7 @@ public class LoginActivity extends Activity implements OnClickListener {
 				        mCloudEditor.commit();
 					}
 
-					LogUtil.i("--------emai:"+email+"  phone:"+phone);
+					LogUtil.i("--------nickname:"+nickname+"  username:"+username);
 					HanvonApplication.userFlag = 0;
 					if (flag != null){
 						if (Integer.valueOf(flag) == 1){

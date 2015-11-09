@@ -136,7 +136,7 @@ public class ScanNoteActivity extends Activity implements OnClickListener{
 	private WakeLock wakeLock;
 
 	private BluetoothMsgReceive btMsgReceiver;
-	private boolean isSendImageMode = false;
+	private int isSendImageMode = 0;
 
 	private boolean flag;
 	private Handler handler = new Handler() {
@@ -149,10 +149,10 @@ public class ScanNoteActivity extends Activity implements OnClickListener{
 				int resultStr = msg.arg1;
 				LogUtil.i("tong-----***********---BTMsgReceiver.RECEIVEIMG_CHANGE");
 				if (resultStr == 1) {
-					if (isSendImageMode) {
-						isSendImageMode = false;
+					if (isSendImageMode == 1) {
+						isSendImageMode = 0;
 					} else {
-						isSendImageMode = true;
+						isSendImageMode = 1;
 					}
 					updateCheckModeState();
 				}
@@ -432,15 +432,19 @@ public class ScanNoteActivity extends Activity implements OnClickListener{
 		LogUtil.i("tong----------updateCheckModeState:"+isSendImageMode);
 		if (isConnected()) {
 			LogUtil.i("tong---------is SendImag----------");
-		    if (isSendImageMode) {
+		    if (isSendImageMode==1) {
 			    IVsendImag.setBackgroundResource(R.drawable.scan_note);
 			    hsvLayoutScanImage.setVisibility(View.VISIBLE);
+			   
 		    } else {
-			    IVsendImag.setBackgroundResource(R.drawable.scan_note);
+			    IVsendImag.setBackgroundResource(R.drawable.close_scan);
 			    hsvLayoutScanImage.setVisibility(View.GONE);
+			  
 		    }
 		}else{
+			IVsendImag.setBackgroundResource(R.drawable.notuse_scan);
 			hsvLayoutScanImage.setVisibility(View.GONE);
+			//设置校对图片
 		}
       //  if (isConnected()) {
 		//	getRightButton().setEnabled(true);
@@ -457,8 +461,27 @@ public class ScanNoteActivity extends Activity implements OnClickListener{
 	 * @return
 	 */
 	private void initIsSendScanImage() {
+	    //判断网络是否连接
+		if (isConnected())
+		{
+	        Boolean curState = BluetoothSetting.getBlueIsSendImage();
+	        if(curState)
+	        {
+	        	isSendImageMode = 1;
+	        }
+	        else
+	        {
+	        	isSendImageMode = 0;
+	        }
+		}
+		else
+		{
+			isSendImageMode = 0;
+		}
+		
 
-		isSendImageMode = BluetoothSetting.getBlueIsSendImage();
+        
+		//isSendImageMode = BluetoothSetting.getBlueIsSendImage();
 	}
 	
 	
@@ -466,7 +489,7 @@ public class ScanNoteActivity extends Activity implements OnClickListener{
 	private void sendRecevieImagetoEpen() {
 		LogUtil.i("tong-------sendRecevieImagetoEpen");
 		HashMap<String, String> map = new HashMap<String, String>();
-		if (isSendImageMode) {
+		if (isSendImageMode == 1) {
 			map.put("receive_scan_image", "0");
 		} else {
 			map.put("receive_scan_image", "1");
@@ -482,7 +505,17 @@ public class ScanNoteActivity extends Activity implements OnClickListener{
 	 * @return
 	 */
 	private void updateCheckMode() {
-		BluetoothSetting.setBlueIsSendImage(isSendImageMode);
+		Boolean curState = false ;
+		if(isSendImageMode == 1)
+		{
+			curState = true;
+		}
+		else
+		{
+			curState = false;
+		}
+		
+		BluetoothSetting.setBlueIsSendImage(curState);
 		BluetoothSetting.writeBack();
 		
 	}
@@ -500,7 +533,7 @@ public class ScanNoteActivity extends Activity implements OnClickListener{
 	
 	
 	public boolean getIsSendScanImage() {
-		return isSendImageMode;
+		return isSendImageMode == 1 ? true : false;
 	}
 	
 	
@@ -769,6 +802,7 @@ public class ScanNoteActivity extends Activity implements OnClickListener{
 	    			if (isConnected()) {
 	    			    sendRecevieImagetoEpen();
 	    			}
+	    	
 	            	break;
 	            case R.id.ivDelete:
 	            	showBottomDlg();

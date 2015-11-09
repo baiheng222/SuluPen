@@ -17,7 +17,6 @@ import android.widget.TextView;
 
 import com.hanvon.sulupen.application.HanvonApplication;
 import com.hanvon.sulupen.db.dao.NoteRecordDao;
-import com.hanvon.sulupen.login.ShowUserMessage;
 import com.hanvon.sulupen.utils.LoginUtil;
 
 public class SettingActivity extends Activity implements OnClickListener
@@ -76,7 +75,8 @@ public class SettingActivity extends Activity implements OnClickListener
         switch (view.getId())
         {
             case R.id.rl_setting_inputmethod:
-                
+                Intent input = new Intent(this, SuLuInputActivity.class);
+                startActivity(input);
             break;
             
             case R.id.rl_setting_about:
@@ -149,6 +149,9 @@ public class SettingActivity extends Activity implements OnClickListener
 	    }
 		Editor mEditor=	mSharedPreferences.edit();
 		mEditor.putInt("status", 0);
+		mEditor.putString("nickname", "");
+		mEditor.putString("username", "");
+		HanvonApplication.isActivity = false;
 		mEditor.commit();
 
 		SharedPreferences mSharedCloudPreferences=getSharedPreferences("Cloud_Info", Activity.MODE_MULTI_PROCESS);

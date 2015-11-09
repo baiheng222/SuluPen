@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<com.hanvon.inputmethod.pinyin.CandidatesContainer 
+<com.hanvon.sulupen.pinyin.CandidatesContainer 
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/candidates_container"  
     android:layout_width="0dip"
@@ -35,13 +35,13 @@
             android:id="@+id/candidate_view1"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            class="com.hanvon.inputmethod.pinyin.CandidateView" />
+            class="com.hanvon.sulupen.pinyin.CandidateView" />
 
         <view
             android:id="@+id/candidate_view2"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            class="com.hanvon.inputmethod.pinyin.CandidateView" />
+            class="com.hanvon.sulupen.pinyin.CandidateView" />
     </ViewFlipper>
 
-</com.hanvon.inputmethod.pinyin.CandidatesContainer>
+</com.hanvon.sulupen.pinyin.CandidatesContainer>

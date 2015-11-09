@@ -125,7 +125,7 @@ import java.util.Set;
     @Override
 	protected void onStart() {
 		super.onStart();
-		LogUtil.i("---------MAIN---1---------------------"+HanvonApplication.strName);
+		LogUtil.i("---------MAIN---1---------------------"+HanvonApplication.hvnName);
 		 IntentFilter mFilter = new IntentFilter(BluetoothIntenAction.ACTION_EPEN_BATTERY_CHANGE);
 			mFilter.addAction(BluetoothIntenAction.ACTION_EPEN_BT_CONNECTED);
 			mFilter.addAction(BluetoothIntenAction.ACTION_EPEN_BT_DISCONNECT);
@@ -144,12 +144,16 @@ import java.util.Set;
 				mEpen.setBackgroundResource(R.drawable.epen_manager_nor);
 			}
 
-			if (!HanvonApplication.strName.equals("")){
+			if (!HanvonApplication.hvnName.equals("")){
+				LogUtil.i("---------MAIN---true---------------------");
         	    ShowUserInfo();
         	}else{
-        		TVusername.setText("未登录");
-		    	 TVnickname.setText("");
+        		LogUtil.i("---------MAIN---false---------------------");
+        		TVusername.setText("");
+		    	TVnickname.setText("未登录");
         		mIvLogin.setBackgroundResource(R.drawable.logicon);
+		    	//mIvLogin.setImageResource(R.drawable.logicon);
+		    	//(getResources().getDrawable(R.drawable.logicon));
         	}
 	}
     @TargetApi(Build.VERSION_CODES.ECLAIR) @SuppressLint("NewApi") public void BluetoothCheck(){
@@ -225,40 +229,50 @@ import java.util.Set;
     }
 
     @TargetApi(Build.VERSION_CODES.GINGERBREAD) @SuppressLint("NewApi") public void ShowUserInfo(){
-    	String email = null,phone = null,hvnname = null,figureurl = null;
+    	String email = "",phone = "",hvnname = "",figureurl = "",username = "";
 		SharedPreferences mSharedPreferences=this.getSharedPreferences("BitMapUrl", Activity.MODE_MULTI_PROCESS);
 		int flag = mSharedPreferences.getInt("flag", 0);
 		HanvonApplication.userFlag = flag;
 		String nickname=mSharedPreferences.getString("nickname", "");
 		boolean isHasNick = mSharedPreferences.getBoolean("isHasNick", true);
 		if (flag == 0){
-		    email = mSharedPreferences.getString("email", "");
-		    phone = mSharedPreferences.getString("phone", "");
+		//    email = mSharedPreferences.getString("email", "");
+		//    phone = mSharedPreferences.getString("phone", "");
+		    username = mSharedPreferences.getString("username", "");
 		}else{
 		    figureurl=mSharedPreferences.getString("figureurl", "");	
 		    hvnname = mSharedPreferences.getString("username", "");
 		}
 		int status = mSharedPreferences.getInt("status", 0);
-		LogUtil.i("flag:"+flag+"  nickname:"+nickname+"   isHasNick:"+isHasNick+"  username:"+hvnname+"  figureurl:"+figureurl);
+		LogUtil.i("flag:"+flag+"  nickname:"+nickname+"   status:"+status+"  username:"+hvnname+"  figureurl:"+figureurl);
 
 		if (status == 1){
 		    if (flag == 0){
 			    if(!nickname.isEmpty()){
 			    	TVusername.setText(nickname);
-				     if (isHasNick){
-				         if (email.equals("")){
-				        	 TVnickname.setText(phone);
-				        	 HanvonApplication.hvnName = phone;
-				         }else{
-				        	 TVnickname.setText(email);
-				        	 HanvonApplication.hvnName = email;
-				         }
-				     }
+				  //   if (isHasNick){
+				  //       if (email.equals("")){
+				   //     	 TVnickname.setText(phone);
+				   //     	 HanvonApplication.hvnName = phone;
+				   //      }else{
+				   //     	 TVnickname.setText(email);
+				    //    	 HanvonApplication.hvnName = email;
+				    //     }
+				    // }
+			    	TVnickname.setText(username);
+				     HanvonApplication.hvnName = username;
 				     HanvonApplication.strName = nickname;
-				     HanvonApplication.strEmail = email;
-				     HanvonApplication.strPhone = phone;
+				   //  HanvonApplication.strEmail = email;
+				   //  HanvonApplication.strPhone = phone;
 				     mIvLogin.setBackgroundResource(R.drawable.login_head_default);
-				     LogUtil.i("emai:"+email+"  phone:"+phone);
+				     LogUtil.i("hvnName:"+username+"  strName:"+nickname);
+			    }else{
+			    	TVusername.setText("");
+			    	TVnickname.setText(username);
+				     HanvonApplication.hvnName = username;
+				     HanvonApplication.strName = nickname;
+				     mIvLogin.setBackgroundResource(R.drawable.login_head_default);
+				     LogUtil.i("hvnName:"+username+"  strName:"+nickname);
 			    }
 			 //   figureurl = mSharedPreferences.getString("drawable", "");
 			 //   if (!figureurl.equals("")){
@@ -281,6 +295,11 @@ import java.util.Set;
 				    bitmapUtils.display(((ImageView)findViewById(R.id.iv_login_icon)),figureurl);
 			    }
 		    }
+		}else{
+			TVusername.setText("");
+	    	TVnickname.setText("未登录");
+    		mIvLogin.setBackgroundResource(R.drawable.logicon);
+	    	//mIvLogin.setImageResource(R.drawable.logicon);
 		}
     }
     
@@ -397,7 +416,7 @@ import java.util.Set;
     		break;
     		
             case R.id.iv_login_icon:
-            	if (HanvonApplication.strName.equals("")){
+            	if (HanvonApplication.hvnName.equals("")){
             	    Intent newIntent1 = new Intent(this, LoginActivity.class);
     		        startActivity(newIntent1);
             	}else{

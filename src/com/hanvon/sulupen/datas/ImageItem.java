@@ -12,6 +12,7 @@ public class ImageItem implements Serializable
 	public String imageId;
 	public String thumbnailPath;
 	public String sourcePath;
+	public String imageBase64;
 	public boolean isSelected = false;
 	@Override
 	public String toString() {
@@ -24,4 +25,11 @@ public class ImageItem implements Serializable
 		return sourcePath;
 	}
 	
+	public String getImageBase64(){
+		return imageBase64;
+	}
+	
+	public void setImageBase64(String base64){
+		this.imageBase64 = base64;
+	}
 }

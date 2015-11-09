@@ -1,6 +1,7 @@
 package com.hanvon.sulupen.utils;
 
 import java.io.BufferedOutputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -21,6 +22,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.provider.MediaStore.Images.Media;
 import android.provider.MediaStore.Images.Thumbnails;
+import android.util.Base64;
 import android.util.Log;
 
 
@@ -246,5 +248,4 @@ public class ImageFetcher
 
 		return dstPath;
 	}
-
 }

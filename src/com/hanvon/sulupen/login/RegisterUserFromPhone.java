@@ -149,9 +149,11 @@ public class RegisterUserFromPhone extends Activity implements OnClickListener{
 				    	SharedPreferences mSharedPreferences=getSharedPreferences("BitMapUrl", Activity.MODE_MULTI_PROCESS);
 						Editor mEditor=	mSharedPreferences.edit();
 						mEditor.putString("username", strPhoneNumber);
-						mEditor.putString("nickname", strPhoneNumber);
-						mEditor.putString("email", "");
-						mEditor.putString("phone", strPhoneNumber);
+						mEditor.putString("nickname", "");
+						HanvonApplication.hvnName = strPhoneNumber;
+						HanvonApplication.strName = "";
+					//	mEditor.putString("email", "");
+					//	mEditor.putString("phone", strPhoneNumber);
 					    mEditor.putInt("flag", 0);
 					    mEditor.putInt("status", 1);
 					    mEditor.commit();
@@ -203,7 +205,6 @@ public class RegisterUserFromPhone extends Activity implements OnClickListener{
   	    	JSuserInfoJson.put("user", strPhoneNumber);
   	    	JSuserInfoJson.put("pwd", strPassword);
   	    	JSuserInfoJson.put("mobile", strPhoneNumber);
-  	    	JSuserInfoJson.put("nickname", strPhoneNumber);
   	    	JSuserInfoJson.put("registeWay","1");
   	    } catch (JSONException e) {
   		    e.printStackTrace();

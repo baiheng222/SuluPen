@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-  <com.hanvon.inputmethod.pinyin.FounctionContainer
+  <com.hanvon.sulupen.pinyin.FounctionContainer
          xmlns:android="http://schemas.android.com/apk/res/android"
          android:id="@+id/layout_moreFunction"
          android:layout_width="0dip"
@@ -54,4 +54,4 @@
         android:background="@drawable/mask_bg"
         android:visibility="gone"
             />
-   </com.hanvon.inputmethod.pinyin.FounctionContainer>
+   </com.hanvon.sulupen.pinyin.FounctionContainer>
