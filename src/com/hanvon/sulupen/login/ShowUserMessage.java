@@ -73,10 +73,12 @@ public class ShowUserMessage extends Activity implements OnClickListener{
 		// TODO Auto-generated method stub
 		switch(v.getId()){
 		    case R.id.modify_nickname:
-		    	Toast.makeText(this, "功能 未实现，请期待下个版本！", Toast.LENGTH_LONG).show();
+		    	startActivity(new Intent(ShowUserMessage.this, ModifyUserName.class));
+				ShowUserMessage.this.finish();
 		    	break;
 		    case R.id.modify_password:
-		    	Toast.makeText(this, "功能 未实现，请期待下个版本！", Toast.LENGTH_LONG).show();
+		    	startActivity(new Intent(ShowUserMessage.this, ModifyPassword.class));
+				ShowUserMessage.this.finish();
 		    	break;
 		    case R.id.third_bind:
 		    	Toast.makeText(this, "功能 未实现，请期待下个版本！", Toast.LENGTH_LONG).show();

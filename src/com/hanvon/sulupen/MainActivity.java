@@ -248,8 +248,10 @@ import java.util.Set;
 				     if (isHasNick){
 				         if (email.equals("")){
 				        	 TVnickname.setText(phone);
+				        	 HanvonApplication.hvnName = phone;
 				         }else{
 				        	 TVnickname.setText(email);
+				        	 HanvonApplication.hvnName = email;
 				         }
 				     }
 				     HanvonApplication.strName = nickname;

@@ -112,6 +112,7 @@
     <string name="third_login">第三方</string>
     <string name="third_bind">第三方绑定</string>
     <string name="loginout">退出登录</string>
+    <string name="modify_name">请输入您的名字</string>
     <!-- 硬件基本信息显示 -->
     <string name="hw_electricity">电量：</string>
     <string name="hw_status">状态：</string>

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.hanvon.sulupen"
-    android:versionCode="12"
-    android:versionName="1.0.1.003" >
+    android:versionCode="13"
+    android:versionName="1.0.1.004" >
 
     <uses-sdk
         android:minSdkVersion="8"
@@ -223,6 +223,10 @@
         <activity  android:name="com.hanvon.sulupen.login.ResetPasswd">
         </activity>
         <activity  android:name="com.hanvon.sulupen.login.RmbPwdCheckCode">
+        </activity>
+        <activity  android:name="com.hanvon.sulupen.login.ModifyPassword">
+        </activity>
+        <activity  android:name="com.hanvon.sulupen.login.ModifyUserName">
         </activity>
         <activity  android:name="com.hanvon.bluetooth.BluetoothDetail">
         </activity>

@@ -132,19 +132,15 @@ public class RegisterUserFromEmail extends Activity implements OnClickListener{
 			LogUtil.i("INTO RequestTask:doInBackground,and flag = " + flagTask);
 			if(flagTask==1){
 				result = CheckSameName();
-			} else if(flagTask == 2) {
-				result = SendCodetoEmail();
 			} else if(flagTask == 3) {
+				result = SendCodetoEmail();
+			} else if(flagTask == 2) {
 			    result = RigestUserApi();
 		    }
 			return result;
 		}
 		 //响应结果
 	    @SuppressLint("NewApi") protected void onPostExecute(RequestResult result) {
-	    	if (flagTask == 2){
-				    new RequestTask(3).execute();
-				    return;
-			    } 
 	    	if (result == null){
 	    		pd.dismiss();
 			    Toast.makeText(RegisterUserFromEmail.this, "检查失败！", Toast.LENGTH_SHORT).show();
