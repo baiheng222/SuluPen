@@ -1,5 +1,7 @@
 package com.hanvon.sulupen;
 
+import java.util.List;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,20 +13,19 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.hanvon.sulupen.adapter.NoteBookChangeAdapter;
 import com.hanvon.sulupen.db.bean.NoteBookRecord;
 import com.hanvon.sulupen.db.dao.NoteBookRecordDao;
 
-import java.util.List;
-
 public class ChangNoteBookActivity extends Activity implements OnClickListener
 {
     private final String TAG = "ChangNoteBookActivity";
     
     private TextView mTvCancel;
-    private ImageView mIvAddNewNoteBook;
+    private RelativeLayout mIvAddNewNoteBook;
     private ListView mLvNoetBookList;
     
     private NoteBookRecordDao mNoteBookRecordDao;
@@ -54,7 +55,7 @@ public class ChangNoteBookActivity extends Activity implements OnClickListener
     private void initView()
     {
         mTvCancel = (TextView) findViewById(R.id.tv_cancel_change_notebook_btn);
-        mIvAddNewNoteBook = (ImageView) findViewById(R.id.iv_add_new_notebook);
+        mIvAddNewNoteBook = (RelativeLayout) findViewById(R.id.rl_new_notebook);
         mLvNoetBookList = (ListView) findViewById(R.id.lv_list_of_change_notebook);
         
         mIvAddNewNoteBook.setOnClickListener(this);
@@ -101,7 +102,7 @@ public class ChangNoteBookActivity extends Activity implements OnClickListener
                 finish();
             break;
             
-            case R.id.iv_add_new_notebook:
+            case R.id.rl_new_notebook:
                 Intent newNoteIntent = new Intent(this, NewNoteBookActivity.class);
                 newNoteIntent.setFlags(FLAG_CREATE_FOR_CHANGE);
                 startActivityForResult(newNoteIntent, REQUEST_CREATE_ROR_CHANGE);

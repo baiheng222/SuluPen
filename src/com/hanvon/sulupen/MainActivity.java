@@ -2,6 +2,9 @@
 package com.hanvon.sulupen;
 
 
+import java.util.List;
+import java.util.Set;
+
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
@@ -25,10 +28,10 @@ import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.hanvon.bluetooth.BluetoothChatService;
 import com.hanvon.bluetooth.BluetoothDetail;
@@ -41,15 +44,12 @@ import com.hanvon.sulupen.application.HanvonApplication;
 import com.hanvon.sulupen.db.bean.NoteBookRecord;
 import com.hanvon.sulupen.db.dao.NoteBookRecordDao;
 import com.hanvon.sulupen.login.LoginActivity;
+import com.hanvon.sulupen.login.ShowUserMessage;
 import com.hanvon.sulupen.utils.CircleImageView;
 import com.hanvon.sulupen.utils.LogUtil;
-import com.hanvon.sulupen.login.ShowUserMessage;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.lidroid.xutils.BitmapUtils;
 import com.lidroid.xutils.bitmap.BitmapCommonUtils;
-
-import java.util.List;
-import java.util.Set;
 
 
 @SuppressLint("NewApi") public class MainActivity extends Activity implements OnClickListener, OnLongClickListener
@@ -58,9 +58,9 @@ import java.util.Set;
     private TextView mTitle;
     private ImageView mLeftBtn;
     private TextView mRightBtn;
-    private ImageView mNewNoteBook;
-    private ImageView mEditNoteBook;
-    private ImageView mSearchNoteBook;
+    private LinearLayout mNewNoteBook;
+    private LinearLayout mEditNoteBook;
+    private LinearLayout mSearchNoteBook;
     private ImageView mNewNote;
     private ListView mBooksList;
     private TextView mEmptyNoteBook;
@@ -317,9 +317,9 @@ import java.util.Set;
         mLeftBtn = (ImageView) findViewById(R.id.tv_leftbtn);
         mRightBtn = (TextView) findViewById(R.id.tv_rightbtn);
         
-        mNewNoteBook = (ImageView) findViewById(R.id.tv_newnotebook);
-        mEditNoteBook = (ImageView) findViewById(R.id.tv_editnotebook);
-        mSearchNoteBook = (ImageView) findViewById(R.id.tv_searchbtn);
+        mNewNoteBook = (LinearLayout) findViewById(R.id.ll_new);
+        mEditNoteBook = (LinearLayout) findViewById(R.id.ll_edit);
+        mSearchNoteBook = (LinearLayout) findViewById(R.id.ll_search);
         
         mNewNote = (ImageView) findViewById(R.id.iv_newnote);
         
@@ -376,18 +376,18 @@ import java.util.Set;
     {
         switch (view.getId())
         {
-            case R.id.tv_newnotebook:
+            case R.id.ll_new:
             	Intent newIntent = new Intent(this, NewNoteBookActivity.class);
     			newIntent.setFlags(FLAG_CREATE);
     			startActivity(newIntent);
             break;
             
-            case R.id.tv_editnotebook:
+            case R.id.ll_edit:
                 Intent intent = new Intent(this, EditNoteBookActivity.class);
                 startActivity(intent);
                 break;
                 
-            case R.id.tv_searchbtn:
+            case R.id.ll_search:
                 break;
             
             case R.id.iv_newnote:

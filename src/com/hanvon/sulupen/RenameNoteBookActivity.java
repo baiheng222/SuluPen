@@ -86,6 +86,7 @@ public class RenameNoteBookActivity extends Activity implements OnClickListener
 	
 	private void clearNoteBookName()
 	{
+		Log.d(TAG, "clear notebook name");
 		mEtInputNewName.setText("");
 	}
 	

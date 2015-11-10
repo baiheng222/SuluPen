@@ -55,7 +55,7 @@
         ></RelativeLayout>
     
     <RelativeLayout 
-        android:id="@+id/rl_tips"
+        android:id="@+id/rl_new_notebook"
         android:layout_width="match_parent"
         android:layout_height="43dp"
         android:layout_below="@id/seperator">
@@ -92,7 +92,7 @@
         android:layout_width="match_parent"
         android:layout_height="10dp"
         android:background="#e2e2e2"
-        android:layout_below="@id/rl_tips"
+        android:layout_below="@id/rl_new_notebook"
         ></RelativeLayout>
     
     <ListView
