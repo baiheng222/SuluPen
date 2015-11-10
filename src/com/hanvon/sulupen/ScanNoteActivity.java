@@ -2,6 +2,7 @@ package com.hanvon.sulupen;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -38,6 +39,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import cn.sharesdk.framework.ShareSDK;
 import cn.sharesdk.onekeyshare.OnekeyShare;
@@ -62,12 +64,14 @@ import com.hanvon.sulupen.ui.ImageBucketChooseActivity;
 import com.hanvon.sulupen.ui.ImageZoomActivity;
 import com.hanvon.sulupen.utils.CustomConstants;
 import com.hanvon.sulupen.utils.CustomDialog;
+import com.hanvon.sulupen.utils.HvnCloudManager;
 import com.hanvon.sulupen.utils.IntentConstants;
 import com.hanvon.sulupen.utils.LogUtil;
 import com.hanvon.sulupen.utils.TimeUtil;
 import com.hanvon.sulupen.utils.UiUtil;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -113,6 +117,8 @@ public class ScanNoteActivity extends Activity implements OnClickListener{
 	private final static int FLAG_CREATE_NOTE_WITH_DEFAULT_NOTEBOOK = 3;
 	private final static int FLAG_CREATE = 2;
     private final static int FLAG_EDIT = 1;
+    private final static int UPLLOAD_FILE_CLOUD_SUCCESS = 5;
+    private final static int UPLLOAD_FILE_CLOUD_FAIL = 6;
 	private int flagIntent = 1;
 	private NoteRecordDao mScanRecordDao;
 	private NoteRecord mScanRecord = null;
@@ -138,6 +144,7 @@ public class ScanNoteActivity extends Activity implements OnClickListener{
 	private BluetoothMsgReceive btMsgReceiver;
 	private int isSendImageMode = 0;
 
+	private ProgressDialog pd;
 	private boolean flag;
 	private Handler handler = new Handler() {
 		@SuppressLint("ShowToast")
@@ -164,47 +171,16 @@ public class ScanNoteActivity extends Activity implements OnClickListener{
 			case BluetoothMsgReceive.BT_DISCONNECT:
 			//	getRightButton().setEnabled(false);
 				break;
-		//	case UPLOAD_FATIL:
-	//			mProgressDialog.dismiss();
-	//			Toast.makeText(ScanNoteDetailActivity.this, "上传失败",Toast.LENGTH_LONG).show();
-	//			break;
-		//	case UPLOAD_SUCCESS:
-		//		mProgressDialog.dismiss();
-		//		Toast.makeText(ScanNoteDetailActivity.this, "上传成功",Toast.LENGTH_LONG).show();
-		//		break;
-			
-		//	case BAIDU_DELETE_SUCCESS:
-		//		DataListCount++;
-//				if (DataListCount < mPrevDataList.size()){
-//					LogUtil.i("BAIDU_DELETE_SUCCESS: count:  "+DataListCount + "     mPrevDataList.size():"+ mPrevDataList.size());
-//					break;
-//				}
-//				DataListCount = 0;
-//				List<String> file = (List<String>) msg.obj;
-//				int count = 0;
-//				String noteTitle = null;
-//				String scanContent = null;
-//				for(String item:file){
-//                    if (count == 0){
-//                    	noteTitle = item;
-//                    }else if (count == 1){
-//                    	scanContent = item;
-//                    }
-//                    count++;
-//				}
-//				
-//				DataListCount = mDataList.size();
-//				LogUtil.i("noteTile:---"+noteTitle+"\r\nscanContent:--"+scanContent);
-//				uploadFileToBaiduCloud(noteTitle,scanContent);
-//				
-//				count = 0;
-//				for(ImageItem item:mDataList){
-//					LogUtil.i(" source path:---"+item.getSourcePath());
-//					uploadPngToBaidu(item.getSourcePath(),count);
-//					count++;
-//				}
-//			    break;
-			    
+			case UPLLOAD_FILE_CLOUD_SUCCESS:
+				pd.dismiss();
+				Toast.makeText(ScanNoteActivity.this, "文件上传成功!", Toast.LENGTH_SHORT).show();
+				LogUtil.i("-----^^^^^^----------上传成功");
+				break;
+			case UPLLOAD_FILE_CLOUD_FAIL:
+				pd.dismiss();
+				Toast.makeText(ScanNoteActivity.this, "文件上传失败!", Toast.LENGTH_SHORT).show();
+				LogUtil.i("-----xxxxxxx----------上传失败");
+				break;
 
 			default:
 				break;
@@ -248,7 +224,7 @@ public class ScanNoteActivity extends Activity implements OnClickListener{
 				.findViewById(R.id.horScroll);
 		ivScanBmp = (ImageView) this.findViewById(R.id.ivScanImage);
 		
-		tvNewNote = (TextView) this.findViewById(R.id.newNote);
+		tvNewNote = (TextView) this.findViewById(R.id.tv_title);;
 		etScanContent = (EditText) this.findViewById(R.id.etNoteContent);
 		etNoteTitle = (EditText) this.findViewById(R.id.etNoteTitle);
 		tvScanContent = (TextView) this.findViewById(R.id.tvNoteContent);
@@ -361,7 +337,8 @@ public class ScanNoteActivity extends Activity implements OnClickListener{
 			} 
 			else 
 			{
-				tvNewNote.setText("");
+					tvNewNote.setText("");
+
 			    int noteid = intent.getIntExtra("NoteRecordId", -1);
 			    Log.d(TAG, "get noteid: " + noteid);
 			    if (noteid != -1)
@@ -640,7 +617,6 @@ public class ScanNoteActivity extends Activity implements OnClickListener{
 					mPhotoRecordDao.add(cphote);
 				}
 				
-				
 				//保存该次选择的标签类型到sharedpreference
 				if(sp==null)
 				{
@@ -697,11 +673,36 @@ public class ScanNoteActivity extends Activity implements OnClickListener{
 		}
 		// 清空选择图片的pref文件记录
 		removeTempFromPref();
-		mDataList = new ArrayList<ImageItem>();
-		
-		
+		mDataList = new ArrayList<ImageItem>();	
 	}
 	
+	public void UploadFilesToHvnCloud(final String title,final String content,final List<ImageItem> mDataList){
+		//final String result = null;
+		new Thread() {
+			@Override
+			public void run() {
+				String result = null;
+				HvnCloudManager hvnCloud = new HvnCloudManager();
+				try {
+					result = hvnCloud.UploadNotesToHvnCloud(title, content, mDataList);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				LogUtil.i(result);
+				
+				if (result == null){
+					Message msg = new Message();
+                    msg.what = UPLLOAD_FILE_CLOUD_FAIL;
+                    handler.sendMessage(msg); 
+				}else{
+					Message msg = new Message();
+                    msg.what = UPLLOAD_FILE_CLOUD_SUCCESS; 
+                    handler.sendMessage(msg);	
+				}
+			}
+		}.start();
+	}	
 	
 	/**
 	 * 光标后追加文字
@@ -714,6 +715,15 @@ public class ScanNoteActivity extends Activity implements OnClickListener{
 		
 		int index = curEditText.getSelectionStart();
 		Editable edit = curEditText.getEditableText();
+		
+		
+		//2000给予提示
+		if((edit.length()+str.length())>2000)
+		{
+			UiUtil.showToast(this, "您的笔记内容已达最大！");
+			return;
+
+		}
 //		int index = etScanContent.getSelectionStart();
 //		Editable edit = etScanContent.getEditableText();
 		 
@@ -787,6 +797,12 @@ public class ScanNoteActivity extends Activity implements OnClickListener{
 				toEditableMode(etScanContent);
 				break;
 	            case R.id.ivShare:
+	            /*	String title = etNoteTitle.getText().toString();
+	    			String content = etScanContent.getText().toString();
+	    			if (!content.equals("")){
+	    				pd = ProgressDialog.show(ScanNoteActivity.this, "", "文件上传中...");
+	            	    UploadFilesToHvnCloud(title,content,mDataList);
+	    			}*/
 	            	//跳转到分享和上传功能界面
 	            	Intent intent = new Intent(ScanNoteActivity.this,ShareNoteActivity.class);
 	            	intent.putExtra("title", etNoteTitle.getText().toString());

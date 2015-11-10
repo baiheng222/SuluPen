@@ -173,7 +173,7 @@ public class RememberPassword extends Activity implements OnClickListener{
 
 			   final List<NameValuePair> parameters=new ArrayList<NameValuePair>();
 		       parameters.add(new BasicNameValuePair("userName", strUserCode));
-			   parameters.add(new BasicNameValuePair("email", ""));
+			   parameters.add(new BasicNameValuePair("email", strUserCode));
 				final String url = "https://account.hw99.com/user/checkUserNameEmail.action";
 				final int result = 0;
 				new Thread() {

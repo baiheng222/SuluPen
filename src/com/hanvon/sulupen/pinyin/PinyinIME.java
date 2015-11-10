@@ -72,6 +72,7 @@ import com.hanvon.sulupen.utils.LogUtil;
 //import com.hanvon.sulupen.helper.FileHelper;
 //import com.hanvon.sulupen.ui.DeviceListActivity;
 //import com.hanvon.sulupen.ScanNoteActivity;
+import com.hanvon.sulupen.utils.UiUtil;
 
 /**
  * Main class of the Pinyin input method. 输入法服务
@@ -1180,11 +1181,20 @@ public class PinyinIME extends InputMethodService {
 	 */
 	public void commitResultText(String resultText) {
 	    System.out.println("tong----------in commitResultText:"+resultText);
+		//如果添加后的字符大于2000，给予提示
+		if((editString.length()+resultText.length())>2000)
+		{
+			UiUtil.showToast(this, "您的笔记内容已达最大！");
+			return;
+			
+		}
 		LogUtil.i("");
 		InputConnection ic = getCurrentInputConnection();
 		if (null != ic)
 			ic.commitText(resultText, 1);
 		editString.append(resultText);
+
+	
 		System.out.println("tong----------in commitResultText editString:"+editString);
 		LogUtil.i(editString.toString());
 //			ic.setComposingText(resultText, 1);
@@ -3089,6 +3099,14 @@ public class PinyinIME extends InputMethodService {
 	//由英文输入界面调用
 	public void appendEditText(String content)
 	{
+		//2000给予提示
+		if((editString.length()+content.length())>2000)
+		{
+			UiUtil.showToast(this, "您的笔记内容已达最大！");
+			return;
+			
+		}
+		
 		System.out.println("tong---------in appendEditText content is:"+content);
 		editString.append(content);
 		System.out.println("tong---------in appendEditText editString is:"+editString);

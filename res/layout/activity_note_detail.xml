@@ -189,7 +189,7 @@
            <RelativeLayout
                android:id="@+id/note_bottom_bar"
                android:layout_width="fill_parent"
-               android:layout_height="match_parent"
+               android:layout_height="48dp"
                android:background="@color/frame_bg" >
             
                
@@ -211,9 +211,9 @@
             android:layout_height="wrap_content"
             android:background="@drawable/share_note"
             android:layout_alignParentLeft="true"
-            android:layout_marginTop="5dp"
-             android:layout_marginLeft="5dp"
-             android:layout_marginRight="15dp"
+            android:layout_centerVertical="true"
+             android:layout_marginLeft="15dp"
+           
             />
 
              <ImageView
@@ -221,7 +221,8 @@
                  android:layout_width="wrap_content"
                  android:layout_height="wrap_content"
                  android:layout_alignParentRight="true"
-                android:layout_marginTop="5dp"
+                 android:layout_centerVertical="true"
+                 android:layout_marginRight="15dp"
                  android:background="@drawable/delete_note" />
 
 
@@ -230,9 +231,8 @@
                    android:id="@+id/ivChangelag"
                    android:layout_width="wrap_content"
                    android:layout_height="wrap_content"
-                   android:layout_alignParentTop="true"
-                   android:layout_marginLeft="34dp"
-                     android:layout_marginTop="5dp"
+                   android:layout_marginLeft="40dp"
+                   android:layout_centerVertical="true"
                    android:layout_toRightOf="@+id/ivShare"
                    android:background="@drawable/lag_note" />
 
@@ -240,16 +240,18 @@
                    android:id="@+id/ivScan"
                    android:layout_width="wrap_content"
                    android:layout_height="wrap_content"
-                   android:layout_marginTop="5dp"
+                   android:layout_centerVertical="true"
                    android:layout_centerHorizontal="true"
+               
                    android:background="@drawable/scan_note" />
 
                <ImageView
                    android:id="@+id/ivInsertImage"
                    android:layout_width="wrap_content"
                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                   android:layout_marginRight="55dp"
+                   android:layout_centerVertical="true"
+                  
+                   android:layout_marginRight="37dp"
                    android:layout_toLeftOf="@+id/ivDelete"
                    android:background="@drawable/image_note" />
 

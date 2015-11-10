@@ -49,6 +49,7 @@ public class HttpsClient{
 			if (status == 200){
 				//    String resultData = EntityUtils.toString(response.getEntity());
 				String resultData = EntityUtils.toString(response.getEntity(),HTTP.UTF_8);
+				LogUtil.i("------"+resultData);
 				    return resultData;
 			}
 		}catch (IOException e){
