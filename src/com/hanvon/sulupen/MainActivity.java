@@ -15,6 +15,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -185,6 +187,13 @@ import com.lidroid.xutils.bitmap.BitmapCommonUtils;
 	}
     
     
+    private String getCurVersion() throws Exception 
+	{
+		PackageManager packageManager = this.getPackageManager();
+		PackageInfo packInfo = packageManager.getPackageInfo(this.getPackageName(), 0);
+		return packInfo.versionName;
+	}
+    
     public void initLeftMenu()
     {
     	// configure the SlidingMenu
@@ -224,11 +233,24 @@ import com.lidroid.xutils.bitmap.BitmapCommonUtils;
     	 
     	mRlCloudSync = (RelativeLayout) findViewById(R.id.rl_cloud);
     	mRlCloudSync.setOnClickListener(this);
+    	
+    	TextView version = (TextView) findViewById(R.id.tv_version);
+    	
+    	try 
+		{
+    		version.setText("Version" + getCurVersion());
+		} 
+		catch (Exception e) 
+		{
+			e.printStackTrace();
+		}
+    	
 
     	ShowUserInfo();
     }
 
-    @TargetApi(Build.VERSION_CODES.GINGERBREAD) @SuppressLint("NewApi") public void ShowUserInfo(){
+    @TargetApi(Build.VERSION_CODES.GINGERBREAD) @SuppressLint("NewApi") 
+    public void ShowUserInfo(){
     	String email = "",phone = "",hvnname = "",figureurl = "",username = "";
 		SharedPreferences mSharedPreferences=this.getSharedPreferences("BitMapUrl", Activity.MODE_MULTI_PROCESS);
 		int flag = mSharedPreferences.getInt("flag", 0);
