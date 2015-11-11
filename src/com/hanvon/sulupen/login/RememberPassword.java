@@ -182,7 +182,7 @@ public class RememberPassword extends Activity implements OnClickListener{
 						HttpsClient httpsClient = new HttpsClient();
 						String result = httpsClient.HttpsRequest(url, parameters);
 						LogUtil.i(result);
-						
+
 						if (result.equals("right")){
 							Message msg = new Message();
 		                    msg.what = 0; 

@@ -82,7 +82,7 @@ public class UpdateAppService extends Service{
         public File getFileFromServer(String path) throws Exception{
     		LogUtil.i("PATH:"+path);
     		File file = null;
-    	    if(Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)){
+    	//    if(Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)){
     	        URL url = new URL(path);
     	        HttpURLConnection conn =  (HttpURLConnection) url.openConnection();
     	        conn.setConnectTimeout(5000);
@@ -90,21 +90,23 @@ public class UpdateAppService extends Service{
     	        int length = conn.getContentLength();
     	        InputStream is = conn.getInputStream();
     	        if (updateType == 1){
-    	        	 File f = new File(Environment.getExternalStorageDirectory()+"EpenAssistant.apk");
+    	        	 File f = new File("/sdcard/"+"SuluPen.apk");
     	        	 if (f.exists()){
-    	        		 LogUtil.i("---Environment:PATH---"+Environment.getExternalStorageDirectory()+"/EpenAssistant.apk");
+    	        		 LogUtil.i("---Environment:PATH---"+"/sdcard/"+"SuluPen.apk");
     	        		 f.delete();
     	        	 }
-    	        	 file = new File(Environment.getExternalStorageDirectory(), "EpenAssistant.apk");
+    	        	 file = new File("/sdcard/", "SuluPen.apk");
+    	        	 LogUtil.i("---Environment:PATH---"+"/sdcard/"+"SuluPen.apk");
     	        }else if (updateType == 2){
-    	        	 File f = new File(Environment.getExternalStorageDirectory()+"/"+HanvonApplication.HardUpdateName);
+    	        	 File f = new File("/sdcard/"+"/"+HanvonApplication.HardUpdateName);
    	        	     if (f.exists()){
-   	        	    	LogUtil.i("---Environment:PATH---"+Environment.getExternalStorageDirectory()+"/"+HanvonApplication.HardUpdateName);
+   	        	    	LogUtil.i("---Environment:PATH---"+"/sdcard/"+"/"+HanvonApplication.HardUpdateName);
    	        		    f.delete();
    	        	     }
-    	        	 file = new File(Environment.getExternalStorageDirectory(), HanvonApplication.HardUpdateName);
+    	        	 file = new File("/sdcard/", HanvonApplication.HardUpdateName);
+    	        	 LogUtil.i("---Environment:PATH---"+"/sdcard/"+HanvonApplication.HardUpdateName);
     	        }
-    	        LogUtil.i("---Environment:PATH---"+Environment.getExternalStorageDirectory());
+    	        LogUtil.i("---Environment:PATH---"+"/sdcard/");
     	        FileOutputStream fos = new FileOutputStream(file);
     	        BufferedInputStream bis = new BufferedInputStream(is);
     	        byte[] buffer = new byte[1024];
@@ -148,9 +150,9 @@ public class UpdateAppService extends Service{
         	        stopSelf();
                 }
     	        return file;
-    	    }else{
-    	    	return null;
-    	    }
+    	 //   }else{
+    	  //  	return null;
+    	  //  }
         }
     	/**
     	 * 5.安装下载的Apk软件

@@ -10,18 +10,15 @@
     android:background="#f6f6f6"
     android:layout_alignParentTop="true" >
     
-    	<TextView
-        android:id="@+id/tv_cancel_notebook_edit"
-    	android:layout_width="wrap_content"
-    	android:layout_height="match_parent"
-    	android:layout_alignParentLeft="true"
-    	android:layout_marginLeft="15dp"
-    	android:layout_marginRight="12dp"
-    	android:text="@string/edit_cancel"
-    	android:textSize="14sp"
-    	android:textColor="#3b8989"
-    	
-    	android:gravity="center_vertical"/>
+    	<ImageView
+            android:id="@+id/iv_edit_noetbook_backbtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="8dp"
+            android:src="@drawable/back" />
     
         <TextView
         android:id="@+id/tv_done_notebook_edit"
@@ -33,17 +30,18 @@
     	android:text="@string/edit_done"
     	android:textSize="14sp"
     	android:textColor="#3b8989"
+    	android:visibility="gone"
     	android:gravity="center_vertical"/>
         
         <TextView
             android:id="@+id/tv_title"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_toLeftOf="@id/tv_done_notebook_edit"
-            android:layout_toRightOf="@id/tv_cancel_notebook_edit"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
             android:textColor="#4d4d4d"
             android:gravity="center_vertical|center_horizontal"
-            android:text="@string/title_notebook"
+            android:text="@string/edit_edit"
             android:textSize="16sp"/>        
 	</RelativeLayout>
 	

@@ -1,16 +1,11 @@
 package com.hanvon.sulupen;
 
-import java.util.List;
-
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.AlertDialog.Builder;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
-import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -18,13 +13,16 @@ import com.hanvon.sulupen.adapter.NoteBookEditListAdapter;
 import com.hanvon.sulupen.db.bean.NoteBookRecord;
 import com.hanvon.sulupen.db.dao.NoteBookRecordDao;
 
+import java.util.List;
+
 public class EditNoteBookActivity extends Activity implements OnClickListener
 {
 	private final String TAG = "EditNoteBookActivity";
 	
-	private TextView mTvCancel;
-	private TextView mTvDone;
+	//private TextView mTvCancel;
+	//private TextView mTvDone;
 	private ListView mLvList;
+	private ImageView mIvBackBtn;
 	
 	public NoteBookRecordDao mNoteBookRecordDao;
 	private List<NoteBookRecord> mNoteBookList;
@@ -44,12 +42,12 @@ public class EditNoteBookActivity extends Activity implements OnClickListener
 	
 	private void initView()
 	{
-		mTvCancel = (TextView) findViewById(R.id.tv_cancel_notebook_edit);
-		mTvDone = (TextView) findViewById(R.id.tv_done_notebook_edit);
+		//mTvCancel = (TextView) findViewById(R.id.tv_cancel_notebook_edit);
+		//mTvDone = (TextView) findViewById(R.id.tv_done_notebook_edit);
+		mIvBackBtn = (ImageView) findViewById(R.id.iv_edit_noetbook_backbtn);
 		mLvList = (ListView) findViewById(R.id.lv_edit_notebook);
 		
-		mTvCancel.setOnClickListener(this);
-		mTvDone.setOnClickListener(this);
+		mIvBackBtn.setOnClickListener(this);
 		
 		mEditNoteBookAdapter = new NoteBookEditListAdapter(this, mNoteBookList);
 		mLvList.setAdapter(mEditNoteBookAdapter);
@@ -66,12 +64,8 @@ public class EditNoteBookActivity extends Activity implements OnClickListener
 	public void onClick(View view)
 	{
 		switch(view.getId())
-		{
-			case R.id.tv_done_notebook_edit:
-			
-			break;
-			
-			case R.id.tv_cancel_notebook_edit:
+		{	
+			case R.id.iv_edit_noetbook_backbtn:
 				finish();
 			break;
 		}

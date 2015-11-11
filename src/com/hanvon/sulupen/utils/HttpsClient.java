@@ -46,6 +46,7 @@ public class HttpsClient{
 
 		    response = client.execute(httpPost);
 			int status = response.getStatusLine().getStatusCode();
+			
 			if (status == 200){
 				//    String resultData = EntityUtils.toString(response.getEntity());
 				String resultData = EntityUtils.toString(response.getEntity(),HTTP.UTF_8);

@@ -51,6 +51,8 @@ public class NoteRecordDao
 		{
 			e.printStackTrace();
 		}
+		
+		getAllNoteRecords();
 	}
 
 	// 保存一条数据

@@ -106,6 +106,8 @@ public class ScanNoteActivity extends Activity implements OnClickListener{
     
     private ImageView IVsendImag;
     
+    private Boolean bShareFlag = false;
+    private String  strLinkPath = null;
     
 	//private TopicDialog topicDlg;
 
@@ -172,14 +174,37 @@ public class ScanNoteActivity extends Activity implements OnClickListener{
 			//	getRightButton().setEnabled(false);
 				break;
 			case UPLLOAD_FILE_CLOUD_SUCCESS:
-				pd.dismiss();
-				Toast.makeText(ScanNoteActivity.this, "文件上传成功!", Toast.LENGTH_SHORT).show();
-				LogUtil.i("-----^^^^^^----------上传成功");
+				if(bShareFlag )
+				{
+					pd.dismiss();
+					bShareFlag = false;
+					showShare();
+				}
+				else
+				{
+					pd.dismiss();
+					Toast.makeText(ScanNoteActivity.this, "文件上传成功!", Toast.LENGTH_SHORT).show();
+			
+				}
+				
+
 				break;
 			case UPLLOAD_FILE_CLOUD_FAIL:
+				
+				if(bShareFlag )
+				{
+					bShareFlag = false;
+					pd.dismiss();
+					Toast.makeText(ScanNoteActivity.this, "获取链接失败，不能分享!", Toast.LENGTH_SHORT).show();
+					
+				}
+				else
+				{
 				pd.dismiss();
 				Toast.makeText(ScanNoteActivity.this, "文件上传失败!", Toast.LENGTH_SHORT).show();
 				LogUtil.i("-----xxxxxxx----------上传失败");
+				}
+				
 				break;
 
 			default:
@@ -696,6 +721,7 @@ public class ScanNoteActivity extends Activity implements OnClickListener{
                     msg.what = UPLLOAD_FILE_CLOUD_FAIL;
                     handler.sendMessage(msg); 
 				}else{
+					strLinkPath = result;
 					Message msg = new Message();
                     msg.what = UPLLOAD_FILE_CLOUD_SUCCESS; 
                     handler.sendMessage(msg);	
@@ -797,17 +823,21 @@ public class ScanNoteActivity extends Activity implements OnClickListener{
 				toEditableMode(etScanContent);
 				break;
 	            case R.id.ivShare:
-	            /*	String title = etNoteTitle.getText().toString();
-	    			String content = etScanContent.getText().toString();
-	    			if (!content.equals("")){
-	    				pd = ProgressDialog.show(ScanNoteActivity.this, "", "文件上传中...");
-	            	    UploadFilesToHvnCloud(title,content,mDataList);
-	    			}*/
+
 	            	//跳转到分享和上传功能界面
-	            	Intent intent = new Intent(ScanNoteActivity.this,ShareNoteActivity.class);
-	            	intent.putExtra("title", etNoteTitle.getText().toString());
-	            	startActivity(intent);
-	            	//showShare();
+//	            	Intent intent = new Intent(ScanNoteActivity.this,ShareNoteActivity.class);
+//	            	intent.putExtra("title", etNoteTitle.getText().toString());
+//	            	startActivity(intent);
+	            	
+	            	//直接分享
+	            	bShareFlag = true;
+	            	String title1 = etNoteTitle.getText().toString();
+		    	    String content1 = etScanContent.getText().toString();
+		    			if (!content1.equals("")){
+		    				pd = ProgressDialog.show(ScanNoteActivity.this, "", "生成连接中，请等待...");
+		            	    UploadFilesToHvnCloud(title1,content1,mDataList);
+		    			}
+	         
 	            	 break;
 	            case R.id.ivInsertImage:
 					new PopupWindows(ScanNoteActivity.this, mGridView);    
@@ -844,7 +874,15 @@ public class ScanNoteActivity extends Activity implements OnClickListener{
 	            
    */
 	            case R.id.ivChangelag:
-	            	startChangeNoteBook();
+	            	//点击第二个图标，上传云
+		            	String title = etNoteTitle.getText().toString();
+		    			String content = etScanContent.getText().toString();
+		    			if (!content.equals("")){
+		    				pd = ProgressDialog.show(ScanNoteActivity.this, "", "文件上传中...");
+		            	    UploadFilesToHvnCloud(title,content,mDataList);
+		    			}
+	            	
+	            	//startChangeNoteBook();
 	            	break;
 	            	
 	    		case R.id.come_back:
@@ -914,19 +952,21 @@ public class ScanNoteActivity extends Activity implements OnClickListener{
 		 // title标题，印象笔记、邮箱、信息、微信、人人网和QQ空间使用
 		 oks.setTitle(getString(R.string.share));
 		 // titleUrl是标题的网络链接，仅在人人网和QQ空间使用
-		 oks.setTitleUrl("http://sharesdk.cn");
+		 oks.setTitleUrl(strLinkPath);
 		 // text是分享文本，所有平台都需要这个字段
-		 oks.setText("我是汉王速记（测试）");
+		 oks.setText(etScanContent.getText().toString());
 		 // imagePath是图片的本地路径，Linked-In以外的平台都支持此参数
-		 oks.setImagePath("/sdcard/test.jpg");//确保SDcard下面存在此张图片
+	
+		 //oks.setImagePath("/data/data/com.hanvon.sulupen/res/drawable-mdpi/ic_launcher.png");
+		 //oks.setImagePath("/sdcard/test.jpg");//确保SDcard下面存在此张图片
 		 // url仅在微信（包括好友和朋友圈）中使用
-		 oks.setUrl("http://sharesdk.cn");
+		 oks.setUrl(strLinkPath);
 		 // comment是我对这条分享的评论，仅在人人网和QQ空间使用
 		 oks.setComment("我是测试评论文本");
 		 // site是分享此内容的网站名称，仅在QQ空间使用
 		 oks.setSite(getString(R.string.app_name));
 		 // siteUrl是分享此内容的网站地址，仅在QQ空间使用
-		 oks.setSiteUrl("http://sharesdk.cn");
+		 oks.setSiteUrl(strLinkPath);
 
 		// 启动分享GUI
 		 oks.show(this);
