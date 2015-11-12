@@ -153,8 +153,14 @@ import com.lidroid.xutils.bitmap.BitmapCommonUtils;
         		LogUtil.i("---------MAIN---false---------------------");
         		TVusername.setText("");
 		    	TVnickname.setText("未登录");
-        		mIvLogin.setBackgroundResource(R.drawable.logicon);
-		    	//mIvLogin.setImageResource(R.drawable.logicon);
+        	//	mIvLogin.setBackgroundResource(R.drawable.logicon);
+        	//	mIvLogin.setImageResource(R.drawable.logicon);
+		    	if (HanvonApplication.userFlag == 0){
+		    		mIvLogin.setBackgroundResource(R.drawable.logicon);
+		    	}else{
+		    		mIvLogin.setImageDrawable((getResources().getDrawable(R.drawable.logicon)));
+		    	}
+		    	
 		    	//(getResources().getDrawable(R.drawable.logicon));
         	}
 	}
@@ -272,20 +278,9 @@ import com.lidroid.xutils.bitmap.BitmapCommonUtils;
 		    if (flag == 0){
 			    if(!nickname.isEmpty()){
 			    	TVusername.setText(nickname);
-				  //   if (isHasNick){
-				  //       if (email.equals("")){
-				   //     	 TVnickname.setText(phone);
-				   //     	 HanvonApplication.hvnName = phone;
-				   //      }else{
-				   //     	 TVnickname.setText(email);
-				    //    	 HanvonApplication.hvnName = email;
-				    //     }
-				    // }
 			    	TVnickname.setText(username);
 				     HanvonApplication.hvnName = username;
 				     HanvonApplication.strName = nickname;
-				   //  HanvonApplication.strEmail = email;
-				   //  HanvonApplication.strPhone = phone;
 				     mIvLogin.setBackgroundResource(R.drawable.login_head_default);
 				     LogUtil.i("hvnName:"+username+"  strName:"+nickname);
 			    }else{
@@ -296,10 +291,6 @@ import com.lidroid.xutils.bitmap.BitmapCommonUtils;
 				     mIvLogin.setBackgroundResource(R.drawable.login_head_default);
 				     LogUtil.i("hvnName:"+username+"  strName:"+nickname);
 			    }
-			 //   figureurl = mSharedPreferences.getString("drawable", "");
-			 //   if (!figureurl.equals("")){
-			 //   	mIvLogin.setImageDrawable(byteToDrawable(figureurl));
-			//    }
 		    }
 		    if (flag == 1 || flag == 2){
 			    if(!nickname.isEmpty()){
@@ -320,7 +311,11 @@ import com.lidroid.xutils.bitmap.BitmapCommonUtils;
 		}else{
 			TVusername.setText("");
 	    	TVnickname.setText("未登录");
-    		mIvLogin.setBackgroundResource(R.drawable.logicon);
+	    	if (HanvonApplication.userFlag == 0){
+	    		mIvLogin.setBackgroundResource(R.drawable.logicon);
+	    	}else{
+	    		mIvLogin.setImageDrawable((getResources().getDrawable(R.drawable.logicon)));
+	    	}
 	    	//mIvLogin.setImageResource(R.drawable.logicon);
 		}
     }

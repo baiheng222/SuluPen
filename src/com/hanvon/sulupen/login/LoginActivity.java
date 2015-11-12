@@ -1,11 +1,22 @@
 package com.hanvon.sulupen.login;
 
 import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import cn.sharesdk.framework.Platform;
+import cn.sharesdk.framework.PlatformActionListener;
+import cn.sharesdk.framework.ShareSDK;
+import cn.sharesdk.tencent.qq.QQ;
+import cn.sharesdk.tencent.qzone.QZone;
+import cn.sharesdk.wechat.friends.Wechat;
+
 import com.hanvon.sulupen.application.HanvonApplication;
 import com.hanvon.sulupen.MainActivity;
 import com.hanvon.sulupen.R;
@@ -16,7 +27,9 @@ import com.hanvon.sulupen.net.RequestServerData;
 import com.hanvon.sulupen.utils.LogUtil;
 import com.hanvon.sulupen.utils.ClearEditText;
 import com.hanvon.sulupen.utils.ConnectionDetector;
-import com.hanvon.sulupen.utils.LoginUtil;
+import com.hanvon.sulupen.utils.LoginUtils;
+import com.hanvon.sulupen.utils.LoginUtils;
+import com.mob.tools.utils.UIHandler;
 import com.tencent.mm.sdk.modelmsg.SendAuth;
 import com.tencent.tauth.Tencent;
 
@@ -34,6 +47,8 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.os.Handler.Callback;
+import android.text.TextUtils;
 import android.util.Base64;
 import android.view.KeyEvent;
 import android.view.View;
@@ -45,7 +60,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class LoginActivity extends Activity implements OnClickListener {
+public class LoginActivity extends Activity implements Callback, 
+OnClickListener, PlatformActionListener  {
 
 	private TextView TVSkip;
 	private ClearEditText ETUserName;
@@ -64,9 +80,21 @@ public class LoginActivity extends Activity implements OnClickListener {
 	private int userflag = 0;
 	public static LoginActivity instance = null;
 	public String flag;   // 0 从其他界面跳转 1 从云信息登陆跳转  2 从上传界面跳转
+	
+	private static final int MSG_USERID_FOUND = 1;
+	private static final int MSG_LOGIN = 2;
+	private static final int MSG_AUTH_CANCEL = 3;
+	private static final int MSG_AUTH_ERROR= 4;
+	private static final int MSG_AUTH_COMPLETE = 5;
+	
+	private String openid;
+	private String figureurl;
+	private String nickname;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		ShareSDK.initSDK(this);
 		instance = this;
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_login);
@@ -344,19 +372,9 @@ public class LoginActivity extends Activity implements OnClickListener {
 
 	public void QQUserLogin(){
 		LogUtil.i("INTO QQUserLogin!!!!!!!!");
-		if (new ConnectionDetector(LoginActivity.this).isConnectingTOInternet()) {
-			HanvonApplication.userFlag = 1;
-			pd = ProgressDialog.show(LoginActivity.this, "", "");
-			LoginUtil logutil = new LoginUtil(LoginActivity.this,LoginActivity.this);
-			if (flag != null){
-				logutil.QQLogin(pd,Integer.valueOf(flag));
-			}else{
-				logutil.QQLogin(pd,0);	
-			}
-		} else {
-			Toast.makeText(LoginActivity.this, "网络连接不可用，请检查网络后再试", Toast.LENGTH_SHORT).show();
-		}
-		LogUtil.i("Leave QQUserLogin!!!!!!!!");
+		userflag = 1;
+		pd = ProgressDialog.show(this, "", "正在登陆中，请稍后...");
+		authorize(new QQ(this));
 	}
 	
 	public void hvnUserLogin(){
@@ -366,21 +384,9 @@ public class LoginActivity extends Activity implements OnClickListener {
 
 	public void weiXinUserLogin(){
 		LogUtil.i("INTO WeixinUserLogin!!!!!!!!");
-		pd = ProgressDialog.show(LoginActivity.this, "", "");
-		if (new ConnectionDetector(LoginActivity.this).isConnectingTOInternet()) {
-			HanvonApplication.userFlag = 2;
-			final SendAuth.Req req = new SendAuth.Req();
-			req.scope = "snsapi_userinfo";
-			if (flag != null){
-				req.state = "carjob_wx_login"+flag;
-			}else{
-				req.state = "carjob_wx_login"+"0";
-			}
-			HanvonApplication.api.sendReq(req);
-		//	LoginActivity.this.finish();
-		} else {
-			Toast.makeText(LoginActivity.this, "网络连接不可用，请检查网络后再试", Toast.LENGTH_SHORT).show();
-		}
+		userflag = 2;
+		pd = ProgressDialog.show(this, "", "正在登陆中，请稍后...");
+		authorize(new Wechat(this));
 	}
 	
 	public synchronized Drawable byteToDrawable(String icon) { 
@@ -400,6 +406,10 @@ public class LoginActivity extends Activity implements OnClickListener {
 	protected void onDestroy() {
 		LogUtil.i("INTO onDestroy!!!!!!!!");
 		super.onDestroy();
+		
+		if (pd != null){
+			pd.dismiss();
+		}
 	}
 	
 	@Override  
@@ -411,6 +421,122 @@ public class LoginActivity extends Activity implements OnClickListener {
 	    	this.finish();
 	    }
 	    return false;                                                                  
+	}
+	
+	
+	
+	
+	private void authorize(Platform plat) {	
+		
+
+		if(plat.isValid()) {
+			LogUtil.i("------isValid --11111111-------" + plat.isValid());
+			String userId = plat.getDb().getUserId();
+			if (!TextUtils.isEmpty(userId)) {
+				UIHandler.sendEmptyMessage(MSG_USERID_FOUND, this);
+				nickname = plat.getDb().getUserName();
+				openid = plat.getDb().getUserId();
+				figureurl = plat.getDb().getUserIcon();
+
+				LogUtil.i("---nickname:" + nickname+"  openid:"+openid);
+				
+				HanvonApplication.plat = plat;
+				login(plat.getName(), userId, null);
+				return;
+			}
+		}
+		LogUtil.i("------isValid --22222222222-------");
+		plat.setPlatformActionListener(this);
+		plat.SSOSetting(true);
+		plat.showUser(null);
+		plat.getDb().putExpiresIn(15*24*3600);
+	}
+	
+	public void onComplete(Platform platform, int action,
+			HashMap<String, Object> res) {
+		if (action == Platform.ACTION_USER_INFOR) {
+			UIHandler.sendEmptyMessage(MSG_AUTH_COMPLETE, this);
+			nickname = platform.getDb().getUserName();
+			openid = platform.getDb().getUserId();
+			figureurl = platform.getDb().getUserIcon();
+
+			LogUtil.i("---nickname:" + nickname+"  openid:"+openid);
+			HanvonApplication.plat = platform;
+			login(platform.getName(), platform.getDb().getUserId(), res);
+		}
+		LogUtil.i(res.toString());
+		nickname = platform.getDb().getUserName();
+		openid = platform.getDb().getUserId();
+		figureurl = platform.getDb().getUserIcon();
+		
+		LogUtil.i("---nickname:" + nickname+"  openid:"+openid);
+		LoginUtils login = new LoginUtils(this,userflag);
+		login.setFigureurl(platform.getDb().getUserIcon());
+		login.setNickName(platform.getDb().getUserName());
+		login.setOpenid(platform.getDb().getUserId());
+		
+		login.LoginToHvn();
+		
+	}
+	
+	public void onError(Platform platform, int action, Throwable t) {
+		if (action == Platform.ACTION_USER_INFOR) {
+			UIHandler.sendEmptyMessage(MSG_AUTH_ERROR, this);
+		}
+		t.printStackTrace();
+	}
+	
+	public void onCancel(Platform platform, int action) {
+		if (action == Platform.ACTION_USER_INFOR) {
+			UIHandler.sendEmptyMessage(MSG_AUTH_CANCEL, this);
+		}
+	}
+	
+	private void login(String plat, String userId, HashMap<String, Object> userInfo) {
+		Message msg = new Message();
+		msg.what = MSG_LOGIN;
+		msg.obj = plat;
+		UIHandler.sendMessage(msg, this);
+	}
+	
+	public boolean handleMessage(Message msg) {
+		switch(msg.what) {
+			case MSG_USERID_FOUND: {
+				Toast.makeText(this, R.string.userid_found, Toast.LENGTH_SHORT).show();
+				LoginUtils login = new LoginUtils(this,userflag);
+				login.setFigureurl(figureurl);
+				login.setNickName(nickname);
+				login.setOpenid(openid);
+				
+				login.LoginToHvn();
+			}
+			break;
+			case MSG_LOGIN: {
+			//	String text = getString(R.string.logining, msg.obj);
+			//	Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
+				System.out.println("---------------");
+				pd.dismiss();
+			}
+			break;
+			case MSG_AUTH_CANCEL: {
+				Toast.makeText(this, R.string.auth_cancel, Toast.LENGTH_SHORT).show();
+				System.out.println("-------MSG_AUTH_CANCEL--------");
+				pd.dismiss();
+			}
+			break;
+			case MSG_AUTH_ERROR: {
+				Toast.makeText(this, R.string.auth_error, Toast.LENGTH_SHORT).show();
+				System.out.println("-------MSG_AUTH_ERROR--------");
+				pd.dismiss();
+			}
+			break;
+			case MSG_AUTH_COMPLETE: {
+				Toast.makeText(this, R.string.auth_complete, Toast.LENGTH_SHORT).show();
+				System.out.println("--------MSG_AUTH_COMPLETE-------");
+			}
+			break;
+		}
+		return false;
 	}
 }
 

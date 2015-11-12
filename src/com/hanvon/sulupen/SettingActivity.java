@@ -17,7 +17,7 @@ import android.widget.TextView;
 
 import com.hanvon.sulupen.application.HanvonApplication;
 import com.hanvon.sulupen.db.dao.NoteRecordDao;
-import com.hanvon.sulupen.utils.LoginUtil;
+import com.hanvon.sulupen.login.LoginActivity;
 
 public class SettingActivity extends Activity implements OnClickListener
 {
@@ -39,7 +39,12 @@ public class SettingActivity extends Activity implements OnClickListener
     {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
+
         setContentView(R.layout.activity_setting);
+        
+        if (HanvonApplication.hvnName == ""){
+        	findViewById(R.id.tv_setting_logout).setVisibility(View.GONE);
+        }
         
         initView();
     }
@@ -141,11 +146,14 @@ public class SettingActivity extends Activity implements OnClickListener
 		HanvonApplication.BitHeadImage = null;
 		SharedPreferences mSharedPreferences=getSharedPreferences("BitMapUrl", Activity.MODE_MULTI_PROCESS);
 		int flag =mSharedPreferences.getInt("flag", 0);
+		HanvonApplication.userFlag = flag;
 		if (flag == 0){
 		}else if(flag == 1){
-		    LoginUtil loginUtil = new LoginUtil(SettingActivity.this,SettingActivity.this);
-		    loginUtil.QQLoginOut();
+		//	HanvonApplication.plat.removeAccount();
+		  //  LoginUtil loginUtil = new LoginUtil(SettingActivity.this,SettingActivity.this);
+		  //  loginUtil.QQLoginOut();
 	    }else if (flag == 2){
+	    //	HanvonApplication.plat.removeAccount();
 	    }
 		Editor mEditor=	mSharedPreferences.edit();
 		mEditor.putInt("status", 0);

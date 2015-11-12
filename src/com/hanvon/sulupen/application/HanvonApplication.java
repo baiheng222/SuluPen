@@ -12,6 +12,8 @@ import android.preference.PreferenceManager;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 
+import cn.sharesdk.framework.Platform;
+
 import com.alibaba.fastjson.JSONObject;
 import com.baidu.frontia.FrontiaApplication;
 import com.baidu.location.BDLocation;
@@ -80,6 +82,9 @@ public class HanvonApplication extends FrontiaApplication {
 	public static String path;
 	
 	public static boolean isActivity;
+	
+	public static Platform plat;
+	
 	@Override
 	public void onCreate() {
 
@@ -104,7 +109,7 @@ public class HanvonApplication extends FrontiaApplication {
 
 		mTencent = Tencent.createInstance(QQ_APPID, HanvonApplication.this);
 //		removeTempFromPref();
-		
+	//	
 //		/**获取uid**/
 		ActivityManager am = (ActivityManager) getSystemService(this.getApplicationContext().ACTIVITY_SERVICE);
        ApplicationInfo appinfo = getApplicationInfo();

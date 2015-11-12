@@ -158,6 +158,12 @@ public class UrlBankUtil {
 	}
 	
 	/**
+	 * 汉王用户通过邮箱注册找回密码
+	 */
+	public static String getEmailToUser(){
+		return  HanvanApkIp + "/user/findPwdByEmail";
+	}
+	/**
 	 * 汉王用户通过邮箱注册获取激活邮件
 	 */
 	public static String getActivityEmai(){

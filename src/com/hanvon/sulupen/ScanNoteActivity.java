@@ -237,7 +237,8 @@ public class ScanNoteActivity extends Activity implements OnClickListener{
 
         mbUiThreadHandler = new Handler();
 	}
-	
+
+
 	private void initView() {
 
 		mBcakImage= (ImageView) findViewById(R.id.come_back);
@@ -438,16 +439,22 @@ public class ScanNoteActivity extends Activity implements OnClickListener{
 	 */
 	private void updateCheckModeState() {
 		LogUtil.i("tong----------updateCheckModeState:"+isSendImageMode);
-		if (isConnected()) {
-			LogUtil.i("tong---------is SendImag----------");
-		    if (isSendImageMode==1) {
-			    IVsendImag.setBackgroundResource(R.drawable.scan_note);
-			    hsvLayoutScanImage.setVisibility(View.VISIBLE);
+		if (BluetoothService.getServiceInstance() != null){
+		    if (isConnected()) {
+			    LogUtil.i("tong---------is SendImag----------");
+		        if (isSendImageMode==1) {
+			        IVsendImag.setBackgroundResource(R.drawable.scan_note);
+			        hsvLayoutScanImage.setVisibility(View.VISIBLE);
 			   
-		    } else {
-			    IVsendImag.setBackgroundResource(R.drawable.close_scan);
-			    hsvLayoutScanImage.setVisibility(View.GONE);
+		        } else {
+			        IVsendImag.setBackgroundResource(R.drawable.close_scan);
+			        hsvLayoutScanImage.setVisibility(View.GONE);
 			  
+		        }
+		    }else{
+			    IVsendImag.setBackgroundResource(R.drawable.notuse_scan);
+			    hsvLayoutScanImage.setVisibility(View.GONE);
+			    //设置校对图片
 		    }
 		}else{
 			IVsendImag.setBackgroundResource(R.drawable.notuse_scan);
@@ -470,20 +477,22 @@ public class ScanNoteActivity extends Activity implements OnClickListener{
 	 */
 	private void initIsSendScanImage() {
 	    //判断网络是否连接
-		if (isConnected())
-		{
-	        Boolean curState = BluetoothSetting.getBlueIsSendImage();
-	        if(curState)
-	        {
-	        	isSendImageMode = 1;
-	        }
-	        else
-	        {
-	        	isSendImageMode = 0;
-	        }
-		}
-		else
-		{
+		if (BluetoothService.getServiceInstance() != null){
+		    if (isConnected())
+		    {
+	            Boolean curState = BluetoothSetting.getBlueIsSendImage();
+	            if(curState)
+	            {
+	        	    isSendImageMode = 1;
+	            }
+	            else
+	            {
+	        	    isSendImageMode = 0;
+	            }
+		    }else{
+			    isSendImageMode = 0;
+		    }
+		}else{
 			isSendImageMode = 0;
 		}
 		
@@ -857,10 +866,11 @@ public class ScanNoteActivity extends Activity implements OnClickListener{
 					break;
 	            case R.id.ivScan:
 	    			LogUtil.i("tong------------home_go_home");
-	    			if (isConnected()) {
-	    			    sendRecevieImagetoEpen();
+	    			if (BluetoothService.getServiceInstance() != null){
+	    			    if (isConnected()) {
+	    			        sendRecevieImagetoEpen();
+	    			    }
 	    			}
-	    	
 	            	break;
 	            case R.id.ivDelete:
 	            	showBottomDlg();
@@ -890,6 +900,14 @@ public class ScanNoteActivity extends Activity implements OnClickListener{
 		            	String title = etNoteTitle.getText().toString();
 		    			String content = etScanContent.getText().toString();
 		    			if (!content.equals("")){
+		    				if (HanvonApplication.hvnName == ""){
+		    					Toast.makeText(this, "未登录，请先登录！", Toast.LENGTH_SHORT).show();
+		    					break;
+		    				}
+		    				if (!HanvonApplication.isActivity){
+		    					Toast.makeText(this, "用户未激活，请激活后重新登录！", Toast.LENGTH_SHORT).show();
+		    					break;
+		    				}
 		    				pd = ProgressDialog.show(ScanNoteActivity.this, "", "文件上传中...");
 		            	    UploadFilesToHvnCloud(title,content,mDataList);
 		    			}

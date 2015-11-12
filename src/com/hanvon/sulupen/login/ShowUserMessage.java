@@ -3,7 +3,6 @@ package com.hanvon.sulupen.login;
 import com.hanvon.sulupen.MainActivity;
 import com.hanvon.sulupen.R;
 import com.hanvon.sulupen.application.HanvonApplication;
-import com.hanvon.sulupen.utils.LoginUtil;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -109,8 +108,8 @@ public class ShowUserMessage extends Activity implements OnClickListener{
 		int flag =mSharedPreferences.getInt("flag", 0);
 		if (flag == 0){
 		}else if(flag == 1){
-		    LoginUtil loginUtil = new LoginUtil(ShowUserMessage.this,ShowUserMessage.this);
-		    loginUtil.QQLoginOut();
+		  //  LoginUtil loginUtil = new LoginUtil(ShowUserMessage.this,ShowUserMessage.this);
+		   // loginUtil.QQLoginOut();
 	    }else if (flag == 2){
 	    }
 		Editor mEditor=	mSharedPreferences.edit();

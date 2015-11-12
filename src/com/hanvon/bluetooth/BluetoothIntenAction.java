@@ -27,7 +27,10 @@ public class BluetoothIntenAction {
 		 * 笔端关机时间改变广播动作
 		 */
 		public static final String ACTION_EPEN_CLOSETIME_CHANGE = "action.epen.closetime.change";
-		
+		/**
+		 * 笔端扫描方向广播动作
+		 */
+		public static final String ACTION_EPEN_SCANDIR_CHANGE = "action.epen.scandir.change";
 		/**
 		 * 笔端是否发送图片数据的设置改变广播动作
 		 */

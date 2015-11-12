@@ -54,6 +54,11 @@
         <item >2小时</item>
     </string-array>
     
+    <string-array name="epen_scan_dir">
+        <item >横向扫描</item>
+        <item >竖向扫描</item>
+    </string-array>
+    
         <string-array name="language_type_items">
         <item>中文</item>
         <item>英语</item>

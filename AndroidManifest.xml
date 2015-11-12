@@ -173,7 +173,13 @@
         </activity>
         
        <activity android:name="com.hanvon.sulupen.SuLuInputActivity" />
-
+        <activity
+                android:name="com.hanvon.sulupen.pinyin.SettingsActivity"
+                android:label="@string/ime_settings_activity_name" >
+                <intent-filter>
+                    <action android:name="android.intent.action.MAIN" />
+                </intent-filter>
+        </activity>
          
         <activity android:name="AboutActivity">
         </activity>
@@ -333,7 +339,6 @@ android:exported="true"/>
                 android:screenOrientation="portrait"
                 android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
             </activity>
-           
     </application>
 
 </manifest>

@@ -101,6 +101,11 @@
     <string name="back">返回</string>
     <string name="forget_pwd">找回密码</string>
     <string name="empty_notebooklist_tips">NoteBook is empty</string>
+    <string name="userid_found">用户信息已存在，正在跳转登录操作…</string>
+    <string name="logining">使用%s帐号登录中…</string>
+    <string name="auth_cancel">授权操作已取消</string>
+    <string name="auth_error">授权操作遇到错误，请阅读Logcat输出</string>
+    <string name="auth_complete">授权成功，正在跳转登录操作…</string>
     <!-- 账户基本信息显示用到的字段 -->
     <string name="account">账户</string>
     <string name="account_message">账户信息</string>
@@ -125,6 +130,7 @@
     <string name="hw_recognition">识别核心设定</string>
     <string name="hw_sleep">休眠时间设定</string>
     <string name="hw_shutdown">关机时间设定</string>
+    <string name="hw_scandir">扫描方向</string>
     <string name="hw_restore">恢复出厂设置</string>
     <string name="comeback_tips">重要提示</string>
     <string name="comeback_message">将恢复默认设置</string>

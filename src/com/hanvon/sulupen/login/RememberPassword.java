@@ -9,6 +9,8 @@ import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import com.hanvon.sulupen.MainActivity;
 import com.hanvon.sulupen.R;
 import com.hanvon.sulupen.application.HanvonApplication;
 import com.hanvon.sulupen.net.JsonData;
@@ -79,7 +81,7 @@ public class RememberPassword extends Activity implements OnClickListener{
 		    		return;
 		    	}else if (RmbFlag == 1){
 		    		pd = ProgressDialog.show(RememberPassword.this, "", "正在验证手机号....");
-		    		new RequestTask().execute();
+		    		new RequestTask(1).execute();
 		    	}else if (RmbFlag == 2){
 		    		pd = ProgressDialog.show(RememberPassword.this, "", "正在验证邮箱....");
 			        sendCodeToEmail();
@@ -89,6 +91,10 @@ public class RememberPassword extends Activity implements OnClickListener{
 	}
 	
 	class RequestTask  extends AsyncTask<Void, Void, RequestResult>{
+		   int flagTask;
+           public RequestTask(int flagTask){
+    	      this.flagTask=flagTask;
+           }
 	  	   @Override
 		    protected void onPreExecute() {
 		    	super.onPreExecute();
@@ -96,7 +102,11 @@ public class RememberPassword extends Activity implements OnClickListener{
 			@Override
 			protected RequestResult doInBackground(Void... arg0) {
 				RequestResult result=null;
-				result = sendCodeToUser();
+				if (flagTask == 1){
+				    result = sendCodeToUser();
+				}else{
+					result = sendEmailToUser();
+				}
 				return result;
 			}
 			 //响应结果
@@ -115,14 +125,22 @@ public class RememberPassword extends Activity implements OnClickListener{
 				    	return;
 				    }
 			    	status = parseJsonFromRequest(json);
-			    	if (status == 0){
-			    		Toast.makeText(RememberPassword.this,"验证码已发送至手机，请查收!", Toast.LENGTH_SHORT).show();
-			    		Intent intent = new Intent();
-			    		intent.putExtra("phone", strUserCode);
-			    		intent.setClass(RememberPassword.this, RmbPwdCheckCode.class);  
-			    	    startActivity(intent);  
-			            finish();
+			    	if (flagTask == 1){
+			       	    if (status == 0){
+			    		    Toast.makeText(RememberPassword.this,"验证码已发送至手机，请查收!", Toast.LENGTH_SHORT).show();
+			    		    Intent intent = new Intent();
+			    		    intent.putExtra("phone", strUserCode);
+			    		    intent.setClass(RememberPassword.this, RmbPwdCheckCode.class);  
+			    	        startActivity(intent);
+			                finish();
 					}
+			    	}else{
+			    		if (status == 0){
+			    		    Toast.makeText(RememberPassword.this,"密码重置邮件已发送至邮箱，请查收!", Toast.LENGTH_SHORT).show();
+			    		    startActivity(new Intent(RememberPassword.this, MainActivity.class));
+			    		    RememberPassword.this.finish();
+			    		}
+			    	}
 			    } catch (JSONException e) {
 				    e.printStackTrace();
 			    }
@@ -149,6 +167,25 @@ public class RememberPassword extends Activity implements OnClickListener{
 	  	    return result;
 	    }
 
+		public RequestResult sendEmailToUser(){
+			JSONObject JSuserInfoJson = new JSONObject();
+	  	    try {
+	  	    //	JSuserInfoJson.put("uid", HanvonApplication.AppUid);
+	  	    //	JSuserInfoJson.put("sid", HanvonApplication.AppSid);
+	  	  	//    JSuserInfoJson.put("ver", HanvonApplication.AppVer);
+	  	  	    JSuserInfoJson.put("user", strUserCode);
+	  	  	    JSuserInfoJson.put("email", strUserCode);
+	  	    } catch (JSONException e) {
+	  		    e.printStackTrace();
+	  	    }
+
+	  	    LogUtil.i(JSuserInfoJson.toString());
+	  	    RequestResult result=new RequestResult();
+	  //	    result=RequestServerData.getauthcodeForRmbPasswd(JSuserInfoJson);
+	  	  result=RequestServerData.getEmailToUser(JSuserInfoJson);
+
+	  	    return result;
+	    }
 		public int parseJsonFromRequest(JSONObject json) throws NumberFormatException, JSONException{
 			int status = 0;
 			status = Integer.valueOf(json.get("code").toString()).intValue();

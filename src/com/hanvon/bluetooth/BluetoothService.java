@@ -417,6 +417,15 @@ public class BluetoothService extends Service{
 							closeIntent.putExtra("result", resultC);
 							sendBroadcast(closeIntent);
 							break;
+						case 112:
+							//扫描方向
+							int resultS = jsonObject.getInt("result");
+							LogUtil.i("tong----------resultC:"+resultS);
+							Intent scanIntent = new Intent();
+							scanIntent.setAction(BluetoothIntenAction.ACTION_EPEN_SCANDIR_CHANGE);
+							scanIntent.putExtra("result", resultS);
+							sendBroadcast(scanIntent);
+							break;
 						default:
 							break;
 						}

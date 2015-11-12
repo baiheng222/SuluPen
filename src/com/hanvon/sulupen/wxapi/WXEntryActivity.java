@@ -1,15 +1,39 @@
-/*
- * 官网地站:http://www.mob.com
- * 技术支持QQ: 4006852216
- * 官方微信:ShareSDK   （如果发布新版本的话，我们将会第一时间通过微信将版本更新内容推送给您。如果使用过程中有任何问题，也可以通过微信与我们取得联系，我们将会在24小时内给予回复）
- *
- * Copyright (c) 2013年 mob.com. All rights reserved.
- */
 
 package com.hanvon.sulupen.wxapi;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import android.app.Activity;
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
+import android.os.AsyncTask;
+import android.os.Bundle;
 import android.widget.Toast;
+
+import com.hanvon.sulupen.MainActivity;
+import com.hanvon.sulupen.application.HanvonApplication;
+import com.hanvon.sulupen.login.LoginActivity;
+import com.hanvon.sulupen.net.JsonData;
+import com.hanvon.sulupen.net.RequestResult;
+import com.hanvon.sulupen.net.RequestServerData;
+import com.hanvon.sulupen.utils.HttpsClient;
+import com.hanvon.sulupen.utils.LogUtil;
+import com.hanvon.sulupen.utils.SHA1Util;
+import com.tencent.mm.sdk.modelbase.BaseReq;
+import com.tencent.mm.sdk.modelbase.BaseResp;
+import com.tencent.mm.sdk.modelmsg.SendAuth;
+import com.tencent.mm.sdk.openapi.IWXAPIEventHandler;
+
+
 import cn.sharesdk.wechat.utils.WXAppExtendObject;
 import cn.sharesdk.wechat.utils.WXMediaMessage;
 import cn.sharesdk.wechat.utils.WechatHandlerActivity;
@@ -46,5 +70,6 @@ public class WXEntryActivity extends WechatHandlerActivity {
 			Toast.makeText(this, obj.extInfo, Toast.LENGTH_SHORT).show();
 		}
 	}
+
 
 }

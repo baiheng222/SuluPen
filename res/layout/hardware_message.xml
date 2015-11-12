@@ -210,7 +210,31 @@
                 android:textSize="15sp"
                 android:drawableRight="@drawable/right_arrow"/>
         </LinearLayout>
-        
+        <!-- 扫描方向设置 -->
+        <LinearLayout 
+            android:id="@+id/hw_scandir"
+            android:layout_width="fill_parent"
+            android:layout_height="40dip"
+            android:layout_marginTop="2dip"
+            android:background="#FFFFFF"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+            <TextView 
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dip"
+                android:text="@string/hw_scandir"
+                android:textSize="15sp"/>
+            <TextView 
+                android:id="@+id/device_scandir"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:gravity="right|center_vertical"
+                android:layout_marginRight="10dip"
+                android:text=""
+                android:textSize="15sp"
+                android:drawableRight="@drawable/right_arrow"/>
+        </LinearLayout>
         <!-- 恢复出厂设置 -->
         <LinearLayout 
             android:id="@+id/hw_restore"

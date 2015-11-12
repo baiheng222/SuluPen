@@ -31,6 +31,7 @@ public class BluetoothDetail extends Activity implements OnClickListener{
 	private final int IDENT_CORE = 0xf2;
 	private final int SLEEP_TIME = 0xf3;
 	private final int CLOSE_TIME = 0Xf4;
+	private final int SCAN_DIR = 0Xf5;
 	
 	private TextView TVelectricity;
 	private TextView TVstatus;
@@ -40,11 +41,13 @@ public class BluetoothDetail extends Activity implements OnClickListener{
 	private TextView TVshutdown;
 	private TextView TVfunction;
 	private TextView TVrecognition;
+	private TextView TVscandir;
 	private LinearLayout LLfunction;
 	private LinearLayout llrecognition;
 	private LinearLayout llsleep;
 	private LinearLayout llshutdown;
 	private LinearLayout llrestore;
+	private LinearLayout llscandir;
 	
 	private Handler handler;
 	private BluetoothMsgReceive btMsgReceiver;
@@ -54,6 +57,7 @@ public class BluetoothDetail extends Activity implements OnClickListener{
 	private String[] identCoreStrs;
 	private String[] sleepTimeStrs;
 	private String[] closeTimeStrs;
+	private String[] scanDirStrs;
 	private int identCoreCheckedItem = 0;
 	private int identCoreChooseItem = 0;
 	private int funcKeyCheckedItem = 0;
@@ -62,6 +66,8 @@ public class BluetoothDetail extends Activity implements OnClickListener{
 	private int funcKeyChooseItem = 0;
 	private int chooseItem = -1;
 	private int closeChooseItem = -1;
+	private int scanDirChoose = 0;
+	private int checkedScanDirItem = 0;
 	private String[] funcKeyArray = { "", "\n", " ", "\b" };
 	private int[] identCoreArray = { 0, 1, 2, 3 };
 	private int[] timesArray = { 2, 5, 10, -1 };
@@ -73,6 +79,7 @@ public class BluetoothDetail extends Activity implements OnClickListener{
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.hardware_message);
+		findViewById(R.id.hw_shutdown).setVisibility(View.GONE);
 		initView();
 		initData();
 	}
@@ -97,6 +104,7 @@ public class BluetoothDetail extends Activity implements OnClickListener{
 		mFilter.addAction(BluetoothIntenAction.ACTION_EPEN_LANGUAGE_CHANGE);
 		mFilter.addAction(BluetoothIntenAction.ACTION_EPEN_DEFAULTSET_CHANGE);
 		mFilter.addAction(BluetoothIntenAction.ACTION_EPEN_CLOSETIME_CHANGE);
+		mFilter.addAction(BluetoothIntenAction.ACTION_EPEN_SCANDIR_CHANGE);
 		mFilter.addAction(BluetoothIntenAction.ACTION_EPEN_BT_CONNECTED);
 		mFilter.addAction(BluetoothIntenAction.ACTION_EPEN_BT_DISCONNECT);
 		this.registerReceiver(btMsgReceiver, mFilter);
@@ -111,12 +119,14 @@ public class BluetoothDetail extends Activity implements OnClickListener{
 		TVrecognition = (TextView)findViewById(R.id.device_recognition);
 		TVsleep = (TextView)findViewById(R.id.device_sleep);
 		TVshutdown = (TextView)findViewById(R.id.device_shutdown);
+		TVscandir = (TextView)findViewById(R.id.device_scandir);
 		
 		LLfunction = (LinearLayout) this.findViewById(R.id.hw_function);
 		llrecognition = (LinearLayout) this.findViewById(R.id.hw_recognition);
 		llsleep = (LinearLayout) this.findViewById(R.id.hw_sleep);
 		llshutdown = (LinearLayout) this.findViewById(R.id.hw_shutdown);
 		llrestore = (LinearLayout) findViewById(R.id.hw_restore);
+		llscandir = (LinearLayout) findViewById(R.id.hw_scandir);
 
 		
 		BTbreak.setOnClickListener(this);
@@ -126,6 +136,7 @@ public class BluetoothDetail extends Activity implements OnClickListener{
 		llsleep.setOnClickListener(this);
 		llshutdown.setOnClickListener(this);
 		llrestore.setOnClickListener(this);
+		llscandir.setOnClickListener(this);
 
 		initHandler();
 		btMsgReceiver = new BluetoothMsgReceive(handler);
@@ -137,6 +148,7 @@ public class BluetoothDetail extends Activity implements OnClickListener{
 		identCoreStrs = getResources().getStringArray(R.array.epen_ident_core);
 		sleepTimeStrs = getResources().getStringArray(R.array.epen_sleep_time);
 		closeTimeStrs = getResources().getStringArray(R.array.epen_close_time);
+		scanDirStrs = getResources().getStringArray(R.array.epen_scan_dir);
 
 		if (BluetoothService.getServiceInstance().getBluetoothChatService().getState() == BluetoothChatService.STATE_CONNECTED){
 			TVstatus.setText("已连接");
@@ -174,12 +186,15 @@ public class BluetoothDetail extends Activity implements OnClickListener{
 
 		TVrecognition.setText(identCoreStrs[identCoreCheckedItem]);
 
-		int sleepTime = BluetoothSetting.getSleepTime();
-		TVsleep.setText(sleepTimeStrs[sleepTime]);
+		checkedItem = BluetoothSetting.getSleepTime();
+		TVsleep.setText(sleepTimeStrs[checkedItem]);
 		
 		//设置关机时间
-		int closeTime = BluetoothSetting.getShutdownTime();
-		TVshutdown.setText(closeTimeStrs[closeTime]);	
+		checkedCloseItem = BluetoothSetting.getShutdownTime();
+		TVshutdown.setText(closeTimeStrs[checkedCloseItem]);
+		
+		checkedScanDirItem = BluetoothSetting.getBlueScanDir();
+		TVscandir.setText(scanDirStrs[checkedScanDirItem]);
 	}
 	private void initHandler() {
 		handler = new Handler() {
@@ -190,6 +205,7 @@ public class BluetoothDetail extends Activity implements OnClickListener{
 					int resultD = msg.arg1;
 					if (resultD == 1) {
 						Toast.makeText(BluetoothDetail.this, "恢复默认设置成功", Toast.LENGTH_SHORT).show();
+						setFactory();
 					} else {
 						Toast.makeText(BluetoothDetail.this, "恢复默认设置失败", Toast.LENGTH_SHORT).show();
 					}
@@ -214,6 +230,17 @@ public class BluetoothDetail extends Activity implements OnClickListener{
 						Toast.makeText(BluetoothDetail.this,"设置关机时间成功", Toast.LENGTH_SHORT).show();
 					} else {
 						Toast.makeText(BluetoothDetail.this,"设置关机时间失败", Toast.LENGTH_SHORT).show();
+					}
+					break;
+				case BluetoothMsgReceive.SCANDIR_CHANGE:
+					LogUtil.i("tong---SCANDIR_CHANGE");
+					int results = msg.arg1;
+					if (results == 1) {
+						checkedScanDirItem = scanDirChoose;
+						TVscandir.setText(scanDirStrs[checkedScanDirItem]);
+						Toast.makeText(BluetoothDetail.this,"设置扫描方向成功", Toast.LENGTH_SHORT).show();
+					} else {
+						Toast.makeText(BluetoothDetail.this,"设置扫描方向失败", Toast.LENGTH_SHORT).show();
 					}
 					break;
 				case BluetoothMsgReceive.LANGUAGE_CHANGE:
@@ -244,6 +271,25 @@ public class BluetoothDetail extends Activity implements OnClickListener{
 				}
 			}
 		};
+	}
+	
+	public void setFactory(){
+		BluetoothSetting.setFuncKeyCode("");
+		funcKeyCheckedItem = 0;
+		BluetoothSetting.setIdentCoreCode("ch-eng");
+		identCoreCheckedItem = 0;
+		BluetoothSetting.setSleepTime(1);
+		checkedItem = 1;
+		BluetoothSetting.setBlueScanDir(0);
+		checkedScanDirItem = 0;
+		BluetoothSetting.setBlueIsSendImage(false);
+		BluetoothSetting.writeBack();
+		
+		TVfunction.setText(funcKeyStrs[funcKeyCheckedItem]);
+		TVrecognition.setText(identCoreStrs[identCoreCheckedItem]);
+		TVsleep.setText(sleepTimeStrs[checkedItem]);
+		TVshutdown.setText(closeTimeStrs[checkedCloseItem]);
+		TVscandir.setText(scanDirStrs[checkedScanDirItem]);
 	}
 	
 	@Override
@@ -294,6 +340,10 @@ public class BluetoothDetail extends Activity implements OnClickListener{
 		    	createDlg(CLOSE_TIME, closeTimeStrs, checkedCloseItem);
 				alertDialog.show();
 			    break;
+		    case R.id.hw_scandir:
+		    	createDlg(SCAN_DIR, scanDirStrs, checkedScanDirItem);
+				alertDialog.show();
+			    break;
 		    case R.id.hw_restore:
 		    	AlertDialog.Builder builder = new AlertDialog.Builder(this);
 				builder.setTitle(R.string.comeback_tips)
@@ -331,6 +381,9 @@ public class BluetoothDetail extends Activity implements OnClickListener{
 			break;
 		case CLOSE_TIME:
 			title = getResources().getString(R.string.hw_shutdown);
+			break;
+		case SCAN_DIR:
+			title = getResources().getString(R.string.hw_scandir);
 			break;
 		}
 		builder.setTitle(title).setSingleChoiceItems(Strs, myCheckedItem,
@@ -395,13 +448,24 @@ public class BluetoothDetail extends Activity implements OnClickListener{
 									break;
 								case SLEEP_TIME:
 									chooseItem = which;
+									BluetoothSetting.setSleepTime(chooseItem);
+									BluetoothSetting.writeBack();
 									dialog.dismiss();
 									sendTimeToEpen();
 									break;
 								case CLOSE_TIME:
 									closeChooseItem = which;
+									BluetoothSetting.setShutdownTime(closeChooseItem);
+									BluetoothSetting.writeBack();
 									dialog.dismiss();
 									sendCloseTimeToEpen();
+									break;
+								case SCAN_DIR:
+									scanDirChoose = which;
+									BluetoothSetting.setBlueScanDir(scanDirChoose);
+									BluetoothSetting.writeBack();
+									dialog.dismiss();
+									sendScanDirToEpen();
 									break;
 								}
 
@@ -447,6 +511,12 @@ public class BluetoothDetail extends Activity implements OnClickListener{
 				.sendBTData(2, BluetoothDataPackage.epenCloseTime(map));
 	}
 
+	private void sendScanDirToEpen(){
+		HashMap<String, String> map = new HashMap<String, String>();
+		map.put("scandirection", "" + scanDirChoose);
+		BluetoothService.getServiceInstance().getBluetoothChatService()
+				.sendBTData(2, BluetoothDataPackage.epenScanDir(map));
+	}
 	
 	@Override
 	protected void onStop() {

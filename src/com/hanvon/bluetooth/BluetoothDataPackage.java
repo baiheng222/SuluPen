@@ -135,6 +135,13 @@ public class BluetoothDataPackage {
 		return getDataPackage(type, params);
 	}
 	/**
+	 * 4.设备基本扫描方向改变
+	 */
+	public static String epenScanDir(Map<String, String> params) {
+		int type = 112;
+		return getDataPackage(type, params);
+	}
+	/**
 	 * 5.升级接口
 	 */
 	public static String epenUpgradePackage(String filePath,
