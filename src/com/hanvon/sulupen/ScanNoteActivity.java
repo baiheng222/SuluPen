@@ -108,6 +108,7 @@ public class ScanNoteActivity extends Activity implements OnClickListener{
     
     private Boolean bShareFlag = false;
     private String  strLinkPath = null;
+    private Boolean bShareClick = false;
     
 	//private TopicDialog topicDlg;
 
@@ -196,7 +197,8 @@ public class ScanNoteActivity extends Activity implements OnClickListener{
 					bShareFlag = false;
 					pd.dismiss();
 					Toast.makeText(ScanNoteActivity.this, "获取链接失败，不能分享!", Toast.LENGTH_SHORT).show();
-					
+				
+					bShareClick = false;
 				}
 				else
 				{
@@ -316,6 +318,7 @@ public class ScanNoteActivity extends Activity implements OnClickListener{
 			flagIntent = intent.getFlags();
 			if (flagIntent == FLAG_CREATE_NOTE_WITH_DEFAULT_NOTEBOOK)
 			{
+				changeRecordMode(2);
 			    if (sp == null)
 			    {
 			        sp = getSharedPreferences(CustomConstants.APPLICATION_NAME, MODE_PRIVATE);
@@ -346,6 +349,7 @@ public class ScanNoteActivity extends Activity implements OnClickListener{
 			}
 			else if (flagIntent == FLAG_CREATE ) 
 			{
+				changeRecordMode(2);
 			    //新建
 				mNoteBookRecord = (NoteBookRecord) intent.getSerializableExtra("NoteBook");
 			    
@@ -362,7 +366,8 @@ public class ScanNoteActivity extends Activity implements OnClickListener{
 			} 
 			else 
 			{
-					tvNewNote.setText("");
+				changeRecordMode(1);
+				tvNewNote.setText("");
 
 			    int noteid = intent.getIntExtra("NoteRecordId", -1);
 			    Log.d(TAG, "get noteid: " + noteid);
@@ -416,6 +421,7 @@ public class ScanNoteActivity extends Activity implements OnClickListener{
 	
 	
 	private void toEditableMode(EditText view) {
+		changeRecordMode(2);
 		etScanContent.setVisibility(View.VISIBLE);
 		etNoteTitle.setVisibility(View.VISIBLE);
 		tvScanContent.setVisibility(View.GONE);
@@ -816,6 +822,7 @@ public class ScanNoteActivity extends Activity implements OnClickListener{
 	        {
 	    	case R.id.tvNoteTitle:
 				//点击标题栏进入编辑模式
+	    		
 				toEditableMode(etNoteTitle);
 				break;
 	    	case R.id.tvNoteContent:
@@ -823,21 +830,26 @@ public class ScanNoteActivity extends Activity implements OnClickListener{
 				toEditableMode(etScanContent);
 				break;
 	            case R.id.ivShare:
-
+                    
 	            	//跳转到分享和上传功能界面
 //	            	Intent intent = new Intent(ScanNoteActivity.this,ShareNoteActivity.class);
 //	            	intent.putExtra("title", etNoteTitle.getText().toString());
 //	            	startActivity(intent);
-	            	
-	            	//直接分享
-	            	bShareFlag = true;
-	            	String title1 = etNoteTitle.getText().toString();
-		    	    String content1 = etScanContent.getText().toString();
-		    			if (!content1.equals("")){
-		    				pd = ProgressDialog.show(ScanNoteActivity.this, "", "生成连接中，请等待...");
-		            	    UploadFilesToHvnCloud(title1,content1,mDataList);
-		    			}
-	         
+	            	if(!bShareClick)
+	            	{
+	            		
+		            	//直接分享
+		            	bShareFlag = true;
+		            	String title1 = etNoteTitle.getText().toString();
+			    	    String content1 = etScanContent.getText().toString();
+			    			if (!content1.equals("")){
+			    				bShareClick = true;
+			    				pd = ProgressDialog.show(ScanNoteActivity.this, "", "生成连接中，请等待...");
+			            	    UploadFilesToHvnCloud(title1,content1,mDataList);
+			    			}
+		                  
+	            	}
+
 	            	 break;
 	            case R.id.ivInsertImage:
 					new PopupWindows(ScanNoteActivity.this, mGridView);    
@@ -950,11 +962,17 @@ public class ScanNoteActivity extends Activity implements OnClickListener{
 		// 分享时Notification的图标和文字  2.5.9以后的版本不调用此方法
 		 //oks.setNotification(R.drawable.ic_launcher, getString(R.string.app_name));
 		 // title标题，印象笔记、邮箱、信息、微信、人人网和QQ空间使用
-		 oks.setTitle(getString(R.string.share));
+		 oks.setTitle(getString(R.string.share_from_hanvon));
 		 // titleUrl是标题的网络链接，仅在人人网和QQ空间使用
 		 oks.setTitleUrl(strLinkPath);
 		 // text是分享文本，所有平台都需要这个字段
-		 oks.setText(etScanContent.getText().toString());
+		 String title = etNoteTitle.getText().toString();
+		 if(title == "")
+		 {
+			 String strContent = etScanContent.getText().toString();
+			 title = strContent;
+		 }
+		 oks.setText(title);
 		 // imagePath是图片的本地路径，Linked-In以外的平台都支持此参数
 	
 		 //oks.setImagePath("/data/data/com.hanvon.sulupen/res/drawable-mdpi/ic_launcher.png");
@@ -970,6 +988,7 @@ public class ScanNoteActivity extends Activity implements OnClickListener{
 
 		// 启动分享GUI
 		 oks.show(this);
+		 bShareClick = false;
 		 }
 	
 	

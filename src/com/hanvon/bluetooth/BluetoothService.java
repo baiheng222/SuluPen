@@ -15,6 +15,7 @@ import com.hanvon.sulupen.db.bean.NoteRecord;
 import com.hanvon.sulupen.db.dao.NoteRecordDao;
 import com.hanvon.sulupen.helper.PreferHelper;
 import com.hanvon.sulupen.login.LoginActivity;
+import com.hanvon.sulupen.pinyin.PinyinIME;
 import com.hanvon.sulupen.utils.CustomDialog;
 import com.hanvon.sulupen.utils.LogUtil;
 import com.hanvon.sulupen.utils.TimeUtil;
@@ -51,7 +52,7 @@ public class BluetoothService extends Service{
 	public int curBatteryPower = -1;
 	public int curBatteryStatus = -1;
 	// 1为盲扫模式，2为校对模式,3.输入法模式
-	public static int scanRecordMode = 2;
+	public static int scanRecordMode = 1;
 	
 	private static AlertDialog d;
 	private static Timer sendFileTimer;
@@ -265,7 +266,7 @@ public class BluetoothService extends Service{
 								//			+ ((HanvonApplication) getApplication()).curAddress);
 								//	mScanRecordAccess.add(info);
 								// 校对模式
-							} else */if (scanRecordMode == 2 || scanRecordMode == 1) {
+							} else */if (scanRecordMode == 2) {
 								String scanContent = jsonData.getString("scan_text");
 								String imageStr = jsonData.getString("scan_image");
 								// LogUtil.i("scanRecordMode"+PreferHelper.getBoolean(DeviceDetailActivity.isReceiveImg,
@@ -293,11 +294,11 @@ public class BluetoothService extends Service{
 								}
 							}
 							// 输入法模式
-							else {
-						//		PinyinIME.pinyinIME.mHandler
-							//			.obtainMessage(
-							//					BluetoothChatService.BLUETOOTH_MESSAGE_READ,
-							//					jsonData).sendToTarget();
+							else if(scanRecordMode == 3){
+								PinyinIME.pinyinIME.mHandler
+										.obtainMessage(
+												BluetoothChatService.BLUETOOTH_MESSAGE_READ,
+												jsonData).sendToTarget();
 							}
 							break;
 
@@ -370,12 +371,12 @@ public class BluetoothService extends Service{
 						 */
 						case 107:
 							//校对模式
-							 if (scanRecordMode == 2 || scanRecordMode == 1) {
+							 if (scanRecordMode == 2) {
 								if (ScanNoteActivity.scanNoteAct != null)
 									ScanNoteActivity.scanNoteAct
 											.appendText(funcKeyCode());
 								//输入法模式
-							} else {
+							} else if(scanRecordMode == 3){
 								if (ScanNoteActivity.scanNoteAct != null)
 									ScanNoteActivity.scanNoteAct
 											.appendText(funcKeyCode());

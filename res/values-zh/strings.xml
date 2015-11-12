@@ -58,4 +58,5 @@
     <string name="setting_sound_key_title">按键声音</string>
     <string name="setting_vibrate_title">按键震动</string>
     <string name="setting_prediction_title">联想输入</string>
+    <string name="share_from_hanvon">来自汉王速记的分享</string>
 </resources>
