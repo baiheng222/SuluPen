@@ -39,7 +39,7 @@
             android:layout_centerVertical="true"
             android:textColor="#4d4d4d"
             android:gravity="center_vertical|center_horizontal"
-            android:text="@string/title_notebook"
+            android:text="@string/choose_notes"
             android:textSize="16sp"/>        
 	</RelativeLayout>
 	

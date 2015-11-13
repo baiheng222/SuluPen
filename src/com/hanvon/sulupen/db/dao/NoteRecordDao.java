@@ -116,9 +116,40 @@ public class NoteRecordDao
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
+        
+        mNoteRecordList.clear();
+        
     }
     
 
+    public List<NoteRecord> searchRecordsByString(String seachStr)
+    {
+    	List<NoteRecord> searchRet = new ArrayList<NoteRecord>();
+    	
+    	try 
+        {
+        	mNoteRecordList = mNoteRecordDao.queryForAll();
+        } 
+        catch (SQLException e) 
+        {
+            e.printStackTrace();
+        }
+    	
+    	if (null != mNoteRecordList)
+    	{
+    		for (int i =0; i < mNoteRecordList.size(); i++)
+    		{
+    			if (mNoteRecordList.get(i).getNoteTitle().contains(seachStr) 
+    				|| mNoteRecordList.get(i).getNoteContent().contains(seachStr))
+    			{
+    				searchRet.add(mNoteRecordList.get(i));
+    			}
+    		}
+    	}
+    	
+    	return searchRet;
+    }
+    
 	
 	// 查询数据库里面所有的数据
     public List<NoteRecord> getAllNoteRecords() 

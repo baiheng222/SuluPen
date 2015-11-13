@@ -169,6 +169,9 @@
         <activity android:name="ChangNoteBookActivity">
         </activity>
         
+        <activity android:name="SearchActivity">
+        </activity>
+        
         <activity android:name="SettingActivity">
         </activity>
         

@@ -6,20 +6,23 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
+import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.TextView.OnEditorActionListener;
 
 import com.hanvon.sulupen.adapter.NoteListAdapter;
 import com.hanvon.sulupen.db.bean.NoteBookRecord;
 import com.hanvon.sulupen.db.bean.NoteRecord;
 import com.hanvon.sulupen.db.dao.NoteRecordDao;
+import com.hanvon.sulupen.utils.ClearEditText;
 
 public class NoteBookListActivity extends Activity implements OnClickListener
 {
@@ -31,7 +34,7 @@ public class NoteBookListActivity extends Activity implements OnClickListener
 	private TextView mTitle;
 	private TextView mRightBtn;
 	private TextView mEmptyNoteTip;
-	private EditText mInput;
+	private ClearEditText mInput;
 	private ImageView mNewNote;
 	private ListView mLvNoteList;
 	
@@ -48,6 +51,7 @@ public class NoteBookListActivity extends Activity implements OnClickListener
 	
 	private final static int FLAG_CREATE = 2;
     private final static int FLAG_EDIT = 1;
+    private final static int FLAG_SEARCH_WITH_STRING = 8;
 	
 
 	@Override
@@ -92,7 +96,28 @@ public class NoteBookListActivity extends Activity implements OnClickListener
 		 mBack = (ImageView) findViewById(R.id.tv_backbtn);
 		 mTitle = (TextView) findViewById(R.id.tv_title);
 		 mRightBtn = (TextView) findViewById(R.id.tv_rightbtn);
-		 mInput = (EditText) findViewById(R.id.ed_search_input);
+		 mInput = (ClearEditText) findViewById(R.id.ed_search_input);
+		 
+		 mInput.setOnEditorActionListener(new OnEditorActionListener() 
+		 { 
+			 public boolean onEditorAction(TextView v, int actionId, KeyEvent event)  
+			 {                          
+
+				 if (actionId == EditorInfo.IME_ACTION_SEND 
+					|| (event != null && event.getKeyCode() == KeyEvent.KEYCODE_ENTER &&
+							event.getAction() == KeyEvent.ACTION_DOWN)) 
+				 {                
+					 //do something;
+					 Log.d(TAG, "search key pressed !!!!!!!!!!!!!!!!!");
+					 startSearchActivity(mInput.getText().toString());
+					 return true;             
+				 }               
+
+				 return false;           
+			 }       
+
+		 });
+		 
 		 mNewNote = (ImageView) findViewById(R.id.iv_newnote);
 		 mLvNoteList = (ListView) findViewById(R.id.lv_notelist);
 		 mEmptyNoteTip = (TextView) findViewById(R.id.tv_showemptynote);
@@ -131,6 +156,13 @@ public class NoteBookListActivity extends Activity implements OnClickListener
 		 }
 	 }
 	 
+	 public void startSearchActivity(String searchStr)
+	 {
+		 Intent intent = new Intent(this, SearchActivity.class);
+		 intent.setFlags(FLAG_SEARCH_WITH_STRING);
+		 intent.putExtra("SearchString", searchStr);
+		 startActivity(intent);
+	 }
 	 
 	 public void startNoteDetailActivity(int pos)
 	 {
@@ -189,6 +221,7 @@ public class NoteBookListActivity extends Activity implements OnClickListener
          }
 	     mNoteListAdapter.notifyDataSetChanged();
 	 }
+	 
 	 
 	 public void setNoteListAdapter()
 	 {

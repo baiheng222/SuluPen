@@ -405,6 +405,8 @@ import com.lidroid.xutils.bitmap.BitmapCommonUtils;
                 break;
                 
             case R.id.ll_search:
+            	Intent search = new Intent(this, SearchActivity.class);
+            	startActivity(search);
                 break;
             
             case R.id.iv_newnote:

@@ -34,8 +34,16 @@ public class ChooseNoteActivity extends Activity implements OnClickListener
 	private List<NoteRecord> mNoteRecordList;
 	private NoteBookRecord mPassedNoteBook;
 	private NoteChooseAdapter mNotesAdapter;
+	private String mSearchString;
 	
+	private int flagIntent = 1;
 	
+	private final static int FLAG_CREATE = 2;
+    private final static int FLAG_EDIT = 1;
+    public final static int FLAG_CREATE_NOTE_WITH_DEFAULT_NOTEBOOK = 3;
+    private final static int UPLLOAD_FILE_CLOUD_SUCCESS = 5;
+    private final static int UPLLOAD_FILE_CLOUD_FAIL = 6;
+    private final static int FLAG_SEARCH = 7;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -74,6 +82,26 @@ public class ChooseNoteActivity extends Activity implements OnClickListener
 	
 	private void initData()
 	{
+		mNoteRecordDao = new NoteRecordDao(this);
+		
+		Intent intent = getIntent();
+        if (intent != null) 
+        {
+        	flagIntent = intent.getFlags();
+			if (flagIntent == FLAG_SEARCH)
+			{
+				mSearchString = (String) intent.getStringExtra("SearchString");
+				Log.d(TAG, "get search string "  + mSearchString);
+				mNoteRecordList = mNoteRecordDao.searchRecordsByString(mSearchString);
+			}
+			else
+			{
+				mPassedNoteBook = (NoteBookRecord) intent.getSerializableExtra("NoteBook");
+				mNoteRecordList = mNoteRecordDao.getNoteRecordsByNoteBookId(mPassedNoteBook.getId());
+		        Log.d(TAG, "notes num is " +  mNoteRecordList.size());
+			}
+        }
+		/*
 		Intent intent = getIntent();
         if (intent != null) 
         {
@@ -88,9 +116,10 @@ public class ChooseNoteActivity extends Activity implements OnClickListener
         
         //mPassedNoteBook.toString();
         
-        mNoteRecordDao = new NoteRecordDao(this);
+        
         mNoteRecordList = mNoteRecordDao.getNoteRecordsByNoteBookId(mPassedNoteBook.getId());
         Log.d(TAG, "notes num is " +  mNoteRecordList.size());
+        */
 	}
 
 	@Override
