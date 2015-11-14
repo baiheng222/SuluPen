@@ -31,14 +31,14 @@ public class HvnCloudManager {
 	private static int BUF_SIZE = 32768;
 
 	private String htmlPageUrl = null;
-
+	
 	public String UploadNotesToHvnCloud(String title,String content,List<ImageItem> mDataList) throws IOException{
-
+		
 		String filename = SHA1Util.encodeBySHA(title)+".txt";
 		String path = "/sdcard/" + filename;
 
 		FileWriter writer = new FileWriter(path, true);
-		writer.write("</p>"+title+"</p>\r\n</p>"+content+"</p>");
+		writer.write("<div>/r/n<h1>"+title+"</h1>\r\n<p>"+content+"</p>");
 		
 		for(ImageItem item:mDataList){
 			writer.write("\r\n<image src=\"data:image/png;base64,");
@@ -48,6 +48,9 @@ public class HvnCloudManager {
 			writer.write("\">");
 			writer.flush();
 		}
+		writer.write("</div>");
+		writer.flush();
+
 		writer.close();
 		
 		String result = UploadFiletoHvn(path,title,filename);

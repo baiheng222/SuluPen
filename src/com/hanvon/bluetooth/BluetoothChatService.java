@@ -560,7 +560,7 @@ public class BluetoothChatService {
 				}
 
 			} catch (IOException e) {
-				LogUtil.e("error:" + e.toString() + "eMsg:" + e.getMessage());
+				LogUtil.i("error:" + e.toString() + "eMsg:" + e.getMessage());
 				connectionLost();
 				try {
 					BluetoothChatService.this.start();
@@ -688,7 +688,7 @@ public class BluetoothChatService {
 		// if (mState != STATE_CONNECTED) return;
 		// r = mConnectedThread;
 		// }
-		LogUtil.i("INTO sendBTData dataType:"+dataType+"    dataStr:"+dataStr);
+		LogUtil.i("tong----------INTO sendBTData dataType:"+dataType+"    dataStr:"+dataStr);
 		mConnectedThread.sendData((byte) dataType, dataStr);
 	}
 }

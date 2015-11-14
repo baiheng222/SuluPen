@@ -29,6 +29,8 @@ import android.app.Service;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Handler;
@@ -133,6 +135,12 @@ public class BluetoothService extends Service{
 					BluetoothSearch.curBtAddress = BluetoothChatService.curDeviceAddress;
 					BluetoothSetting.setBlueAddress(BluetoothSearch.curBtAddress);
 				}
+				
+				SharedPreferences mSharedPreferences=getSharedPreferences("Blue", Activity.MODE_MULTI_PROCESS);
+				Editor mEditor=	mSharedPreferences.edit();
+				HanvonApplication.isDormant = false;
+				mEditor.putBoolean("isDormant", HanvonApplication.isDormant);
+				mEditor.commit();
 				break;
 			case BluetoothChatService.STATE_CONNECTING:
 				// mChatService.showProgressDialog();
@@ -180,7 +188,7 @@ public class BluetoothService extends Service{
 			// 文本类型
 			if (dataType == 2) {
 				JSONObject jsonObject = (JSONObject) msg.obj;
-				// LogUtil.i("接收包:"+jsonObject.toString());
+				 LogUtil.i("接收包:"+jsonObject.toString());
 				if (jsonObject != null) {
 					try {
 						int type = jsonObject.getInt("type");
@@ -200,12 +208,36 @@ public class BluetoothService extends Service{
 							LogUtil.i("----deviceinfo:"+jsonData.toString());
 							String serialNum = jsonData.getString("device_serialNum");
 							String isSendImage = jsonData.getString("device_isSendImage");
+							if (jsonData.isNull("SuluPen_Hardware")){
+							    HanvonApplication.HardSid = "SuluPen_Hardware_001";
+							}else{
+								HanvonApplication.HardSid = jsonData.getString("SuluPen_Hardware");
+							}
 							if(isSendImage.equals("0")){
 								BluetoothSetting.setBlueIsSendImage(false);
 							}else{
 								BluetoothSetting.setBlueIsSendImage(true);
 							}
+							String device_language = "ch-eng";
+							if (jsonData.isNull("device_language")){
+							}else{
+								device_language = jsonData.getString("device_language");
+							}
 							
+							BluetoothSetting.setIdentCoreCode(device_language);
+							String sleep_time = jsonData.getString("device_sleepTime");
+							int index = 1;
+							if (sleep_time.equals("2")){
+								index = 0;
+							}else if (sleep_time.equals("5")){
+								index = 1;
+							}else if (sleep_time.equals("10")){
+								index = 2;
+							}else if (sleep_time.equals("-1")){
+								index = 3;
+							}
+							BluetoothSetting.setSleepTime(index);
+
 							BluetoothSetting.setSeralNumber(serialNum);
 							/********************add by chenxzhuang*****************/
 							String device_version = jsonData.getString("device_version");
@@ -234,6 +266,11 @@ public class BluetoothService extends Service{
 							intent.putExtra("epen_power", power);
 							intent.putExtra("epen_status", status);
 							sendBroadcast(intent);
+							if (power == 8 || power == 6){
+								Toast.makeText(getApplicationContext(), "蓝牙速录笔电池电量过低,请充电!", Toast.LENGTH_SHORT).show();
+							}else if (power <= 5){
+								Toast.makeText(getApplicationContext(), "蓝牙速录笔电池电量过低,5秒后将自动关机!", Toast.LENGTH_SHORT).show();
+							}
 
 							break;
 
@@ -403,10 +440,7 @@ public class BluetoothService extends Service{
 							 * 笔端电量不足5%时,笔端的关机指示;5s后笔端自动关机提示
 							 */
 						case 110:
-
-						//	UiUtil.showToast(getApplicationContext(),
-						//			"蓝牙速录笔电池电量过低,5秒后将自动关机!");
-
+						//	Toast.makeText(getApplicationContext(), "蓝牙速录笔电池电量过低,5秒后将自动关机!", Toast.LENGTH_SHORT).show();
 							break;
 						case 111:
 							//关机时间设置
@@ -425,6 +459,28 @@ public class BluetoothService extends Service{
 							scanIntent.setAction(BluetoothIntenAction.ACTION_EPEN_SCANDIR_CHANGE);
 							scanIntent.putExtra("result", resultS);
 							sendBroadcast(scanIntent);
+							break;
+						case 113:
+							//扫描笔睡眠状态更改
+							jsonData = jsonObject.getJSONObject("data");
+							int sleepState = jsonData.getInt("sleep_state");
+							LogUtil.i("tong----------sleepState:"+sleepState);
+							if (sleepState == 0){
+								Toast.makeText(getApplicationContext(), "蓝牙速录笔休眠状态已唤醒!", Toast.LENGTH_SHORT).show();
+								HanvonApplication.isDormant = false;
+							}else if (sleepState == 1){
+								Toast.makeText(getApplicationContext(), "蓝牙速录笔已进入休眠状态!", Toast.LENGTH_SHORT).show();
+								HanvonApplication.isDormant = true;
+							}
+							SharedPreferences mSharedPreferences=getSharedPreferences("Blue", Activity.MODE_MULTI_PROCESS);
+							Editor mEditor=	mSharedPreferences.edit();
+							mEditor.putBoolean("isDormant", HanvonApplication.isDormant);
+							mEditor.commit();
+							
+							Intent sleepSatateIntent = new Intent();
+							sleepSatateIntent.setAction(BluetoothIntenAction.ACTION_EPEN_SLEEP_STATE_CHANGE);
+							sleepSatateIntent.putExtra("result", sleepState);
+							sendBroadcast(sleepSatateIntent);
 							break;
 						default:
 							break;

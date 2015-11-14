@@ -34,6 +34,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.hanvon.bluetooth.BluetoothChatService;
 import com.hanvon.bluetooth.BluetoothDetail;
@@ -163,6 +164,11 @@ import com.lidroid.xutils.bitmap.BitmapCommonUtils;
 		    	
 		    	//(getResources().getDrawable(R.drawable.logicon));
         	}
+			
+			SharedPreferences mSharedPreferences=getSharedPreferences("Blue", Activity.MODE_MULTI_PROCESS);
+			if (mSharedPreferences != null){
+			    HanvonApplication.isDormant = mSharedPreferences.getBoolean("isDormant", false);
+			}
 	}
     @TargetApi(Build.VERSION_CODES.ECLAIR) @SuppressLint("NewApi") public void BluetoothCheck(){
 		BluetoothAdapter adapter = BluetoothAdapter.getDefaultAdapter();
@@ -295,6 +301,11 @@ import com.lidroid.xutils.bitmap.BitmapCommonUtils;
 		    if (flag == 1 || flag == 2){
 			    if(!nickname.isEmpty()){
 			    	 TVusername.setText(nickname);
+			    	 TVnickname.setText(hvnname);
+				     HanvonApplication.strName = nickname;
+				     HanvonApplication.hvnName = hvnname;
+			    }else{
+			    	 TVusername.setText("");
 			    	 TVnickname.setText(hvnname);
 				     HanvonApplication.strName = nickname;
 				     HanvonApplication.hvnName = hvnname;
@@ -450,11 +461,11 @@ import com.lidroid.xutils.bitmap.BitmapCommonUtils;
             break;
             
             case R.id.rl_count:
-                
+            	Toast.makeText(this, "此版本暂不支持该功能！", Toast.LENGTH_SHORT).show();
             break;
             
             case R.id.rl_cloud:
-                
+            	Toast.makeText(this, "此版本暂不支持该功能！", Toast.LENGTH_SHORT).show();  
             break;    
         }
     }

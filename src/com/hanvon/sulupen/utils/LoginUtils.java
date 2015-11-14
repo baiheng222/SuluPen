@@ -84,6 +84,9 @@ public class LoginUtils {
 				        Editor mEditor=	mSharedPreferences.edit();
 				        mEditor.putString("username", username);
 				        HanvonApplication.hvnName = username;
+				        if (qqNickname.equals("null")){
+				        	qqNickname = "";
+				        }
 				        HanvonApplication.strName = qqNickname;
 				        mEditor.putString("nickname", qqNickname);
 				        mEditor.putString("figureurl", figureurl);

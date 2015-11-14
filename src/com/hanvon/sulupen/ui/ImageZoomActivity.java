@@ -57,6 +57,12 @@ public class ImageZoomActivity extends Activity
 				if (mDataList.size() == 1)
 				{
 					removeImgs();
+					if(ScanNoteActivity.scanNoteAct.getGridViewFromNote() != null)
+					{
+						//删除图片显示控件
+						ScanNoteActivity.scanNoteAct.getGridViewFromNote().setVisibility(View.GONE);
+					}
+				
 					finish();
 				}
 				else

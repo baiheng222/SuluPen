@@ -28,6 +28,8 @@ public class BluetoothMsgReceive extends BroadcastReceiver{
 	public final static int CLOSETIME_CHANGE = 0x1008;
 	public final static int SCANDIR_CHANGE = 0x1009;
 
+	public final static int SLEEP_STATE_CHANGE = 0x1010;
+	
 	public BluetoothMsgReceive(Handler handler) {
 		this.handler = handler;
 	}
@@ -58,6 +60,10 @@ public class BluetoothMsgReceive extends BroadcastReceiver{
 		} else if (action.equals(BluetoothIntenAction.ACTION_EPEN_SCANDIR_CHANGE)) {
 			int result = intent.getIntExtra("result", 0);
 			Message msg = handler.obtainMessage(SCANDIR_CHANGE, result, 0);
+			handler.sendMessage(msg);
+		}else if (action.equals(BluetoothIntenAction.ACTION_EPEN_SLEEP_STATE_CHANGE)) {
+			int result = intent.getIntExtra("result", 0);
+			Message msg = handler.obtainMessage(SLEEP_STATE_CHANGE, result, 0);
 			handler.sendMessage(msg);
 		} else if (action.equals(BluetoothIntenAction.ACTION_EPEN_RECEIVEIMG_CHANGE)) {
 			LogUtil.i("------------------------------------------------");

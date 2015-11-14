@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 import com.hanvon.sulupen.MainActivity;
 import com.hanvon.sulupen.R;
+import com.hanvon.sulupen.application.HanvonApplication;
 import com.hanvon.sulupen.utils.LogUtil;
 
 import android.app.Activity;
@@ -274,6 +275,7 @@ public class BluetoothDetail extends Activity implements OnClickListener{
 	}
 	
 	public void setFactory(){
+		
 		BluetoothSetting.setFuncKeyCode("");
 		funcKeyCheckedItem = 0;
 		BluetoothSetting.setIdentCoreCode("ch-eng");
@@ -284,7 +286,7 @@ public class BluetoothDetail extends Activity implements OnClickListener{
 		checkedScanDirItem = 0;
 		BluetoothSetting.setBlueIsSendImage(false);
 		BluetoothSetting.writeBack();
-		
+
 		TVfunction.setText(funcKeyStrs[funcKeyCheckedItem]);
 		TVrecognition.setText(identCoreStrs[identCoreCheckedItem]);
 		TVsleep.setText(sleepTimeStrs[checkedItem]);
@@ -297,6 +299,10 @@ public class BluetoothDetail extends Activity implements OnClickListener{
 		if (BluetoothService.getServiceInstance().getBluetoothChatService()
 				.getState() != BluetoothChatService.STATE_CONNECTED)
 		{
+			return;
+		}
+		if (HanvonApplication.isDormant){
+			Toast.makeText(this, "蓝牙扫描笔进入休眠状态，请按power键进行唤醒！", Toast.LENGTH_SHORT).show();
 			return;
 		}
 		switch(v.getId()){

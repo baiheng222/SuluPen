@@ -83,12 +83,13 @@ public class ImageChooseActivity extends Activity {
 				+ availableSize + ")");
 		mAdapter.notifyDataSetChanged();
 	}
-
+  
 	private void initListener() {
 		mFinishBtn.setOnClickListener(new OnClickListener() {
 
 			public void onClick(View v) {
 				LogUtil.i("tong--------mFinishBtn click");
+
 				ArrayList<ImageItem> temp = new ArrayList<ImageItem>(
 						selectedImgs.values());
 				
@@ -98,6 +99,12 @@ public class ImageChooseActivity extends Activity {
 				// (Serializable) temp);
 				ScanNoteActivity.scanNoteAct.mDataList.addAll(temp);
 				startActivity(intent);
+				
+				if(ScanNoteActivity.scanNoteAct.getGridViewFromNote().getVisibility() == View.GONE)
+				{
+					ScanNoteActivity.scanNoteAct.getGridViewFromNote().setVisibility(View.VISIBLE);
+				}
+				
 				finish();
 				LogUtil.i("tong--------mDataList.addAll end");
 			}

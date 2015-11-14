@@ -14,6 +14,7 @@ import android.view.Window;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.hanvon.sulupen.application.HanvonApplication;
 import com.hanvon.sulupen.db.dao.NoteRecordDao;
@@ -129,8 +130,12 @@ public class SettingActivity extends Activity implements OnClickListener
             break;
                 
             case R.id.rl_setting_upgrade:
-            	SoftUpdate updateInfo = new SoftUpdate(this,1);
-    	        updateInfo.checkVersion();
+            	if (HanvonApplication.isUpdate){
+            		Toast.makeText(this, "正在下载升级文件，请稍后再试!", Toast.LENGTH_SHORT).show();
+            	}else{
+            	    SoftUpdate updateInfo = new SoftUpdate(this,1);
+    	            updateInfo.checkVersion();
+            	}
             break;
             
             case R.id.tv_backbtn:

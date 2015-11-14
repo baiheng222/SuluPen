@@ -160,6 +160,7 @@ public class UpdateAppService extends Service{
     	  */
     	protected String installApk(File file) {
     		LogUtil.i("*****************");
+    		HanvonApplication.isUpdate = false;
     		HanvonApplication.path = Uri.fromFile(file).toString();
     	    LogUtil.i(HanvonApplication.path);
     		nManager.cancel(100);

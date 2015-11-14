@@ -80,7 +80,7 @@ public class ShowUserMessage extends Activity implements OnClickListener{
 				ShowUserMessage.this.finish();
 		    	break;
 		    case R.id.third_bind:
-		    	Toast.makeText(this, "功能 未实现，请期待下个版本！", Toast.LENGTH_LONG).show();
+		    	Toast.makeText(this, "此版本暂不支持该功能！", Toast.LENGTH_LONG).show();
 		    	break;
 		//    case R.id.quit_login:
 		 //   	UserLoginOut();

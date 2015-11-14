@@ -371,6 +371,11 @@ OnClickListener, PlatformActionListener  {
     }
 
 	public void QQUserLogin(){
+		if (new ConnectionDetector(LoginActivity.this).isConnectingTOInternet()) {
+		}else{
+			Toast.makeText(LoginActivity.this, "网络连接不可用，请检查网络后再试", Toast.LENGTH_SHORT).show();
+			return;
+		}
 		LogUtil.i("INTO QQUserLogin!!!!!!!!");
 		userflag = 1;
 		pd = ProgressDialog.show(this, "", "正在登陆中，请稍后...");
@@ -383,6 +388,11 @@ OnClickListener, PlatformActionListener  {
 	}
 
 	public void weiXinUserLogin(){
+		if (new ConnectionDetector(LoginActivity.this).isConnectingTOInternet()) {
+		}else{
+			Toast.makeText(LoginActivity.this, "网络连接不可用，请检查网络后再试", Toast.LENGTH_SHORT).show();
+			return;
+		}
 		LogUtil.i("INTO WeixinUserLogin!!!!!!!!");
 		userflag = 2;
 		pd = ProgressDialog.show(this, "", "正在登陆中，请稍后...");
@@ -515,7 +525,7 @@ OnClickListener, PlatformActionListener  {
 			//	String text = getString(R.string.logining, msg.obj);
 			//	Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
 				System.out.println("---------------");
-				pd.dismiss();
+			//	pd.dismiss();
 			}
 			break;
 			case MSG_AUTH_CANCEL: {

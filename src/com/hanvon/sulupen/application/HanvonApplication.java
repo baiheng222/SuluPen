@@ -84,7 +84,10 @@ public class HanvonApplication extends FrontiaApplication {
 	public static boolean isActivity;
 	
 	public static Platform plat;
+	public static String HardSid = "";
+	public static boolean isDormant = false;
 	
+	public static boolean isUpdate = false;
 	@Override
 	public void onCreate() {
 

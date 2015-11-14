@@ -99,7 +99,7 @@ public class HardUpdate {
 		JSONObject JSuserInfoJson = new JSONObject();
   	    try {
   	    	JSuserInfoJson.put("uid", HanvonApplication.AppUid);
-  	  	    JSuserInfoJson.put("sid", "SuluPen_Hardware");
+  	  	    JSuserInfoJson.put("sid", HanvonApplication.HardSid);
   	  	    JSuserInfoJson.put("ver", version);
   	  	    JSuserInfoJson.put("type", 1);
   	    } catch (JSONException e) {

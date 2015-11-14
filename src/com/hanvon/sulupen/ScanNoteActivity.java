@@ -215,11 +215,19 @@ public class ScanNoteActivity extends Activity implements OnClickListener{
 		}
 	};
 	
+	public  GridView getGridViewFromNote()
+	{
+		return mGridView;
+	}
 	
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (KeyEvent.KEYCODE_BACK == keyCode) {
 			LogUtil.i("===========================");
+			saveNoteToDb();
+		}
+		if (KeyEvent.KEYCODE_HOME == keyCode)
+		{
 			saveNoteToDb();
 		}
 		return super.onKeyDown(keyCode, event);
@@ -281,6 +289,8 @@ public class ScanNoteActivity extends Activity implements OnClickListener{
 		// 添加图片相关代码 
 		mGridView = (GridView) findViewById(R.id.gridview);
 		mGridView.setSelector(new ColorDrawable(Color.TRANSPARENT));
+		mGridView.setVisibility(View.GONE);
+		
 		//只在这里setAdapter会导致进入历史笔记后添加的图片显示不一致的问题.因为这里Activity的mDataList和adapter内操作的mDataList的本体不是一个,在onResume中设置(或重新)setAdapter可解决该问题
 		// mAdapter = new ImagePublishAdapter(this, mDataList);
 		// mGridView.setAdapter(mAdapter);
@@ -391,6 +401,12 @@ public class ScanNoteActivity extends Activity implements OnClickListener{
 				}
 						
 				ArrayList<NotePhotoRecord> mPhotesList = mScanRecord.getNotePhotoList();
+				
+				if(mPhotesList.size() != 0)
+				{
+					mGridView.setVisibility(View.VISIBLE);
+				}
+				
 				for(int i=0;i<mPhotesList.size();i++)
 				{
 				    Log.d(TAG, "photo url is: " + mPhotesList.get(i).getLocalUrl());
@@ -398,6 +414,8 @@ public class ScanNoteActivity extends Activity implements OnClickListener{
 					ImageItem curImage = new ImageItem();
 					curImage.sourcePath =  mPhotesList.get(i).getLocalUrl();
 					mDataList.add(curImage);
+					
+					mPhotoRecordDao.deleteRecord(mPhotesList.get(i));
 				
 				}
 				
@@ -543,8 +561,13 @@ public class ScanNoteActivity extends Activity implements OnClickListener{
 	 * @return
 	 */
 	private boolean isConnected() {
-		return BluetoothService.getServiceInstance().getBluetoothChatService()
+		if (HanvonApplication.isDormant){
+			Toast.makeText(this, "蓝牙扫描笔进入休眠状态，请按power键进行唤醒！", Toast.LENGTH_SHORT).show();
+			return false;
+		}else{
+		    return BluetoothService.getServiceInstance().getBluetoothChatService()
 				.getState() == BluetoothChatService.STATE_CONNECTED;
+		}
 	}
 	
 	
@@ -692,13 +715,13 @@ public class ScanNoteActivity extends Activity implements OnClickListener{
 				mScanRecordDao.updataRecord(mScanRecord);
 				
 				//添加图片
-				
 				for(int i=0;i<mDataList.size();i++)
 				{
 				    NotePhotoRecord cphote = new NotePhotoRecord();
 					cphote.setLocalUrl(mDataList.get(i).sourcePath);
 					cphote.setNote(mScanRecord);
-					mPhotoRecordDao.updataScanRecord(cphote);
+					mPhotoRecordDao.add(cphote);
+				
 				}
 				
 				//保存该次选择的标签类型到sharedpreference
@@ -1162,6 +1185,11 @@ public class ScanNoteActivity extends Activity implements OnClickListener{
 			if (mDataList.size() < CustomConstants.MAX_IMAGE_SIZE
 					&& resultCode == -1 && !TextUtils.isEmpty(path))
 			{
+				if(mGridView.getVisibility() == View.GONE)
+				{
+					mGridView.setVisibility(View.VISIBLE);
+				}
+				
 				ImageItem item = new ImageItem();
 				item.sourcePath = path;
 				mDataList.add(item);
