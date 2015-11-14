@@ -1,14 +1,28 @@
 package com.hanvon.sulupen;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
@@ -40,7 +54,6 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import cn.sharesdk.framework.ShareSDK;
 import cn.sharesdk.onekeyshare.OnekeyShare;
 
@@ -69,13 +82,6 @@ import com.hanvon.sulupen.utils.IntentConstants;
 import com.hanvon.sulupen.utils.LogUtil;
 import com.hanvon.sulupen.utils.TimeUtil;
 import com.hanvon.sulupen.utils.UiUtil;
-
-import java.io.File;
-import java.io.IOException;
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 
 public class ScanNoteActivity extends Activity implements OnClickListener{
 
@@ -114,6 +120,7 @@ public class ScanNoteActivity extends Activity implements OnClickListener{
 
 	private String curTopicId = "";
 	
+	
 	private final static int RESULT_CHAGNE_NOTEBOOK = 4;
 	
 	//数据库相关
@@ -131,7 +138,7 @@ public class ScanNoteActivity extends Activity implements OnClickListener{
 	private NoteBookRecord mNoteBookRecord = null;
 	
 	InputMethodManager imm;
-	
+	private Bitmap bitmapLaunch;
 	private String curAddress;
     
 	private Handler mbUiThreadHandler;
@@ -242,7 +249,7 @@ public class ScanNoteActivity extends Activity implements OnClickListener{
 		//setContentView(R.layout.activity_share);
         initView();
         initData();
-
+        //copyPhoto();
         mbUiThreadHandler = new Handler();
 	}
 
@@ -999,7 +1006,7 @@ public class ScanNoteActivity extends Activity implements OnClickListener{
 		 OnekeyShare oks = new OnekeyShare();
 		 //关闭sso授权
 		 oks.disableSSOWhenAuthorize(); 
-
+         LogUtil.i("tong------strLinkPath:"+strLinkPath);
 		// 分享时Notification的图标和文字  2.5.9以后的版本不调用此方法
 		 //oks.setNotification(R.drawable.ic_launcher, getString(R.string.app_name));
 		 // title标题，印象笔记、邮箱、信息、微信、人人网和QQ空间使用
@@ -1015,9 +1022,15 @@ public class ScanNoteActivity extends Activity implements OnClickListener{
 		 }
 		 oks.setText(title);
 		 // imagePath是图片的本地路径，Linked-In以外的平台都支持此参数
-	
-		 //oks.setImagePath("/data/data/com.hanvon.sulupen/res/drawable-mdpi/ic_launcher.png");
-		 //oks.setImagePath("/sdcard/test.jpg");//确保SDcard下面存在此张图片
+		 String curPath = getApplicationContext().getFilesDir().getPath();
+
+		 copyPhoto();
+		 String srcPath = curPath + "/"+"image.png";
+		 //String newPath= "/sdcard/app_launcher.png";
+		 LogUtil.i("tong-----------srcPath:"+srcPath);
+		 
+		 //copyFile(srcPath,newPath);
+		 oks.setImagePath(srcPath);//确保SDcard下面存在此张图片
 		 // url仅在微信（包括好友和朋友圈）中使用
 		 oks.setUrl(strLinkPath);
 		 // comment是我对这条分享的评论，仅在人人网和QQ空间使用
@@ -1033,6 +1046,62 @@ public class ScanNoteActivity extends Activity implements OnClickListener{
 		 }
 	
 	
+	public void copyPhoto()
+	{
+		
+		bitmapLaunch = BitmapFactory.decodeResource(getResources(), R.drawable.app_launcher);  
+        FileOutputStream fos = null;  
+        try {  
+            fos = openFileOutput("image.png", Context.MODE_PRIVATE);  
+            bitmapLaunch.compress(Bitmap.CompressFormat.PNG, 100, fos);  
+        } catch (FileNotFoundException e) {  
+        } finally {  
+            if (fos != null) {  
+                try {  
+                    fos.flush();  
+                    fos.close();  
+                } catch (IOException e) {  
+                }  
+            }  
+        } 
+	}
+	
+	
+	
+	 /**  
+     * 复制单个文件  
+     * @param oldPath String 原文件路径 如：c:/fqf.txt  
+     * @param newPath String 复制后路径 如：f:/fqf.txt  
+     * @return boolean  
+     */   
+   public void copyFile(String oldPath, String newPath) {   
+       try {   
+           int bytesum = 0;   
+           int byteread = 0;   
+           File oldfile = new File(oldPath);   
+           if (!oldfile.exists()) { //文件不存在时   
+               InputStream inStream = new FileInputStream(oldPath); //读入原文件   
+               FileOutputStream fs = new FileOutputStream(newPath);   
+               byte[] buffer = new byte[1444];   
+          
+               while ( (byteread = inStream.read(buffer)) != -1) {   
+                   bytesum += byteread; //字节数 文件大小   
+                   System.out.println(bytesum);   
+                   fs.write(buffer, 0, byteread);   
+               }   
+               
+               inStream.close();   
+               fs.flush();
+               fs.close();
+           }   
+       }   
+       catch (Exception e) {   
+           System.out.println("复制单个文件操作出错");   
+           e.printStackTrace();   
+  
+       }   
+  
+   }   
 	
 	/** 
      * 分享功能 
