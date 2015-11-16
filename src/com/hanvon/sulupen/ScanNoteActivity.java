@@ -231,11 +231,11 @@ public class ScanNoteActivity extends Activity implements OnClickListener{
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (KeyEvent.KEYCODE_BACK == keyCode) {
 			LogUtil.i("===========================");
-			saveNoteToDb();
+			//saveNoteToDb();
 		}
 		if (KeyEvent.KEYCODE_HOME == keyCode)
 		{
-			saveNoteToDb();
+			//saveNoteToDb();
 		}
 		return super.onKeyDown(keyCode, event);
 	}
@@ -253,6 +253,16 @@ public class ScanNoteActivity extends Activity implements OnClickListener{
         mbUiThreadHandler = new Handler();
 	}
 
+
+	
+	
+	@Override
+	protected void onStop() {
+		// TODO Auto-generated method stub
+		LogUtil.i("tong---------onStop");
+		saveNoteToDb();
+		super.onStop();
+	}
 
 	private void initView() {
 
@@ -328,12 +338,15 @@ public class ScanNoteActivity extends Activity implements OnClickListener{
 	
 	private void initData()
 	{
-		LogUtil.i("tong---------initData");
+		LogUtil.i("tong---------initData:");
 		
 		Intent intent = getIntent();
 		if (intent != null) 
 		{
-			flagIntent = intent.getFlags();
+			String rString = intent.getExtras().getString("CreatFlag");
+			flagIntent = Integer.parseInt(rString); 
+			//flagIntent = intent.getFlags();
+			LogUtil.i("tong-------flagIntent"+flagIntent);
 			if (flagIntent == FLAG_CREATE_NOTE_WITH_DEFAULT_NOTEBOOK)
 			{
 				changeRecordMode(2);
@@ -368,9 +381,11 @@ public class ScanNoteActivity extends Activity implements OnClickListener{
 			else if (flagIntent == FLAG_CREATE ) 
 			{
 				changeRecordMode(2);
+				LogUtil.i("tong-----------FLAG_CREATE");
 			    //新建
 				mNoteBookRecord = (NoteBookRecord) intent.getSerializableExtra("NoteBook");
-			    
+				LogUtil.i("tong-----------getSerializableExtra end");
+				
 				tvTopic.setText(mNoteBookRecord.getNoteBookName());
 				if(sp == null)
 				{
@@ -382,7 +397,7 @@ public class ScanNoteActivity extends Activity implements OnClickListener{
 				
 				mScanRecord = new NoteRecord();
 			} 
-			else 
+			else if(flagIntent == FLAG_EDIT) 
 			{
 				changeRecordMode(1);
 				tvNewNote.setText("");
@@ -633,6 +648,7 @@ public class ScanNoteActivity extends Activity implements OnClickListener{
 	
 	private void saveNoteToDb() 
 	{
+		LogUtil.i("tong--------saveNoteToDb:"+flagIntent);
 		if (flagIntent == FLAG_CREATE || flagIntent == FLAG_CREATE_NOTE_WITH_DEFAULT_NOTEBOOK) 
 		{
 			// add Note to Db

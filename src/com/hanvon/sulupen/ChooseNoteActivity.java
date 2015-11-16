@@ -87,7 +87,8 @@ public class ChooseNoteActivity extends Activity implements OnClickListener
 		Intent intent = getIntent();
         if (intent != null) 
         {
-        	flagIntent = intent.getFlags();
+        	flagIntent = intent.getIntExtra("SearchType", -1);
+        	
 			if (flagIntent == FLAG_SEARCH)
 			{
 				mSearchString = (String) intent.getStringExtra("SearchString");

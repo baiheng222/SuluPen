@@ -1,8 +1,16 @@
 package com.hanvon.sulupen.login;
 
+import cn.sharesdk.framework.Platform;
+import cn.sharesdk.framework.ShareSDK;
+import cn.sharesdk.tencent.qq.QQ;
+import cn.sharesdk.wechat.friends.Wechat;
+
 import com.hanvon.sulupen.MainActivity;
 import com.hanvon.sulupen.R;
+import com.hanvon.sulupen.SettingActivity;
 import com.hanvon.sulupen.application.HanvonApplication;
+import com.hanvon.sulupen.utils.LogUtil;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -28,7 +36,7 @@ public class ShowUserMessage extends Activity implements OnClickListener{
 	private TextView TVthirdLogin;
 	private RelativeLayout RLthird;
 	private ImageView IVthirdBind;
-//	private TextView TVLoginOut;
+	private TextView TVLoginOut;
 	
 	private ImageView TVback;
 
@@ -45,6 +53,10 @@ public class ShowUserMessage extends Activity implements OnClickListener{
 			findViewById(R.id.third).setVisibility(View.GONE);
 		}
 		
+        if (HanvonApplication.hvnName == ""){
+	        findViewById(R.id.quit_login).setVisibility(View.GONE);
+	    }
+		
 		
 	    TVuserName = (TextView) findViewById(R.id.show_uesrname);
 	    TVnickName = (TextView) findViewById(R.id.show_nickname);
@@ -55,13 +67,13 @@ public class ShowUserMessage extends Activity implements OnClickListener{
 	    TVthirdLogin = (TextView) findViewById(R.id.third_login);
 	    RLthird = (RelativeLayout) findViewById(R.id.third);
 	    IVthirdBind = (ImageView) findViewById(R.id.third_bind);
-	//    TVLoginOut = (TextView) findViewById(R.id.quit_login);
+	    TVLoginOut = (TextView) findViewById(R.id.quit_login);
         TVback = (ImageView)findViewById(R.id.usermessage_back);
         
 	    IVmodifyNick.setOnClickListener(this);
 	    IVmodifyPwd.setOnClickListener(this);
 	    IVthirdBind.setOnClickListener(this);
-	//    TVLoginOut.setOnClickListener(this);
+	    TVLoginOut.setOnClickListener(this);
 	    TVback.setOnClickListener(this);
 	    
 	    ShowUserInfo();
@@ -82,9 +94,9 @@ public class ShowUserMessage extends Activity implements OnClickListener{
 		    case R.id.third_bind:
 		    	Toast.makeText(this, "此版本暂不支持该功能！", Toast.LENGTH_LONG).show();
 		    	break;
-		//    case R.id.quit_login:
-		 //   	UserLoginOut();
-		  //  	break;
+		    case R.id.quit_login:
+		    	UserLoginOut();
+		    	break;
 		    case R.id.usermessage_back:
 		    	startActivity(new Intent(ShowUserMessage.this, MainActivity.class));
 				ShowUserMessage.this.finish();
@@ -106,14 +118,33 @@ public class ShowUserMessage extends Activity implements OnClickListener{
 		HanvonApplication.BitHeadImage = null;
 		SharedPreferences mSharedPreferences=getSharedPreferences("BitMapUrl", Activity.MODE_MULTI_PROCESS);
 		int flag =mSharedPreferences.getInt("flag", 0);
+	//	String plat = mSharedPreferences.getString("plat", "");
+	//	LogUtil.i("---quit:---"+plat);
+	//	HanvonApplication.plat = ;
+		HanvonApplication.userFlag = flag;
 		if (flag == 0){
 		}else if(flag == 1){
-		  //  LoginUtil loginUtil = new LoginUtil(ShowUserMessage.this,ShowUserMessage.this);
-		   // loginUtil.QQLoginOut();
+		//	HanvonApplication.plat.removeAccount();
+		  //  LoginUtil loginUtil = new LoginUtil(SettingActivity.this,SettingActivity.this);
+		  //  loginUtil.QQLoginOut();
+			Platform QQplat = ShareSDK.getPlatform(this, QQ.NAME);
+			LogUtil.i("---quit:---"+QQplat);
+			if (QQplat.isValid ()) {
+				QQplat.removeAccount();
+			}
 	    }else if (flag == 2){
+	    //	HanvonApplication.plat.removeAccount();
+	    	Platform WXplat = ShareSDK.getPlatform(this, Wechat.NAME);
+			LogUtil.i("---quit:---"+WXplat.toString());
+			if (WXplat.isValid ()) {
+				WXplat.removeAccount();
+			}
 	    }
 		Editor mEditor=	mSharedPreferences.edit();
 		mEditor.putInt("status", 0);
+		mEditor.putString("nickname", "");
+		mEditor.putString("username", "");
+		HanvonApplication.isActivity = false;
 		mEditor.commit();
 
 		SharedPreferences mSharedCloudPreferences=getSharedPreferences("Cloud_Info", Activity.MODE_MULTI_PROCESS);

@@ -94,7 +94,7 @@ OnClickListener, PlatformActionListener  {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		ShareSDK.initSDK(this);
+	//	ShareSDK.initSDK(this);
 		instance = this;
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_login);
@@ -151,6 +151,7 @@ OnClickListener, PlatformActionListener  {
 					Toast.makeText(LoginActivity.this, "用户名或者密码不允许为空", Toast.LENGTH_SHORT).show();
 					return;
 				}
+				/*
 				if ((strPassWord.length() < 6) || (strPassWord.length() > 16)){
 					Toast.makeText(LoginActivity.this, "密码应为6-16位字母和数字组合!", Toast.LENGTH_SHORT).show();
 					return;
@@ -163,7 +164,7 @@ OnClickListener, PlatformActionListener  {
 				        Toast.makeText(LoginActivity.this,"请输入符合规则的密码!", Toast.LENGTH_SHORT).show();
 				        return;
 				    }
-				}
+				}*/
 				LogUtil.i("username:"+strUserName+", passwd:"+strPassWord);
 				InputMethodManager m=(InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE); 
 				m.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
@@ -305,7 +306,6 @@ OnClickListener, PlatformActionListener  {
 					HanvonApplication.hvnName = username;
 			        HanvonApplication.strName = nickname;
 					mEditor.putBoolean("isHasNick", isHasNick);
-					
 				//	if (!email.equals("")){
 				//		mEditor.putString("email", email);
 				//		HanvonApplication.strEmail = email;
@@ -450,7 +450,6 @@ OnClickListener, PlatformActionListener  {
 
 				LogUtil.i("---nickname:" + nickname+"  openid:"+openid);
 				
-				HanvonApplication.plat = plat;
 				login(plat.getName(), userId, null);
 				return;
 			}
@@ -471,7 +470,6 @@ OnClickListener, PlatformActionListener  {
 			figureurl = platform.getDb().getUserIcon();
 
 			LogUtil.i("---nickname:" + nickname+"  openid:"+openid);
-			HanvonApplication.plat = platform;
 			login(platform.getName(), platform.getDb().getUserId(), res);
 		}
 		LogUtil.i(res.toString());

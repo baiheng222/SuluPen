@@ -81,12 +81,18 @@ public class SearchActivity extends Activity implements OnClickListener
 		Intent intent = getIntent();
         if (intent != null) 
         {
-        	flagIntent = intent.getFlags();
+        	//flagIntent = intent.getFlags();
+        	flagIntent = intent.getIntExtra("SearchType", -1);
 			if (flagIntent == FLAG_SEARCH_WITH_STRING)
 			{
 				mSearchString = (String) intent.getStringExtra("SearchString");
 				Log.d(TAG, "get search string "  + mSearchString);
 			}
+			else if (flagIntent == FLAG_SEARCH)
+			{
+				
+			}
+				
         }
 		
 		/*
@@ -184,8 +190,8 @@ public class SearchActivity extends Activity implements OnClickListener
 	 public void startNoteDetailActivity(int pos)
 	 {
 		 Intent intent = new Intent(this, ScanNoteActivity.class);
-		 intent.setFlags(FLAG_EDIT);
-		 //intent.putExtra("Note", mNoteRecordList.get(pos));
+		 String flagStr = Integer.toString(FLAG_EDIT);
+		 intent.putExtra("CreatFlag", flagStr);
 		 Log.d(TAG, "note is : " +  mNoteRecordList.get(pos).toString());
 		 intent.putExtra("NoteRecordId", mNoteRecordList.get(pos).getId());
 		 startActivity(intent);
@@ -204,14 +210,15 @@ public class SearchActivity extends Activity implements OnClickListener
             
 		 	case R.id.tv_rightbtn:
 		 		Intent intent = new Intent(this, ChooseNoteActivity.class);
-		 		intent.setFlags(FLAG_SEARCH);
+		 		intent.putExtra("SearchType", FLAG_SEARCH);
 		 		intent.putExtra("SearchString", mInput.getText().toString());
 		 		startActivity(intent);
 		 	break;
                      
             case R.id.iv_newnote:
             	Intent newNoteIntent = new Intent(this, ScanNoteActivity.class);
-                newNoteIntent.setFlags(FLAG_CREATE_NOTE_WITH_DEFAULT_NOTEBOOK);
+                String flagStr = Integer.toString(FLAG_CREATE_NOTE_WITH_DEFAULT_NOTEBOOK);
+                newNoteIntent.putExtra("CreatFlag", flagStr);
                 startActivity(newNoteIntent);
             break;     
 		 }

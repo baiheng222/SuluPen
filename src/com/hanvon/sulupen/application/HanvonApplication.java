@@ -13,6 +13,7 @@ import android.telephony.TelephonyManager;
 import android.util.Log;
 
 import cn.sharesdk.framework.Platform;
+import cn.sharesdk.framework.ShareSDK;
 
 import com.alibaba.fastjson.JSONObject;
 import com.baidu.frontia.FrontiaApplication;
@@ -83,16 +84,16 @@ public class HanvonApplication extends FrontiaApplication {
 	
 	public static boolean isActivity;
 	
-	public static Platform plat;
 	public static String HardSid = "";
 	public static boolean isDormant = false;
 	
-	public static boolean isUpdate = false;
+	//public static boolean isUpdate = false;
 	public static String HardUpdateUrl = "";
 	@Override
 	public void onCreate() {
 
 		super.onCreate();
+		ShareSDK.initSDK(this);
 		mLocationClient = new LocationClient(getApplicationContext());
 		myListener = new MyLocationListener();
 		mLocationClient.registerLocationListener(myListener);

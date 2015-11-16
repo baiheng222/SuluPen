@@ -84,6 +84,8 @@ import com.lidroid.xutils.bitmap.BitmapCommonUtils;
 	public final static int FLAG_CREATE = 2;
 	public final static int FLAG_CREATE_NOTE_WITH_DEFAULT_NOTEBOOK = 3;
 	
+	
+	
 	private NoteBookRecordDao mNoteBookRecordDao;
 	private List<NoteBookRecord> mNoteBookList;
 	private NoteBookListAdapter mNoteBookAdapter;
@@ -103,7 +105,7 @@ import com.lidroid.xutils.bitmap.BitmapCommonUtils;
 				mEpen.setBackgroundResource(R.drawable.epen_manager_nor);
 				break;
 			case BluetoothMsgReceive.HARD_WARE_UPDATE:
-			//	new HardWareDownFille(MainActivity.this).DownFile(HanvonApplication.HardUpdateUrl);
+				new UpdateAppService(MainActivity.this,2).CreateInform(HanvonApplication.HardUpdateUrl);
 				break;
 				
 			}
@@ -390,10 +392,8 @@ import com.lidroid.xutils.bitmap.BitmapCommonUtils;
             {
                 Log.d(TAG, "item " + position + " clicked");
                 NoteBookRecord noteBook = mNoteBookList.get(position);
-                Intent newIntent = new Intent(MainActivity.this, NoteBookListActivity.class);
-                //newIntent.setFlags(FLAG_CREATE);
+                Intent newIntent = new Intent(MainActivity.this, NoteBookListActivity.class);;
                 newIntent.putExtra("NoteBook", noteBook);
-                //newIntent.putExtra("NoteBookName", noteBook.getNoteBookName());
                 startActivity(newIntent);
             }
         });
@@ -424,7 +424,7 @@ import com.lidroid.xutils.bitmap.BitmapCommonUtils;
         {
             case R.id.ll_new:
             	Intent newIntent = new Intent(this, NewNoteBookActivity.class);
-    			newIntent.setFlags(FLAG_CREATE);
+    			newIntent.putExtra("CreateNoteBook", FLAG_CREATE);
     			startActivity(newIntent);
             break;
             
@@ -443,7 +443,9 @@ import com.lidroid.xutils.bitmap.BitmapCommonUtils;
             	defaultNoteBook.setNoteBookId(0);
             	defaultNoteBook.setNoteBookName("笔记本");
                 Intent newNoteIntent = new Intent(this, ScanNoteActivity.class);
-                newNoteIntent.setFlags(FLAG_CREATE_NOTE_WITH_DEFAULT_NOTEBOOK);
+                String flagStr = Integer.toString(FLAG_CREATE_NOTE_WITH_DEFAULT_NOTEBOOK);
+                newNoteIntent.putExtra("CreatFlag", flagStr);
+               // newNoteIntent.setFlags(FLAG_CREATE_NOTE_WITH_DEFAULT_NOTEBOOK);
                 newNoteIntent.putExtra("NoteBook", defaultNoteBook);
                 startActivityForResult(newNoteIntent, 1);
                 break;
@@ -454,8 +456,8 @@ import com.lidroid.xutils.bitmap.BitmapCommonUtils;
             	}else{
             		LogUtil.i("--------Before Call BluetoothCheck（）---------2-----");
             		BluetoothCheck(0);
-            	//	Intent blueSearchIntent = new Intent(this, BluetoothSearch.class);
-            	//	startActivity(blueSearchIntent);
+            		Intent blueSearchIntent = new Intent(this, BluetoothSearch.class);
+            		startActivity(blueSearchIntent);
             	}
             	break;
             case R.id.tv_leftbtn:
@@ -569,6 +571,15 @@ import com.lidroid.xutils.bitmap.BitmapCommonUtils;
 	@Override
 	public boolean onLongClick(View v) {
 		// TODO Auto-generated method stub
+		SharedPreferences mSharedPreferences=getSharedPreferences("Blue", Activity.MODE_MULTI_PROCESS);
+		if (mSharedPreferences != null){
+		    HanvonApplication.isDormant = mSharedPreferences.getBoolean("isDormant", false);
+		}
+		
+		if (HanvonApplication.isDormant){
+			Toast.makeText(this, "蓝牙扫描笔进入休眠状态，请按power键进行唤醒！", Toast.LENGTH_SHORT).show();
+			return false;
+		}
 		switch (v.getId()) {
 		case R.id.iv_rightbtn:
 			if (isConnected()) {// 如果连接

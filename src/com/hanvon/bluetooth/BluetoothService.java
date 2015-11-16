@@ -243,6 +243,11 @@ public class BluetoothService extends Service{
 							BluetoothSetting.setSleepTime(index);
 
 							BluetoothSetting.setSeralNumber(serialNum);
+							if (jsonData.getString("device_scanDirection").equals("1")){
+								BluetoothSetting.setBlueScanDir(1);
+							}else{
+								BluetoothSetting.setBlueScanDir(0);
+							}
 							/********************add by chenxzhuang*****************/
 							if (new ConnectionDetector(this).isConnectingTOInternet()) {
 							    String device_version = jsonData.getString("device_version");
@@ -268,7 +273,7 @@ public class BluetoothService extends Service{
 									.getString("battery_status"));
 							curBatteryPower = power;
 							curBatteryStatus = status;
-							LogUtil.i("power:" + power);
+							LogUtil.i("============power:" + power);
 							Intent intent = new Intent();
 							intent.setAction(BluetoothIntenAction.ACTION_EPEN_BATTERY_CHANGE);
 							intent.putExtra("epen_power", power);

@@ -240,8 +240,7 @@
         <activity  android:name="com.hanvon.bluetooth.BluetoothDetail">
         </activity>
         
-        <activity android:name="com.hanvon.sulupen.UpdateAppService" >
-        </activity>
+
         <activity android:name="com.hanvon.sulupen.SoftUpdate" >
         </activity>
          

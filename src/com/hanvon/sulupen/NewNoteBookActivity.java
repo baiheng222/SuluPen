@@ -44,19 +44,25 @@ public class NewNoteBookActivity extends Activity implements OnClickListener {
 		initDatas();
 	}
 
-	private void initDatas() {
+	private void initDatas() 
+	{
 		Intent intent = getIntent();
-		if (intent != null) {
-			flagIntent = intent.getFlags();
-			if (flagIntent == FLAG_CREATE_FOR_CHANGE) {
+		if (intent != null) 
+		{
+			flagIntent = intent.getIntExtra("CreateNoteBook", -1);
+			if (flagIntent == FLAG_CREATE_FOR_CHANGE) 
+			{
 				Log.d(TAG, "start for change notebook");
-			} else {
-				Log.d(TAG, "start fon new notebook");
+			} 
+			else if (flagIntent == FLAG_CREATE)
+			{
+				Log.d(TAG, "start for new notebook");
 			}
 		}
 	}
 
-	private void initViews() {
+	private void initViews() 
+	{
 		mCancleBtn = (TextView) findViewById(R.id.tv_cancel_btn);
 		mDoneBtn = (TextView) findViewById(R.id.tv_done_btn);
 		mInput = (EditText) findViewById(R.id.ed_input_notebookname);
@@ -89,7 +95,6 @@ public class NewNoteBookActivity extends Activity implements OnClickListener {
 				} else {
 					Intent newIntent = new Intent(this,
 							NoteBookListActivity.class);
-					// newIntent.setFlags(FLAG_CREATE);
 					newIntent.putExtra("NoteBook", mCreatedNoteBook);
 					startActivity(newIntent);
 				}

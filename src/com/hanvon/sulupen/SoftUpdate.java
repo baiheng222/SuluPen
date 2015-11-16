@@ -176,7 +176,7 @@ public class SoftUpdate extends Activity implements OnClickListener{
 	    	 public void onClick(DialogInterface dialog, int which) {
 		            LogUtil.i("下载apk,更新"); 
 		            new UpdateAppService(mContext,1).CreateInform(UpdateUrl);
-		            HanvonApplication.isUpdate = true;
+		       //     HanvonApplication.isUpdate = true;
 		       
 		        }
 	    });

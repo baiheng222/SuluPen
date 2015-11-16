@@ -1,5 +1,7 @@
 package com.hanvon.sulupen;
 
+import java.util.WeakHashMap;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -16,9 +18,16 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import cn.sharesdk.framework.Platform;
+import cn.sharesdk.framework.ShareSDK;
+import cn.sharesdk.tencent.qq.QQ;
+import cn.sharesdk.wechat.friends.Wechat;
+
 import com.hanvon.sulupen.application.HanvonApplication;
 import com.hanvon.sulupen.db.dao.NoteRecordDao;
 import com.hanvon.sulupen.login.LoginActivity;
+import com.hanvon.sulupen.utils.LogUtil;
+import com.tencent.tauth.Tencent;
 
 public class SettingActivity extends Activity implements OnClickListener
 {
@@ -31,7 +40,7 @@ public class SettingActivity extends Activity implements OnClickListener
     RelativeLayout mRlFeedBack;
     RelativeLayout mRlAboutUs;
     
-    TextView mTvLogout;
+  //  TextView mTvLogout;
     ImageView mTvBackBtn;
     
     
@@ -43,9 +52,9 @@ public class SettingActivity extends Activity implements OnClickListener
 
         setContentView(R.layout.activity_setting);
         
-        if (HanvonApplication.hvnName == ""){
-        	findViewById(R.id.tv_setting_logout).setVisibility(View.GONE);
-        }
+     //   if (HanvonApplication.hvnName == ""){
+      //  	findViewById(R.id.tv_setting_logout).setVisibility(View.GONE);
+      //  }
         
         initView();
     }
@@ -60,7 +69,7 @@ public class SettingActivity extends Activity implements OnClickListener
         mRlFeedBack = (RelativeLayout) findViewById(R.id.rl_setting_feedback);
         mRlAboutUs = (RelativeLayout) findViewById(R.id.rl_setting_about);
         
-        mTvLogout = (TextView) findViewById(R.id.tv_setting_logout);
+    //    mTvLogout = (TextView) findViewById(R.id.tv_setting_logout);
         mTvBackBtn = (ImageView) findViewById(R.id.tv_backbtn);
         
         mRlInputMethod.setOnClickListener(this);
@@ -70,7 +79,7 @@ public class SettingActivity extends Activity implements OnClickListener
         mRlFeedBack.setOnClickListener(this);
         mRlAboutUs.setOnClickListener(this);
         
-        mTvLogout.setOnClickListener(this);
+    //    mTvLogout.setOnClickListener(this);
         mTvBackBtn.setOnClickListener(this);
         
     }
@@ -125,17 +134,17 @@ public class SettingActivity extends Activity implements OnClickListener
                 dialog.show();     
             break;
                 
-            case R.id.tv_setting_logout:
-            	UserLoginOut();  
-            break;
+       //     case R.id.tv_setting_logout:
+        //    	UserLoginOut();  
+      //      break;
                 
             case R.id.rl_setting_upgrade:
-            	if (HanvonApplication.isUpdate){
-            		Toast.makeText(this, "正在下载升级文件，请稍后再试!", Toast.LENGTH_SHORT).show();
-            	}else{
+            //	if (HanvonApplication.isUpdate){
+            //		Toast.makeText(this, "正在下载升级文件，请稍后再试!", Toast.LENGTH_SHORT).show();
+            //	}else{
             	    SoftUpdate updateInfo = new SoftUpdate(this,1);
     	            updateInfo.checkVersion();
-            	}
+            //	}
             break;
             
             case R.id.tv_backbtn:
@@ -151,14 +160,27 @@ public class SettingActivity extends Activity implements OnClickListener
 		HanvonApplication.BitHeadImage = null;
 		SharedPreferences mSharedPreferences=getSharedPreferences("BitMapUrl", Activity.MODE_MULTI_PROCESS);
 		int flag =mSharedPreferences.getInt("flag", 0);
+	//	String plat = mSharedPreferences.getString("plat", "");
+	//	LogUtil.i("---quit:---"+plat);
+	//	HanvonApplication.plat = ;
 		HanvonApplication.userFlag = flag;
 		if (flag == 0){
 		}else if(flag == 1){
 		//	HanvonApplication.plat.removeAccount();
 		  //  LoginUtil loginUtil = new LoginUtil(SettingActivity.this,SettingActivity.this);
 		  //  loginUtil.QQLoginOut();
+			Platform QQplat = ShareSDK.getPlatform(this, QQ.NAME);
+			LogUtil.i("---quit:---"+QQplat);
+			if (QQplat.isValid ()) {
+				QQplat.removeAccount();
+			}
 	    }else if (flag == 2){
 	    //	HanvonApplication.plat.removeAccount();
+	    	Platform WXplat = ShareSDK.getPlatform(this, Wechat.NAME);
+			LogUtil.i("---quit:---"+WXplat.toString());
+			if (WXplat.isValid ()) {
+				WXplat.removeAccount();
+			}
 	    }
 		Editor mEditor=	mSharedPreferences.edit();
 		mEditor.putInt("status", 0);

@@ -85,11 +85,11 @@ public class HardUpdate {
 	    			 BluetoothService.getServiceInstance().getBluetoothChatService().sendBTData(2,BluetoothDataPackage.epenUpgradePackage("",
 	    			 params));*/
 			    	/*进行文件下载--->向蓝牙笔发起更新请求---->发送文件*/
-			    	new UpdateAppService(mContext,2).CreateInform(FileUrl);
+			    //	new UpdateAppService(mContext,2).CreateInform(FileUrl);
 			    	//new HardWareDownFille(mContext).DownFile(FileUrl);
-			    //	HanvonApplication.HardUpdateUrl = FileUrl;
-			    //	Intent disconnectIntent = new Intent(BluetoothIntenAction.ACTION_EPEN_HARD_WARE_UPDATE);
-				//	mContext.sendBroadcast(disconnectIntent);
+			    	HanvonApplication.HardUpdateUrl = FileUrl;
+			    	Intent disconnectIntent = new Intent(BluetoothIntenAction.ACTION_EPEN_HARD_WARE_UPDATE);
+					mContext.sendBroadcast(disconnectIntent);
 				} else if (json.get("code").equals("9120")){
 				} else if (json.get("code").equals("110")){
 				} else {

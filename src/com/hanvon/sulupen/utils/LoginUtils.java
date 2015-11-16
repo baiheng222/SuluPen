@@ -11,6 +11,8 @@ import android.content.SharedPreferences.Editor;
 import android.os.AsyncTask;
 import android.widget.Toast;
 
+import cn.sharesdk.framework.Platform;
+
 import com.hanvon.sulupen.MainActivity;
 import com.hanvon.sulupen.application.HanvonApplication;
 import com.hanvon.sulupen.login.LoginActivity;

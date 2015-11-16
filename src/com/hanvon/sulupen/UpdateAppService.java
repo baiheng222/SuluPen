@@ -5,39 +5,48 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.lang.annotation.Annotation;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.zip.Inflater;
 
 import com.hanvon.bluetooth.BluetoothDataPackage;
 import com.hanvon.bluetooth.BluetoothService;
 import com.hanvon.sulupen.application.HanvonApplication;
 import com.hanvon.sulupen.utils.LogUtil;
+import com.lidroid.xutils.view.annotation.event.OnClick;
 
+import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.app.Service;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Environment;
 import android.os.IBinder;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 /** 
  * App自动更新之通知栏下载 
  * @author 402-9 
  * 
  */  
 @SuppressWarnings("unused")
-public class UpdateAppService extends Service{  
-    private Context context;  
-    private Notification notification;  
-    private NotificationManager nManager;  
-    private PendingIntent pendingIntent; 
+public class UpdateAppService {  
+    private Context context;
     private String updateUrl;
     private int updateType;
- 
+    private ProgressDialog pd;
+    
+    private boolean isCancel = false;
     
     public UpdateAppService() {
 		super();
@@ -49,25 +58,35 @@ public class UpdateAppService extends Service{
 	//创建通知 
 	public void CreateInform(String Url) {  
 		updateUrl = Url;
-    	LogUtil.i("--------------------------------");
 
-		Intent intent = new Intent(context,MainActivity.class);  
-        pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);  
-        //创建一个通知  
-        notification = new Notification(R.drawable.ssdk_oks_ptr_ptr, "开始下载", System.currentTimeMillis());
-        if (updateType == 1){
-        	notification.setLatestEventInfo(context, "正在下载速记新版本", "点击查看详细内容", pendingIntent);
-        }else if (updateType == 2){
-        	notification.setLatestEventInfo(context, "正在下载速记硬件新版本", "点击查看详细内容", pendingIntent);
-        }
-        nManager = (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);  
-        nManager.notify(100, notification);
+		pd = new  ProgressDialog(context); 
+	    pd.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+	    if (updateType == 2){
+	    	pd.setMessage("正在下载硬件新版本");
+	    }else{
+	    	pd.setMessage("正在下载更新");
+	    }
+	    
+	    pd.setCancelable(false);
+	    if (updateType != 2){
+	        pd.setButton(ProgressDialog.BUTTON2, "取消", new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface arg0, int arg1) {
+				    // TODO Auto-generated method stub
+				    pd.dismiss();
+				    isCancel = true;
+				    LogUtil.i("===========================================");
+			    }
+		    });
+	    }
+	    pd.show();
+	    
         new Thread(new updateRunnable()).start();
         
     }  
     class updateRunnable implements Runnable{  
         int downnum = 0;//已下载的大小  
         int downcount= 0;//下载百分比  
+	    
         @Override  
         public void run() {  
             // TODO Auto-generated method stub  
@@ -87,6 +106,7 @@ public class UpdateAppService extends Service{
     	        HttpURLConnection conn =  (HttpURLConnection) url.openConnection();
     	        conn.setConnectTimeout(5000);
     	        //获取到文件的大小
+    	        pd.setMax(conn.getContentLength());
     	        int length = conn.getContentLength();
     	        InputStream is = conn.getInputStream();
     	        if (updateType == 1){
@@ -118,52 +138,49 @@ public class UpdateAppService extends Service{
     	            downnum += len;  
                     if((downcount == 0)||(int) (downnum*100/length)-1>downcount){   
                         downcount += 1;
-                        if (updateType == 1){
-                        	notification.setLatestEventInfo(context, "正在下载速记新版本", "已下载了"+(int)downnum*100/length+"%", null);
-                        }else if (updateType == 2){
-                        	notification.setLatestEventInfo(context, "正在下载速记硬件新版本", "已下载了"+(int)downnum*100/length+"%", null);
+                       // downloadDialog.setProgress(downnum);
+                        pd.setProgress(downnum);
+                        if (isCancel){
+                        	break;
                         }
-                        nManager.notify(100, notification);
                     }
     	        }
 
     	        fos.close();
     	        bis.close();
     	        is.close();
+    	        if (isCancel){
+    	        	isCancel = false;
+    	        	return null;
+    	        }
     	        if (downnum==length) {
     	        	if (updateType == 1){
     	        		Intent installIntent = new Intent(Intent.ACTION_VIEW);
     	        	    installIntent.setClassName(context,installApk(file));
-                  //    installIntent.setDataAndType(Uri.fromFile(file), "application/vnd.android.package-archive");
-                        pendingIntent = PendingIntent.getActivity(context, 0, installIntent, 0);
-               	        notification.setLatestEventInfo(context, "", "", pendingIntent);
     	        	}else if(updateType == 2){
     	        		/******************************/
     	        		 HashMap<String, String> params=new HashMap<String, String>();
     	    			 params.put("update_mode", ""+11);
     	    			 BluetoothService.getServiceInstance().getBluetoothChatService().sendBTData(2,BluetoothDataPackage.epenUpgradePackage("",
     	    			 params));
-    	    		//	 pendingIntent = PendingIntent.getActivity(context, 0, null, 0);
-                	 //    notification.setLatestEventInfo(context, "", "", pendingIntent);
+    	    		     pd.dismiss();
     	        	}
-                    nManager.notify(100, notification);
-        	        stopSelf();
+                 
                 }
     	        return file;
-    	 //   }else{
-    	  //  	return null;
-    	  //  }
+    	 
         }
+        
+    }
     	/**
     	 * 5.安装下载的Apk软件
     	 * @return 
     	  */
     	protected String installApk(File file) {
     		LogUtil.i("*****************");
-    		HanvonApplication.isUpdate = false;
     		HanvonApplication.path = Uri.fromFile(file).toString();
     	    LogUtil.i(HanvonApplication.path);
-    		nManager.cancel(100);
+    	//	nManager.cancel(100);
     	    Intent intent = new Intent(Intent.ACTION_VIEW);
     	    //执行动作
     	   // intent.setAction(Intent.ACTION_VIEW);
@@ -172,17 +189,17 @@ public class UpdateAppService extends Service{
     	    intent.setDataAndType(Uri.fromFile(file), "application/vnd.android.package-archive");
     	    context.startActivity(intent);
     	    android.os.Process.killProcess(android.os.Process.myPid());
+    	//    HanvonApplication.isUpdate = false;
     	    return null;
     	}
-     }
-	@Override
+    // }
+
 	public IBinder onBind(Intent arg0) {
 		// TODO Auto-generated method stub
 		return null;
 	}  
 	
 	public void onDestory(){
-		nManager.cancel(100);
-		super.onDestroy();
+	//	super.onDestroy();
 	}
  }

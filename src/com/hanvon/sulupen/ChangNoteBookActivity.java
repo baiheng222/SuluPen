@@ -104,7 +104,7 @@ public class ChangNoteBookActivity extends Activity implements OnClickListener
             
             case R.id.rl_new_notebook:
                 Intent newNoteIntent = new Intent(this, NewNoteBookActivity.class);
-                newNoteIntent.setFlags(FLAG_CREATE_FOR_CHANGE);
+                newNoteIntent.putExtra("CreateNoteBook", FLAG_CREATE_FOR_CHANGE);
                 startActivityForResult(newNoteIntent, REQUEST_CREATE_ROR_CHANGE);
             break;
         }

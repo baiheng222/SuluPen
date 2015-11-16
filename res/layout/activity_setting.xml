@@ -267,7 +267,7 @@
             android:textColor="#959595"
             android:textSize="13sp" />
     </RelativeLayout>
-
+<!--  
     <TextView
         android:id="@+id/tv_setting_logout"
         android:layout_width="match_parent"
@@ -280,5 +280,5 @@
         android:text="@string/setting_item_logout"
         android:textColor="#959595"
         android:textSize="13sp" />
-
+-->
 </RelativeLayout>

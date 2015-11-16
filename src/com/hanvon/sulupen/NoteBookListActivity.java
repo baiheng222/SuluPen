@@ -159,7 +159,7 @@ public class NoteBookListActivity extends Activity implements OnClickListener
 	 public void startSearchActivity(String searchStr)
 	 {
 		 Intent intent = new Intent(this, SearchActivity.class);
-		 intent.setFlags(FLAG_SEARCH_WITH_STRING);
+		 intent.putExtra("SearchType", FLAG_SEARCH_WITH_STRING);
 		 intent.putExtra("SearchString", searchStr);
 		 startActivity(intent);
 	 }
@@ -167,8 +167,8 @@ public class NoteBookListActivity extends Activity implements OnClickListener
 	 public void startNoteDetailActivity(int pos)
 	 {
 		 Intent intent = new Intent(this, ScanNoteActivity.class);
-		 intent.setFlags(FLAG_EDIT);
-		 //intent.putExtra("Note", mNoteRecordList.get(pos));
+         String flagStr = Integer.toString(FLAG_EDIT);
+         intent.putExtra("CreatFlag", flagStr);
 		 Log.d(TAG, "note is : " +  mNoteRecordList.get(pos).toString());
 		 intent.putExtra("NoteRecordId", mNoteRecordList.get(pos).getId());
 		 startActivity(intent);
@@ -193,7 +193,8 @@ public class NoteBookListActivity extends Activity implements OnClickListener
                      
             case R.id.iv_newnote:
             	Intent newNoteIntent = new Intent(this, ScanNoteActivity.class);
-                newNoteIntent.setFlags(FLAG_CREATE);
+                String flagStr = Integer.toString(FLAG_CREATE);
+                newNoteIntent.putExtra("CreatFlag", flagStr);
                 newNoteIntent.putExtra("NoteBook", mPassedNoteBook);
                 startActivity(newNoteIntent);
             break;     
