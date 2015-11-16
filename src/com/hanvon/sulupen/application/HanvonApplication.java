@@ -88,6 +88,7 @@ public class HanvonApplication extends FrontiaApplication {
 	public static boolean isDormant = false;
 	
 	public static boolean isUpdate = false;
+	public static String HardUpdateUrl = "";
 	@Override
 	public void onCreate() {
 

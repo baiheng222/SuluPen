@@ -42,6 +42,7 @@ import com.hanvon.bluetooth.BluetoothIntenAction;
 import com.hanvon.bluetooth.BluetoothMsgReceive;
 import com.hanvon.bluetooth.BluetoothSearch;
 import com.hanvon.bluetooth.BluetoothService;
+//import com.hanvon.bluetooth.HardWareDownFille;
 import com.hanvon.sulupen.adapter.NoteBookListAdapter;
 import com.hanvon.sulupen.application.HanvonApplication;
 import com.hanvon.sulupen.db.bean.NoteBookRecord;
@@ -49,6 +50,7 @@ import com.hanvon.sulupen.db.dao.NoteBookRecordDao;
 import com.hanvon.sulupen.login.LoginActivity;
 import com.hanvon.sulupen.login.ShowUserMessage;
 import com.hanvon.sulupen.utils.CircleImageView;
+import com.hanvon.sulupen.utils.ConnectionDetector;
 import com.hanvon.sulupen.utils.LogUtil;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.lidroid.xutils.BitmapUtils;
@@ -100,6 +102,9 @@ import com.lidroid.xutils.bitmap.BitmapCommonUtils;
 			case BluetoothMsgReceive.BT_DISCONNECT:
 				mEpen.setBackgroundResource(R.drawable.epen_manager_nor);
 				break;
+			case BluetoothMsgReceive.HARD_WARE_UPDATE:
+			//	new HardWareDownFille(MainActivity.this).DownFile(HanvonApplication.HardUpdateUrl);
+				break;
 				
 			}
 		};
@@ -118,11 +123,23 @@ import com.lidroid.xutils.bitmap.BitmapCommonUtils;
         
         initViews();
 
-        boolean autoUpdateflag = Settings.getKeyVersionUpdate(MainActivity.this);
-		if (autoUpdateflag){
-            SoftUpdate updateInfo = new SoftUpdate(this,0);
-	        updateInfo.checkVersion();
-		}
+        if (new ConnectionDetector(this).isConnectingTOInternet()) {
+            boolean autoUpdateflag = Settings.getKeyVersionUpdate(MainActivity.this);
+		    if (autoUpdateflag){
+                SoftUpdate updateInfo = new SoftUpdate(this,0);
+	            updateInfo.checkVersion();
+		    }
+        }
+		
+        if (BluetoothService.getServiceInstance() != null){
+		    if (!isConnected()){
+                LogUtil.i("--------Before Call BluetoothCheck（）-------1-------");
+		        BluetoothCheck(2);
+		    }
+        }else{
+        	LogUtil.i("--------Before Call BluetoothCheck（）-------3-------");
+        	BluetoothCheck(1);
+        }
     }
 
     @Override
@@ -132,6 +149,7 @@ import com.lidroid.xutils.bitmap.BitmapCommonUtils;
 		 IntentFilter mFilter = new IntentFilter(BluetoothIntenAction.ACTION_EPEN_BATTERY_CHANGE);
 			mFilter.addAction(BluetoothIntenAction.ACTION_EPEN_BT_CONNECTED);
 			mFilter.addAction(BluetoothIntenAction.ACTION_EPEN_BT_DISCONNECT);
+			mFilter.addAction(BluetoothIntenAction.ACTION_EPEN_HARD_WARE_UPDATE);
 			this.registerReceiver(btMsgReceiver, mFilter);
 			if (BluetoothService.getServiceInstance() != null){
 		    	if (BluetoothService.getServiceInstance().getBluetoothChatService()
@@ -140,9 +158,7 @@ import com.lidroid.xutils.bitmap.BitmapCommonUtils;
 			    } else {
 				    mEpen.setBackgroundResource(R.drawable.epen_manager_nor);
 			    }
-		//	if (!isConnected()){
-		//	   BluetoothCheck();
-		//	}
+		
 			}else{
 				mEpen.setBackgroundResource(R.drawable.epen_manager_nor);
 			}
@@ -170,7 +186,7 @@ import com.lidroid.xutils.bitmap.BitmapCommonUtils;
 			    HanvonApplication.isDormant = mSharedPreferences.getBoolean("isDormant", false);
 			}
 	}
-    @TargetApi(Build.VERSION_CODES.ECLAIR) @SuppressLint("NewApi") public void BluetoothCheck(){
+    @TargetApi(Build.VERSION_CODES.ECLAIR) @SuppressLint("NewApi") public void BluetoothCheck(int isflag){
 		BluetoothAdapter adapter = BluetoothAdapter.getDefaultAdapter();
 		Set<BluetoothDevice> devices = adapter.getBondedDevices();
 		boolean flag = false;
@@ -187,14 +203,16 @@ import com.lidroid.xutils.bitmap.BitmapCommonUtils;
 		if (flag){
 			String name = hanBluetooth.getName();
 			String deviceInfo = name + "\n" + hanBluetooth.getAddress();
-			
+
 			Intent intent = new Intent();
 			intent.putExtra("device", deviceInfo);
 			intent.setClass(MainActivity.this, BluetoothSearch.class);  
 			MainActivity.this.startActivity(intent);
 		}else{
-			Intent blueSearchIntent = new Intent(this, BluetoothSearch.class);
-    		startActivity(blueSearchIntent);
+			if (isflag == 0){
+			    Intent blueSearchIntent = new Intent(this, BluetoothSearch.class);
+    		    startActivity(blueSearchIntent);
+			}
 		}
 	}
     
@@ -434,7 +452,8 @@ import com.lidroid.xutils.bitmap.BitmapCommonUtils;
             	    Intent blueDetailIntent = new Intent(this, BluetoothDetail.class);
         	    	startActivity(blueDetailIntent);
             	}else{
-            		BluetoothCheck();
+            		LogUtil.i("--------Before Call BluetoothCheck（）---------2-----");
+            		BluetoothCheck(0);
             	//	Intent blueSearchIntent = new Intent(this, BluetoothSearch.class);
             	//	startActivity(blueSearchIntent);
             	}

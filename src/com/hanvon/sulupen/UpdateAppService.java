@@ -143,8 +143,8 @@ public class UpdateAppService extends Service{
     	    			 params.put("update_mode", ""+11);
     	    			 BluetoothService.getServiceInstance().getBluetoothChatService().sendBTData(2,BluetoothDataPackage.epenUpgradePackage("",
     	    			 params));
-    	    			 pendingIntent = PendingIntent.getActivity(context, 0, null, 0);
-                	     notification.setLatestEventInfo(context, "", "", pendingIntent);
+    	    		//	 pendingIntent = PendingIntent.getActivity(context, 0, null, 0);
+                	 //    notification.setLatestEventInfo(context, "", "", pendingIntent);
     	        	}
                     nManager.notify(100, notification);
         	        stopSelf();

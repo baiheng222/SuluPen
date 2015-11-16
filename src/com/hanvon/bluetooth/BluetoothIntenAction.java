@@ -37,6 +37,10 @@ public class BluetoothIntenAction {
 		 */
 		public static final String ACTION_EPEN_SLEEP_STATE_CHANGE = "action.epen.sleepstate.change";
 		/**
+		 * 笔端扫描方向广播动作
+		 */
+		public static final String ACTION_EPEN_HARD_WARE_UPDATE = "action.epen.hardware.change";
+		/**
 		 * 笔端是否发送图片数据的设置改变广播动作
 		 */
 		public static final String ACTION_EPEN_RECEIVEIMG_CHANGE = "action.epen.receiveimg.change";

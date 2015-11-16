@@ -16,6 +16,7 @@ import com.hanvon.sulupen.db.dao.NoteRecordDao;
 import com.hanvon.sulupen.helper.PreferHelper;
 import com.hanvon.sulupen.login.LoginActivity;
 import com.hanvon.sulupen.pinyin.PinyinIME;
+import com.hanvon.sulupen.utils.ConnectionDetector;
 import com.hanvon.sulupen.utils.CustomDialog;
 import com.hanvon.sulupen.utils.LogUtil;
 import com.hanvon.sulupen.utils.TimeUtil;
@@ -153,6 +154,9 @@ public class BluetoothService extends Service{
 						BluetoothIntenAction.ACTION_EPEN_BT_DISCONNECT);
 				sendBroadcast(disconnectIntent);
 				LogUtil.i("MESSAGE_STATE_NONE: " + msg.arg1);
+				if (d != null){
+					d.dismiss();
+				}
 				break;
 			}
 			break;
@@ -240,11 +244,15 @@ public class BluetoothService extends Service{
 
 							BluetoothSetting.setSeralNumber(serialNum);
 							/********************add by chenxzhuang*****************/
-							String device_version = jsonData.getString("device_version");
-							String version = device_version.substring(device_version.indexOf(".")+1, device_version.lastIndexOf("."));
-							LogUtil.i("----device_version:"+version);
-							HardUpdate hardUpdate = new HardUpdate(BluetoothService.this);
-							hardUpdate.checkVersionUpdate(version);
+							if (new ConnectionDetector(this).isConnectingTOInternet()) {
+							    String device_version = jsonData.getString("device_version");
+							    String version = device_version.substring(device_version.indexOf(".")+1, device_version.lastIndexOf("."));
+							    LogUtil.i("----device_version:"+version);
+							    HardUpdate hardUpdate = new HardUpdate(BluetoothService.this);
+							    hardUpdate.checkVersionUpdate(version);
+							}else{
+								Toast.makeText(this, "网络不通，暂时无法进行硬件版本检查!", Toast.LENGTH_SHORT).show();
+							}
 							/**********************add end*************************/
 							break;
 
