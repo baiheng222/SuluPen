@@ -1,6 +1,8 @@
 package com.hanvon.bluetooth;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.UUID;
 
 import com.hanvon.sulupen.MainActivity;
 import com.hanvon.sulupen.R;
@@ -10,6 +12,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothSocket;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -43,7 +46,7 @@ public class BluetoothSearch extends Activity implements OnClickListener{
 	private TextView tvMessage;
 	Button bnLeft, bnRight;
 	LinearLayout layoutRight;
-	
+	int count = 0;
 	private Handler mHandler = new Handler() {
 		public void handleMessage(android.os.Message msg) {
 			switch (msg.what) {
@@ -52,11 +55,17 @@ public class BluetoothSearch extends Activity implements OnClickListener{
 				BluetoothSearch.this.finish();
 				break;
 			case BluetoothMsgReceive.BT_DISCONNECT:
+				LogUtil.i("-----recv BluetoothMsgReceive.BT_DISCONNECT---------");
 				setProgressBarIndeterminateVisibility(false);
+				//if (noPairedDeviceList.size() == 0){
+				//	noPairedDeviceList.clear();
+				//	deviceCount = 0;
+				//}
 				setMessage(R.string.msg_fail);
 				bnLeft.setVisibility(View.VISIBLE);
 				layoutRight.setVisibility(View.VISIBLE);
 				bnRight.setText(R.string.bnSearchNewDevice);
+			//	bnRight.setText(R.string.bnTryAgain);
 				bnLeft.setText(R.string.button_cancel);
 				break;
 			}
@@ -116,6 +125,7 @@ public class BluetoothSearch extends Activity implements OnClickListener{
 			curBtAddress = BluetoothSetting.getBlueAddress();
 		}
 
+		LogUtil.i("----------curBtAddress:"+curBtAddress);
 		if (curBtAddress.equals("")) {
 			doDiscovery();
 		} else {
@@ -148,6 +158,7 @@ public class BluetoothSearch extends Activity implements OnClickListener{
 						    if(deviceCount == 1){
 						        noPairedDeviceList.add(deviceInfo);
 						    }
+						   // mBtAdapter.cancelDiscovery();
 					    }
 					}
 				}
@@ -160,6 +171,7 @@ public class BluetoothSearch extends Activity implements OnClickListener{
 				    if (deviceInfo != null){
 					    // 自动连接
 					 //   tryConnect();
+				    	LogUtil.i("------not find boolth------------");
 					    noPairedDeviceList.add(deviceInfo);
 				    }else{
 				    	setMessage(R.string.none_found);
@@ -283,6 +295,7 @@ public class BluetoothSearch extends Activity implements OnClickListener{
 
 			bnLeft.setVisibility(View.GONE);
 			layoutRight.setVisibility(View.GONE);
+			LogUtil.i("-----into search address:"+connectAddress);
 			BluetoothService.getServiceInstance().getBluetoothChatService()
 					.connect(mBtAdapter.getRemoteDevice(connectAddress));
 		}
@@ -318,6 +331,7 @@ public class BluetoothSearch extends Activity implements OnClickListener{
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.bnRight:
+			LogUtil.i("----click-bnRight-----devicecount-------"+deviceCount);
 			if (deviceCount == 0) {
 				doDiscovery();
 				return;
@@ -325,6 +339,7 @@ public class BluetoothSearch extends Activity implements OnClickListener{
 			tryConnect();
 			break;
 		case R.id.bnLeft:
+			LogUtil.i("----click-bnLeft------------");
 			if (mBtAdapter.isDiscovering()) {
 				mBtAdapter.cancelDiscovery();
 				this.finish();
@@ -363,7 +378,7 @@ public class BluetoothSearch extends Activity implements OnClickListener{
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
-		LogUtil.i("");
+		LogUtil.i("-------Search onDestroy-----------");
 		if (mBtAdapter != null) {
 			mBtAdapter.cancelDiscovery();
 		}

@@ -1744,7 +1744,7 @@ public class PinyinIME extends InputMethodService {
 			LogUtil.i("重置后："+editString.toString());
 		}
 	}
-    int recordMode=1;
+    int recordMode=3;
 	@Override
 	public void onStartInputView(EditorInfo editorInfo, boolean restarting) {
 		if (mEnvironment.needDebug()) {
@@ -1773,7 +1773,7 @@ public class PinyinIME extends InputMethodService {
 			LogUtil.d( "onFinishInputView.");
 		}
 		resetToIdleState(false);
-		BluetoothService.scanRecordMode=recordMode;
+		//BluetoothService.scanRecordMode=recordMode;
 		super.onFinishInputView(finishingInput);
 	}
 

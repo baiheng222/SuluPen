@@ -249,10 +249,19 @@ public class BluetoothService extends Service{
 								BluetoothSetting.setBlueScanDir(0);
 							}
 							/********************add by chenxzhuang*****************/
+							String device_version = jsonData.getString("device_version");
+						    String version = device_version.substring(device_version.indexOf(".")+1, device_version.lastIndexOf("."));
+						    LogUtil.i("----device_version:"+version);
+						    if (HanvonApplication.HardSid.contains("001")){
+						    	BluetoothSetting.setBlueVersion("v1."+version);
+						    }else{
+						    	BluetoothSetting.setBlueVersion("v2."+version);
+						    }
+						    
 							if (new ConnectionDetector(this).isConnectingTOInternet()) {
-							    String device_version = jsonData.getString("device_version");
-							    String version = device_version.substring(device_version.indexOf(".")+1, device_version.lastIndexOf("."));
-							    LogUtil.i("----device_version:"+version);
+							  //  String device_version = jsonData.getString("device_version");
+							 //   String version = device_version.substring(device_version.indexOf(".")+1, device_version.lastIndexOf("."));
+							  //  LogUtil.i("----device_version:"+version);
 							    HardUpdate hardUpdate = new HardUpdate(BluetoothService.this);
 							    hardUpdate.checkVersionUpdate(version);
 							}else{
@@ -329,6 +338,7 @@ public class BluetoothService extends Service{
 										.getIsSendScanImage()) {
 									if(imageStr.length() != 0)
 									{
+										LogUtil.i("----imageStr:--"+imageStr);
 										byte[] imagebyte = Base64.decode(imageStr,
 												Base64.DEFAULT);
 										

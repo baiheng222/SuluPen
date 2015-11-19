@@ -91,6 +91,7 @@
     <color name="skb_background_color">#dddddd</color>
 
     <!-- 添加图片用到的 -->
+    <color name="note_deep_gray">#535777</color>
     <color name="deep_gray">#394257</color>
     <color name="border_gray">#d9dfe5</color>
     <color name="bg_gray">#e1e1e1</color>

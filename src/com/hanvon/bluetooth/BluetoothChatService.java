@@ -70,7 +70,6 @@ public class BluetoothChatService {
 
 	private final BluetoothAdapter mAdapter;
 	private final Handler mHandler;
-	private AcceptThread mAcceptThread;
 	private ConnectThread mConnectThread;
 	private BTConnectedThread mConnectedThread;
 	private int mState;
@@ -113,11 +112,6 @@ public class BluetoothChatService {
 			mConnectedThread.cancel();
 			mConnectedThread = null;
 		}
-
-		if (mAcceptThread != null) {
-			mAcceptThread.cancel();
-			mAcceptThread = null;
-		}
 	}
 	/**
 	 * 
@@ -127,7 +121,6 @@ public class BluetoothChatService {
 	public synchronized void connect(BluetoothDevice device) {
 
 			LogUtil.i("开始连接设备: " + device);
-		// showProgressDialog();
 		if (mState == STATE_CONNECTING) {
 			if (mConnectThread != null) {
 				mConnectThread.cancel();
@@ -140,84 +133,10 @@ public class BluetoothChatService {
 			mConnectedThread = null;
 		}
 
+
 		mConnectThread = new ConnectThread(device);
 		mConnectThread.start();
 		setState(STATE_CONNECTING);
-	}
-
-	
-	private class AcceptThread extends Thread {
-		private final BluetoothServerSocket mmServerSocket;
-
-		@SuppressLint("NewApi") public AcceptThread() {
-			BluetoothServerSocket tmp = null;
-			int version = Build.VERSION.SDK_INT;
-			if (version >= 10) {
-				try {
-					tmp = mAdapter.listenUsingInsecureRfcommWithServiceRecord(NAME, MY_UUID);
-				} catch (IOException e) {
-					LogUtil.e("listenUsingRfcommWithServiceRecord() failed:" + e.toString());
-				}
-			} else {
-				try {
-					tmp = mAdapter.listenUsingRfcommWithServiceRecord(NAME,MY_UUID);
-				} catch (IOException e) {
-					LogUtil.e("listenUsingRfcommWithServiceRecord() failed:" + e.toString());
-				}
-			}
-
-			mmServerSocket = tmp;
-		}
-
-		public void run() {
-			LogUtil.d("begin mAcceptThread");
-			setName("AcceptThread");
-			BluetoothSocket socket = null;
-
-			while (mState != STATE_CONNECTED) {
-				try {
-					if (mmServerSocket != null)
-						socket = mmServerSocket.accept();
-				} catch (IOException e) {
-					LogUtil.e(e.toString());
-					break;
-				}
-				// 如果连接被接受
-				if (socket != null) {
-					synchronized (BluetoothChatService.this) {
-						switch (mState) {
-						case STATE_LISTEN:
-						case STATE_CONNECTING:
-							// 开始连接线程
-							connected(socket, socket.getRemoteDevice());
-							break;
-						case STATE_NONE:
-							break;
-						case STATE_CONNECTED:
-							// 没有准备好或已经连接
-							try {
-								socket.close();
-							} catch (IOException e) {
-								Log.e(TAG, "不能关闭这些连接");
-							}
-							break;
-						}
-					}
-				}
-			}
-
-			LogUtil.i("结束mAcceptThread");
-		}
-
-		public void cancel() {
-			LogUtil.i("cancel " + this);
-			try {
-				if (mmServerSocket != null)
-					mmServerSocket.close();
-			} catch (IOException e) {
-				LogUtil.e("cancel failed");
-			}
-		}
 	}
 	
 	public synchronized void connected(BluetoothSocket socket,
@@ -234,10 +153,7 @@ public class BluetoothChatService {
 			mConnectedThread.cancel();
 			mConnectedThread = null;
 		}
-		if (mAcceptThread != null) {
-			mAcceptThread.cancel();
-			mAcceptThread = null;
-		}
+
 		curDeviceName = device.getName();
 		curDeviceAddress = device.getAddress();
 		setState(STATE_CONNECTED);
@@ -275,13 +191,7 @@ public class BluetoothChatService {
 			mConnectThread.cancel();
 			mConnectThread = null;
 		}
-
-		if (mAcceptThread == null) {
-			mAcceptThread = new AcceptThread();
-			mAcceptThread.start();
-		}
-
-		setState(STATE_LISTEN);
+	
 	}
 	
 	private class ConnectThread extends Thread {
@@ -562,9 +472,9 @@ public class BluetoothChatService {
 			} catch (IOException e) {
 				LogUtil.i("error:" + e.toString() + "eMsg:" + e.getMessage());
 				connectionLost();
-				try {
+			    try{
 					BluetoothChatService.this.start();
-				} catch (Exception e2) {
+				   } catch (Exception e2) {
 				}
 			} finally {
 				System.gc();
@@ -683,11 +593,6 @@ public class BluetoothChatService {
 	}
 	
 	public synchronized void sendBTData(int dataType, String dataStr) {
-		// BTConnectedThread r;
-		// synchronized (this) {
-		// if (mState != STATE_CONNECTED) return;
-		// r = mConnectedThread;
-		// }
 		LogUtil.i("tong----------INTO sendBTData dataType:"+dataType+"    dataStr:"+dataStr);
 		mConnectedThread.sendData((byte) dataType, dataStr);
 	}

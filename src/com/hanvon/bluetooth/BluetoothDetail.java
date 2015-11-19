@@ -158,8 +158,8 @@ public class BluetoothDetail extends Activity implements OnClickListener{
 		}
 		TVelectricity.setText(""+BluetoothService.getServiceInstance().curBatteryPower+"%");
 		
-		String serialnum = BluetoothSetting.getSeralNumber();
-		TVsn.setText(serialnum);
+		String version = BluetoothSetting.getBlueVersion();
+		TVsn.setText(version);
 
 		String funcKeySetting = BluetoothSetting.getFuncKeyCode();
 		for (int i = 0; i < funcKeyArray.length; i++) {

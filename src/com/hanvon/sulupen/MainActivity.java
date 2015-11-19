@@ -456,8 +456,8 @@ import com.lidroid.xutils.bitmap.BitmapCommonUtils;
             	}else{
             		LogUtil.i("--------Before Call BluetoothCheck（）---------2-----");
             		BluetoothCheck(0);
-            		Intent blueSearchIntent = new Intent(this, BluetoothSearch.class);
-            		startActivity(blueSearchIntent);
+            		//Intent blueSearchIntent = new Intent(this, BluetoothSearch.class);
+            		//startActivity(blueSearchIntent);
             	}
             	break;
             case R.id.tv_leftbtn:

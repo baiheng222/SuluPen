@@ -124,7 +124,7 @@
     <string name="hw_status">状态：</string>
     <string name="hw_status_conn">已连接</string>
     <string name="hw_status_not_conn">未连接</string>
-    <string name="hw_sn">序列号:</string>
+    <string name="hw_sn">硬件版本:</string>
     <string name="hw_sn_number">0000-0000-0000-0000</string>
     <string name="hw_function">功能键设定</string>
     <string name="hw_recognition">识别核心设定</string>

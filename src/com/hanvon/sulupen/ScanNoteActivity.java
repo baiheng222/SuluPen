@@ -40,6 +40,7 @@ import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.WindowManager;
 import android.view.WindowManager.LayoutParams;
 import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
@@ -137,7 +138,7 @@ public class ScanNoteActivity extends Activity implements OnClickListener{
 	
 	private NoteBookRecord mNoteBookRecord = null;
 	
-	InputMethodManager imm;
+	
 	private Bitmap bitmapLaunch;
 	private String curAddress;
     
@@ -231,11 +232,35 @@ public class ScanNoteActivity extends Activity implements OnClickListener{
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (KeyEvent.KEYCODE_BACK == keyCode) {
 			LogUtil.i("===========================");
-			//saveNoteToDb();
+			//如果输入法存在，隐藏输入法
+			InputMethodManager immALL = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+			if(immALL != null)
+			{
+				boolean isOpen=immALL.isActive();
+				if(isOpen)
+				{
+					LogUtil.i("tong--------come_back isOpen is true");
+					//immALL.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, InputMethodManager.HIDE_NOT_ALWAYS);
+		           
+				}
+			}
+			saveNoteToDb();
 		}
 		if (KeyEvent.KEYCODE_HOME == keyCode)
 		{
-			//saveNoteToDb();
+			//如果输入法存在，隐藏输入法
+			InputMethodManager immALL = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+			if(immALL != null)
+			{
+				boolean isOpen=immALL.isActive();
+				if(isOpen)
+				{
+					LogUtil.i("tong--------come_back isOpen is true");
+					//immALL.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, InputMethodManager.HIDE_NOT_ALWAYS);
+
+				}
+			}
+			saveNoteToDb();
 		}
 		return super.onKeyDown(keyCode, event);
 	}
@@ -260,7 +285,7 @@ public class ScanNoteActivity extends Activity implements OnClickListener{
 	protected void onStop() {
 		// TODO Auto-generated method stub
 		LogUtil.i("tong---------onStop");
-		saveNoteToDb();
+		//saveNoteToDb();
 		super.onStop();
 	}
 
@@ -301,7 +326,7 @@ public class ScanNoteActivity extends Activity implements OnClickListener{
 		
 		mPhotoRecordDao = new NotePhotoRecordDao(this);
 		
-		//InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+	    
 		btMsgReceiver = new BluetoothMsgReceive(handler);
 		// 添加图片相关代码 
 		mGridView = (GridView) findViewById(R.id.gridview);
@@ -471,7 +496,7 @@ public class ScanNoteActivity extends Activity implements OnClickListener{
 		view.setFocusable(true);
 		view.setFocusableInTouchMode(true);
 		view.requestFocus();
-	//	imm.showSoftInput(view, 0);
+		//imm.showSoftInput(view, 0);
 	}
 	
 	/**
@@ -763,6 +788,7 @@ public class ScanNoteActivity extends Activity implements OnClickListener{
 	}
 	
 	public void UploadFilesToHvnCloud(final String title,final String content,final List<ImageItem> mDataList){
+	
 		//final String result = null;
 		new Thread() {
 			@Override
@@ -798,6 +824,23 @@ public class ScanNoteActivity extends Activity implements OnClickListener{
 	 */
 	public void appendText(String str) {
 		LogUtil.i("AppendText:611--"+str);
+		//如果输入法存在，那么隐藏输入法
+		//如果输入法存在，那么隐藏输入法
+		InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+		boolean isOpen=imm.isActive();
+		if(isOpen)
+		{
+			LogUtil.i("tong--------isOpen is true");
+			imm.hideSoftInputFromWindow(etScanContent.getWindowToken(), 0);
+			//imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, InputMethodManager.HIDE_NOT_ALWAYS);
+			
+		}
+		//InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+		//imm.hideSoftInputFromWindow(getCurrentFocus().getApplicationWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS); 
+		//InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+		//imm.hideSoftInputFromWindow(passwdEdit.getWindowToken(), 0);
+		//imm.hideSoftInputFromWindow(getCurrentFocus().getApplicationWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS); 
+		//imm.hideSoftInputFromWindow(etScanContent.getWindowToken(),0);
 		EditText curEditText = (EditText) getCurrentFocus();
 		
 		int index = curEditText.getSelectionStart();
@@ -900,7 +943,8 @@ public class ScanNoteActivity extends Activity implements OnClickListener{
 			    			if (!content1.equals("")){
 			    				bShareClick = true;
 			    				pd = ProgressDialog.show(ScanNoteActivity.this, "", "生成连接中，请等待...");
-			            	    UploadFilesToHvnCloud(title1,content1,mDataList);
+			            	    LogUtil.i("tong-------mDataList size:"+mDataList.size());
+			    				UploadFilesToHvnCloud(title1,content1,mDataList);
 			    			}
 		                  
 	            	}
@@ -908,7 +952,7 @@ public class ScanNoteActivity extends Activity implements OnClickListener{
 	            	 break;
 	            case R.id.ivInsertImage:
 					new PopupWindows(ScanNoteActivity.this, mGridView);    
-			       // imm.hideSoftInputFromWindow(etScanContent.getWindowToken(),0);
+			    //    imm.hideSoftInputFromWindow(etScanContent.getWindowToken(),0);
 					break;
 	            case R.id.ivScan:
 	    			LogUtil.i("tong------------home_go_home");
@@ -962,6 +1006,29 @@ public class ScanNoteActivity extends Activity implements OnClickListener{
 	            	break;
 	            	
 	    		case R.id.come_back:
+	    			//如果输入法存在，隐藏输入法
+	    			InputMethodManager immALL = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+	    			if(immALL != null)
+	    			{
+	    				
+	    				immALL.hideSoftInputFromWindow(etScanContent.getWindowToken(), 0);
+	    				
+//	    				boolean isOpen=immALL.isActive();
+//	    				if(isOpen)
+//	    				{
+//	    					LogUtil.i("tong--------come_back isOpen is true");
+//	    					immALL.hideSoftInputFromWindow(view.getWindowToken(), 0); 
+//	    					//immALL.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, InputMethodManager.HIDE_NOT_ALWAYS);
+//
+//	    				}
+	    				
+	    				
+	    			}
+	    			
+	    			//int flags = WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM;
+	    			//getWindow().addFlags(flags);
+
+
 	    			saveNoteToDb();
 	    			finish();
 	    			break;

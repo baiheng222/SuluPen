@@ -10,6 +10,7 @@ public class BluetoothSetting {
 	private static final String ANDPY_CONFS_FUNCTIONKEY_KEY = "FunctionKey";
 	private static final String ANDPY_CONFS_IDENTCORE_KEY = "IdentCore";
 	private static final String ANDPY_CONFS_BLUEADDRESS_KEY = "BlueAddress";
+	private static final String ANDPY_CONFS_BLUEVERSION_KEY = "BlueVersion";
 	
 	private static final String ANDPY_CONFS_SCANDIR_KEY = "ScanDir";
 	
@@ -21,6 +22,7 @@ public class BluetoothSetting {
     private static String    mIdentCoreCode;
     private static String    mSerialNum;
     private static String    mAddress;
+    private static String    mVersion;
     private static boolean isSendImage;
     private static int mScanDir;
 	private static BluetoothSetting mInstance = null;
@@ -65,6 +67,7 @@ public class BluetoothSetting {
 		editor.putString(ANDPY_CONFS_BLUEADDRESS_KEY, mAddress);
 		editor.putBoolean(ANDPY_CONFS_SENDIMAGE_KEY, isSendImage);
 		editor.putInt(ANDPY_CONFS_SCANDIR_KEY, mScanDir);
+		editor.putString(ANDPY_CONFS_BLUEVERSION_KEY, mVersion);
 		editor.commit();
 	}
 
@@ -90,6 +93,7 @@ public class BluetoothSetting {
 		mAddress = mSharedPref.getString(ANDPY_CONFS_BLUEADDRESS_KEY, "");
 	    isSendImage = mSharedPref.getBoolean(ANDPY_CONFS_SENDIMAGE_KEY, false);
 	    mScanDir = mSharedPref.getInt(ANDPY_CONFS_SCANDIR_KEY, 0);
+	    mVersion = mSharedPref.getString(ANDPY_CONFS_BLUEVERSION_KEY, "v1.001");
 	}
 
 	
@@ -182,5 +186,14 @@ public class BluetoothSetting {
 	
 	public static void setBlueScanDir(int scandir) {
 		mScanDir = scandir;
+	}
+	
+	public static String getBlueVersion(){
+		return mVersion;
+	}
+	
+	
+	public static void setBlueVersion(String version) {
+		mVersion = version;
 	}
 }

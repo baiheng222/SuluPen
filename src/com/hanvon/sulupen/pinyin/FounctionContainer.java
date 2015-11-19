@@ -25,6 +25,7 @@ import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 
 import com.baidu.voicerecognition.android.VoiceRecognitionConfig;
+import com.hanvon.bluetooth.BluetoothService;
 import com.hanvon.sulupen.R;
 import com.hanvon.sulupen.ScanNoteActivity;
 import com.hanvon.sulupen.adapter.LanguageListAdapter;
@@ -328,6 +329,7 @@ public class FounctionContainer extends FrameLayout implements OnClickListener,
 				curCheckedBnFlag = 1;
 				// ibnEPen.setBackgroundResource(R.drawable.edit_press);
 				showPopup(ibnEPen, initScanImageView());
+				BluetoothService.scanRecordMode=3;
 			} else {
 				curCheckedBnFlag = 0;
 			}
