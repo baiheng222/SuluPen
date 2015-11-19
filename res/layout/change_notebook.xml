@@ -11,7 +11,7 @@
     android:layout_alignParentTop="true" >
     
     	<TextView
-        android:id="@+id/tv_back_btn"
+        android:id="@+id/tv_cancel_change_notebook_btn"
     	android:layout_width="wrap_content"
     	android:layout_height="match_parent"
     	android:layout_alignParentLeft="true"
@@ -23,7 +23,7 @@
     	android:gravity="center_vertical"/>
     
         <TextView
-        android:id="@+id/tv_cancel_change_notebook_btn"
+        android:id="@+id/tv_done_change_notebook_btn"
     	android:layout_width="wrap_content"
     	android:layout_height="match_parent"
     	android:layout_alignParentRight="true"
@@ -32,14 +32,15 @@
     	android:text="@string/edit_done"
     	android:textSize="14sp"
     	android:textColor="#3b8989"
+    	android:visibility="gone"
     	android:gravity="center_vertical"/>
         
         <TextView
             android:id="@+id/tv_title"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_toLeftOf="@id/tv_cancel_change_notebook_btn"
-            android:layout_toRightOf="@id/tv_back_btn"
+			android:layout_centerHorizontal="true"
+			android:layout_centerVertical="true"
             android:gravity="center_vertical|center_horizontal"
             android:text="@string/change_notebook"
             android:textSize="16sp"

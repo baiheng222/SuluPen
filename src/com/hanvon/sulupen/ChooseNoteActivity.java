@@ -86,6 +86,7 @@ public class ChooseNoteActivity extends Activity implements OnClickListener
 		if (flagIntent == FLAG_SEARCH)
 		{
 			mMoveNotesBtn.setEnabled(false);
+			mMoveNotesBtn.setVisibility(View.INVISIBLE);
 		}
 	}
 	
