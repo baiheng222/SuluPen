@@ -173,16 +173,14 @@ public class BluetoothDetail extends Activity implements OnClickListener{
 		// 识别核心选择的显示
 		String identCoreSetting = BluetoothSetting.getIdentCoreCode();
 
-		if("ch-eng".equals(identCoreSetting)){
+		if("ch".equals(identCoreSetting)){
 			identCoreCheckedItem = 0;
-		}else if("ch".equals(identCoreSetting)){
-			identCoreCheckedItem = 1;
 		}else if("eng".equals(identCoreSetting)){
-			identCoreCheckedItem = 2;
+			identCoreCheckedItem = 1;
 		}else if("ja".equals(identCoreSetting)){
-			identCoreCheckedItem = 3;
+			identCoreCheckedItem = 2;
 		}else if("ko".equals(identCoreSetting)){
-			identCoreCheckedItem = 4;
+			identCoreCheckedItem = 3;
 		}
 
 		TVrecognition.setText(identCoreStrs[identCoreCheckedItem]);
@@ -278,7 +276,7 @@ public class BluetoothDetail extends Activity implements OnClickListener{
 		
 		BluetoothSetting.setFuncKeyCode("");
 		funcKeyCheckedItem = 0;
-		BluetoothSetting.setIdentCoreCode("ch-eng");
+		BluetoothSetting.setIdentCoreCode("ch");
 		identCoreCheckedItem = 0;
 		BluetoothSetting.setSleepTime(1);
 		checkedItem = 1;
@@ -430,18 +428,15 @@ public class BluetoothDetail extends Activity implements OnClickListener{
 									String identLang = "";
 									switch (identCoreChooseItem) {
 									case 0:
-										identLang = "ch-eng";
-										break;
-									case 1:
 										identLang = "ch";
 										break;
-									case 2:
+									case 1:
 										identLang = "eng";
 										break;
-									case 3:
+									case 2:
 										identLang = "ja";
 										break;
-									case 4:
+									case 3:
 										identLang = "ko";
 										break;
 									default:
