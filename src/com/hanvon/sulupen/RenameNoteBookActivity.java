@@ -165,7 +165,7 @@ public class RenameNoteBookActivity extends Activity implements OnClickListener
 				}
 				// 设置新光标所在的位置
 				Selection.setSelection(editable, selEndIndex);
-				Toast.makeText(RenameNoteBookActivity.this, "reach max", Toast.LENGTH_SHORT).show();
+				Toast.makeText(RenameNoteBookActivity.this, R.string.input_reach_max, Toast.LENGTH_SHORT).show();
 			}
 		}
 

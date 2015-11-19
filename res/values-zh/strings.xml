@@ -59,4 +59,6 @@
     <string name="setting_vibrate_title">按键震动</string>
     <string name="setting_prediction_title">联想输入</string>
     <string name="share_from_hanvon">来自汉王速记的分享</string>
+    <string name="setting_clear_buffer">是否清除缓存？</string>
+    <string name="input_reach_max">文字超长</string>
 </resources>

@@ -111,7 +111,7 @@ public class SettingActivity extends Activity implements OnClickListener
                 
             case R.id.rl_setting_clear:
                 AlertDialog.Builder dialog = new AlertDialog.Builder(this);
-                dialog.setMessage("Delete all records?");
+                dialog.setMessage(R.string.setting_clear_buffer);
                 dialog.setNegativeButton(R.string.button_cancel, new DialogInterface.OnClickListener() 
                 {
                     @Override

@@ -208,5 +208,9 @@
         <!-- epen setting summary -->
     <string name="setting_enabled">开启</string>
     <string name="setting_disabled">关闭</string>
+    
+    <string name="setting_clear_buffer">Clear buffers</string>
+    
+    <string name="input_reach_max">Reach max length</string>
 
 </resources>

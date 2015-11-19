@@ -210,7 +210,7 @@ public class NewNoteBookActivity extends Activity implements OnClickListener {
 				}
 				// 设置新光标所在的位置
 				Selection.setSelection(editable, selEndIndex);
-				Toast.makeText(NewNoteBookActivity.this, "reach max", Toast.LENGTH_SHORT).show();
+				Toast.makeText(NewNoteBookActivity.this, R.string.input_reach_max, Toast.LENGTH_SHORT).show();
 			}
 		}
 
