@@ -63,7 +63,6 @@
     	android:textSize="13sp"
     	android:textColor="#c8c8c8"
     	android:hint="@string/search_note"
-    	android:focusable="false"
     	android:drawableRight="@drawable/del_char"
     	android:drawableLeft="@drawable/search_note"
     	android:singleLine="true"

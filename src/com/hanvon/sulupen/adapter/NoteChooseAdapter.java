@@ -6,7 +6,6 @@ import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
@@ -14,6 +13,7 @@ import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import com.hanvon.sulupen.R;
+import com.hanvon.sulupen.db.bean.NoteBookRecord;
 import com.hanvon.sulupen.db.bean.NoteRecord;
 import com.hanvon.sulupen.db.dao.NoteRecordDao;
 
@@ -66,6 +66,7 @@ public class NoteChooseAdapter extends BaseAdapter
 		ViewHolder holder = null;
 		if (null == convertView)
 		{
+			Log.d(TAG, "new convertView !!1");
 			convertView = mInflater.inflate(R.layout.choose_notes_list_item, parent, false);
 			holder = new ViewHolder();
 			holder.mNoteContent = (TextView) convertView.findViewById(R.id.tv_choose_note_content);
@@ -98,11 +99,23 @@ public class NoteChooseAdapter extends BaseAdapter
 		else
 		{
 			holder = (ViewHolder) convertView.getTag();
+			Log.d(TAG, "get holder tag");
+			//holder.mNoteSelectIcon.setChecked(checked)
+			//int position =Integer.parseInt(view.getTag().toString());
 		}
 		
 		holder.mNoteContent.setText((mDatas.get(position).getNoteContent()));
 		holder.mNoteTitle.setText(mDatas.get(position).getNoteTitle());
 		holder.mNoteCreateTime.setText(mDatas.get(position).getCreateTime());
+		if (mCheckArray[position] == 1)
+		{
+			holder.mNoteSelectIcon.setChecked(true);
+		}
+		else
+		{
+			holder.mNoteSelectIcon.setChecked(false);
+		}
+		
 		
 		Log.d(TAG, "position is " + position + ": " + mDatas.get(position).toString());
 		
@@ -119,6 +132,33 @@ public class NoteChooseAdapter extends BaseAdapter
 				Log.d(TAG, "delete note, item is " + i);
 				noteDao.deleteRecord(mDatas.get(i));
 				
+			}
+		}
+		
+		for (int i = 0; i < mCheckArray.length;i ++)
+		{
+			if (mCheckArray[i] == 1)
+			{
+				mDatas.remove(i);
+			}
+		}
+		
+		initCheckList();
+		
+		notifyDataSetChanged();
+	}
+	
+	public void batchReNameNoteBook(NoteBookRecord notebook)
+	{
+		NoteRecordDao noteDao = new NoteRecordDao(mContext);
+		for (int i = 0; i < mCheckArray.length;i ++)
+		{
+			if (mCheckArray[i] == 1)
+			{
+				Log.d(TAG, "change notebook, item is " + i);
+				NoteRecord note = mDatas.get(i);
+				note.setNoteBook(notebook);
+				noteDao.updataRecord(note);
 			}
 		}
 		

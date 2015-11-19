@@ -101,7 +101,7 @@ public class HanvonApplication extends FrontiaApplication {
 		mLocationClient.start();
 //		netState = NetWorkHelper.getNetState(getApplicationContext());
 //		Frontia.init(this.getApplicationContext(), Configs.APIKEY);
-		BluetoothService.startService(this);
+		//BluetoothService.startService(this);
 		PreferHelper.init(this.getApplicationContext());
 				
 //		/**

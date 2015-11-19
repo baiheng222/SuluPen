@@ -5,6 +5,7 @@ import java.util.List;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -14,9 +15,11 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.hanvon.sulupen.adapter.NoteChooseAdapter;
+import com.hanvon.sulupen.datas.ImageItem;
 import com.hanvon.sulupen.db.bean.NoteBookRecord;
 import com.hanvon.sulupen.db.bean.NoteRecord;
 import com.hanvon.sulupen.db.dao.NoteRecordDao;
+import com.hanvon.sulupen.utils.CustomConstants;
 
 public class ChooseNoteActivity extends Activity implements OnClickListener
 {
@@ -44,6 +47,7 @@ public class ChooseNoteActivity extends Activity implements OnClickListener
     private final static int UPLLOAD_FILE_CLOUD_SUCCESS = 5;
     private final static int UPLLOAD_FILE_CLOUD_FAIL = 6;
     private final static int FLAG_SEARCH = 7;
+    private final static int RESULT_CHAGNE_NOTEBOOK_BATCH = 8;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -78,6 +82,11 @@ public class ChooseNoteActivity extends Activity implements OnClickListener
 		mShareBtn.setOnClickListener(this);
 		mMoveNotesBtn.setOnClickListener(this);
 		mDeleteNoteBtn.setOnClickListener(this);
+		
+		if (flagIntent == FLAG_SEARCH)
+		{
+			mMoveNotesBtn.setEnabled(false);
+		}
 	}
 	
 	private void initData()
@@ -141,7 +150,9 @@ public class ChooseNoteActivity extends Activity implements OnClickListener
 			break;
 			
 			case R.id.iv_move_note:
-				
+			    Intent changeIntent = new Intent(this, ChangNoteBookActivity.class);
+			    changeIntent.putExtra("NoteBook", mPassedNoteBook);
+			    startActivityForResult(changeIntent, RESULT_CHAGNE_NOTEBOOK_BATCH);
 			break;
 			
 			case R.id.iv_delete_note:
@@ -156,6 +167,36 @@ public class ChooseNoteActivity extends Activity implements OnClickListener
 		{
 			mNotesAdapter.delSelectedNotes();
 		}
+	}
+	
+	private void batchChangeNoteBook(NoteBookRecord notebook)
+	{
+		if (mNotesAdapter != null)
+		{
+			mNotesAdapter.batchReNameNoteBook(notebook);
+		}
+	}
+	
+	protected void onActivityResult(int requestCode, int resultCode, Intent data)
+	{
+		switch (requestCode)
+		{
+		    case  RESULT_CHAGNE_NOTEBOOK_BATCH:
+		        if (RESULT_OK == resultCode)
+		        {
+		            //Log.d(TAG, "get change note book result");
+		            NoteBookRecord notebook = (NoteBookRecord) data.getSerializableExtra("NewNoteBook");
+		            Log.d(TAG, "get change note book result, notebook is " + notebook.toString());
+		            batchChangeNoteBook(notebook);
+		        }
+		        else
+		        {
+		            Log.d(TAG, "receive reslut code is " + resultCode);
+		        }
+		    break;
+			
+		}
+		
 	}
 	
 }

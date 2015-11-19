@@ -99,6 +99,7 @@ public class ChangNoteBookActivity extends Activity implements OnClickListener
         switch (view.getId())
         {
             case R.id.tv_cancel_change_notebook_btn:
+            	Log.d(TAG, "!!!!! cancel pressed");
                 finish();
             break;
             
