@@ -355,6 +355,7 @@ public class BluetoothService extends Service{
 							}
 							// 输入法模式
 							else if(scanRecordMode == 3){
+								ScanNoteActivity.scanNoteAct.setInputFlag(1);
 								PinyinIME.pinyinIME.mHandler
 										.obtainMessage(
 												BluetoothChatService.BLUETOOTH_MESSAGE_READ,

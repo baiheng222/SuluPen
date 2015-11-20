@@ -212,5 +212,7 @@
     <string name="setting_clear_buffer">Clear buffers</string>
     
     <string name="input_reach_max">Reach max length</string>
+    <string name="same_notebook_name">The notebook is exist</string>
+    <string name="notebook_name_null">The notebook name is empty</string>
 
 </resources>

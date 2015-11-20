@@ -72,19 +72,28 @@ public class RenameNoteBookActivity extends Activity implements OnClickListener
 		}
 	}
 	
-	private void saveNewNoteBookName()
+	private int saveNewNoteBookName()
 	{
 		String newName = mEtInputNewName.getText().toString();
+
+		if (newName.length() < 1)
+		{
+			Toast.makeText(this, R.string.notebook_name_null, Toast.LENGTH_SHORT).show();
+			return -1;
+		}
+
 		if (newName.equals(mNoteBookNeedToReName.getNoteBookName()))
 		{
-			Toast.makeText(this, "same name", Toast.LENGTH_SHORT);
-			return;
+			Toast.makeText(this, R.string.same_notebook_name, Toast.LENGTH_SHORT).show();
+			return -1;
 		}
 		
 		mNoteBookNeedToReName.setNoteBookName(newName);
 		
 		NoteBookRecordDao mDao = new NoteBookRecordDao(this);
 		mDao.updataRecord(mNoteBookNeedToReName);
+
+		return 0;
 		
 	}
 	
@@ -104,8 +113,10 @@ public class RenameNoteBookActivity extends Activity implements OnClickListener
 			break;
 			
 			case R.id.tv_done_notebook_rename:
-				saveNewNoteBookName();
-				finish();
+				if (0 ==saveNewNoteBookName())
+				{
+					finish();
+				}
 			break;
 			
 			

@@ -132,7 +132,7 @@ import com.lidroid.xutils.bitmap.BitmapCommonUtils;
 	            updateInfo.checkVersion();
 		    }
         }
-		/*
+		
         if (BluetoothService.getServiceInstance() != null){
 		    if (!isConnected()){
                 LogUtil.i("--------Before Call BluetoothCheck（）-------1-------");
@@ -142,7 +142,6 @@ import com.lidroid.xutils.bitmap.BitmapCommonUtils;
         	LogUtil.i("--------Before Call BluetoothCheck（）-------3-------");
         	BluetoothCheck(1);
         }
-        */
     }
 
     @Override

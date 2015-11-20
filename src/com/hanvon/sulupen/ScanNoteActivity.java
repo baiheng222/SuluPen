@@ -157,6 +157,9 @@ public class ScanNoteActivity extends Activity implements OnClickListener{
 
 	private ProgressDialog pd;
 	private boolean flag;
+	
+	private int mInputFlag = 0;
+	
 	private Handler handler = new Handler() {
 		@SuppressLint("ShowToast")
 		@Override
@@ -223,6 +226,11 @@ public class ScanNoteActivity extends Activity implements OnClickListener{
 		}
 	};
 	
+	public  void setInputFlag(int flag)
+	{
+		mInputFlag = flag;
+	}
+	
 	public  GridView getGridViewFromNote()
 	{
 		return mGridView;
@@ -231,7 +239,7 @@ public class ScanNoteActivity extends Activity implements OnClickListener{
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (KeyEvent.KEYCODE_BACK == keyCode) {
-			LogUtil.i("===========================");
+			LogUtil.i("tong================onKeyDown==========");
 			//如果输入法存在，隐藏输入法
 			InputMethodManager immALL = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
 			if(immALL != null)
@@ -266,6 +274,7 @@ public class ScanNoteActivity extends Activity implements OnClickListener{
 	}
 	
 	protected void onCreate(Bundle savedInstanceState) {
+		LogUtil.i("tong-----scannote onCreate");
 		super.onCreate(savedInstanceState);
 		scanNoteAct=this;
 		setContentView(R.layout.activity_note_detail);
@@ -284,7 +293,7 @@ public class ScanNoteActivity extends Activity implements OnClickListener{
 	@Override
 	protected void onStop() {
 		// TODO Auto-generated method stub
-		LogUtil.i("tong---------onStop");
+		LogUtil.i("tong-----scannote onStop");
 		//saveNoteToDb();
 		super.onStop();
 	}
@@ -713,6 +722,7 @@ public class ScanNoteActivity extends Activity implements OnClickListener{
 				note.setCreateTime((HanvonApplication.noteCreateTime!=null&&HanvonApplication.noteCreateTime.length()>0) ? HanvonApplication.noteCreateTime : TimeUtil.getcurTime(TimeUtil.FORMAT_FULL));
 				note.setWeather(((HanvonApplication) getApplication()).getWeather());
 				
+				note.setInputType(mInputFlag);
 				note.setAddrDetail(((HanvonApplication) getApplication()).getAddrDetail());
 				note.setNoteBook(noteBook);
 				mScanRecordDao.add(note);
@@ -751,6 +761,7 @@ public class ScanNoteActivity extends Activity implements OnClickListener{
 			}
 			if (!content.equals("")) {
 				mScanRecord.setNoteContent(content);
+				mScanRecord.setInputType(mInputFlag);
 				//for test
 				String curNoteBookName =tvTopic.getText().toString();
 				mScanRecord.setNoteBookName(curNoteBookName);
@@ -824,6 +835,7 @@ public class ScanNoteActivity extends Activity implements OnClickListener{
 	 */
 	public void appendText(String str) {
 		LogUtil.i("AppendText:611--"+str);
+		mInputFlag =1;
 		//如果输入法存在，那么隐藏输入法
 		//如果输入法存在，那么隐藏输入法
 		InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -1222,6 +1234,7 @@ public class ScanNoteActivity extends Activity implements OnClickListener{
 
 	@Override
 	protected void onResume() {
+		LogUtil.i("tong-----scannote onPause");
 		super.onResume();
 		acquireWakeLock();
 		//@是否传入图片
@@ -1236,6 +1249,7 @@ public class ScanNoteActivity extends Activity implements OnClickListener{
 	
 	@Override
 	protected void onPause() {
+		LogUtil.i("tong-----scannote onPause");
 		super.onPause();
 		this.unregisterReceiver(btMsgReceiver);
 		updateCheckMode();
@@ -1395,10 +1409,11 @@ public class ScanNoteActivity extends Activity implements OnClickListener{
 	
 	@Override
 	protected void onDestroy() {
+		LogUtil.i("tong-----scannote onDestroy");
 		super.onDestroy();
 		scanNoteAct=null;
 		changeRecordMode(1);
-	
+		mInputFlag = 0;
 		// 保存笔记操作
 		releaseWakeLock();
 	

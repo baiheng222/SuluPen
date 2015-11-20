@@ -61,4 +61,6 @@
     <string name="share_from_hanvon">来自汉王速记的分享</string>
     <string name="setting_clear_buffer">是否清除缓存？</string>
     <string name="input_reach_max">文字超长</string>
+    <string name="same_notebook_name">笔记本已经存在</string>
+    <string name="notebook_name_null">笔记本名称为空</string>
 </resources>

@@ -485,6 +485,7 @@ public class BluetoothDetail extends Activity implements OnClickListener{
 	 * 断开连接
 	 */
 	private void stopConnect() {
+		LogUtil.i("tong=========stopConnect");
 		BluetoothService.getServiceInstance().getBluetoothChatService().stop();
 		Intent Intent = new Intent(this, MainActivity.class);
     	startActivity(Intent);

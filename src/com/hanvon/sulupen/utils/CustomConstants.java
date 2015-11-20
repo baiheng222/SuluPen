@@ -1,11 +1,9 @@
-﻿package com.hanvon.sulupen.utils;
+package com.hanvon.sulupen.utils;
 
 public class CustomConstants
 {
-	public static final String APPLICATION_NAME = "epenAssistantApp";
-	//单次最多发送图片数
+	public static final String APPLICATION_NAME = "AssistantApp";
 	public static final int MAX_IMAGE_SIZE = 9;
-	//首选项:临时图片
 	public static final String PREF_TEMP_IMAGES = "pref_temp_images";
 
 }
