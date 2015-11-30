@@ -4,7 +4,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-/**
+/*
  * @desc 时间处理工具类
  * @author  PengWenCai
  * @time 2015-6-25 下午12:08:21
@@ -39,7 +39,7 @@ public class TimeUtil {
 		return result;
 	}
 
-	/**
+	/*
 	 * 获取当前时间 小时:分;秒 HH:mm:ss
 	 * 
 	 * @return
@@ -51,7 +51,7 @@ public class TimeUtil {
 		return dateString;
 	}
 	
-	/**
+	/*
 	 * 获取当前时间 小时:分;秒 HH:mm:ss
 	 * 
 	 * @return
@@ -63,7 +63,7 @@ public class TimeUtil {
 		return dateString;
 	}
 
-	/**
+	/*
 	 * 获取当前日期 年-月-日 yyyy-MM-dd
 	 * 
 	 * @return
@@ -75,7 +75,7 @@ public class TimeUtil {
 		return dateString;
 	}
 
-	/**
+	/*
 	 * 获取当前日期 年-月-日 yyyy-MM-dd h：
 	 * 
 	 * @return
@@ -87,7 +87,7 @@ public class TimeUtil {
 		return dateString;
 	}
 
-	/**
+	/*
 	 * 使用给定的formatter格式化时间
 	 * 
 	 * @param aSeconds
@@ -102,7 +102,7 @@ public class TimeUtil {
 		return formatDate;
 	}
 
-	/**
+	/*
 	 * 使用给定的formatter格式化时间
 	 * 
 	 * @param aSeconds
@@ -120,7 +120,7 @@ public class TimeUtil {
 		return result;
 	}
 
-	/**
+	/*
 	 * 获取年数字
 	 * 
 	 * @param aSeconds
@@ -135,7 +135,7 @@ public class TimeUtil {
 		return year;
 	}
 
-	/**
+	/*
 	 * 获取月数字
 	 * 
 	 * @param aSeconds
@@ -150,7 +150,7 @@ public class TimeUtil {
 		return month;
 	}
 
-	/**
+	/*
 	 * 获取日数字
 	 * 
 	 * @param aSeconds
@@ -163,7 +163,7 @@ public class TimeUtil {
 		return date.getDate();
 	}
 
-	/**
+	/*
 	 * 获取小时数字
 	 * 
 	 * @param aSeconds
@@ -176,7 +176,7 @@ public class TimeUtil {
 		return date.getHours();
 	}
 
-	/**
+	/*
 	 * 获取分钟数字
 	 * 
 	 * @param aSeconds
@@ -189,7 +189,7 @@ public class TimeUtil {
 		return date.getMinutes();
 	}
 
-	/**
+	/*
 	 * 获取秒数字
 	 * 
 	 * @param aSeconds
@@ -202,7 +202,7 @@ public class TimeUtil {
 		return date.getSeconds();
 	}
 
-	/**
+	/*
 	 * 格式化时间
 	 * 
 	 * @param aFormat
@@ -217,7 +217,7 @@ public class TimeUtil {
 		return sdf.format(date);
 	}
 
-	/**
+	/*
 	 * 获取当前epoch时间
 	 * 
 	 * @return
@@ -227,7 +227,7 @@ public class TimeUtil {
 		return current.getTime();
 	}
 
-	/**
+	/*
 	 * 获取当前epoch时间
 	 * 
 	 * @return
@@ -254,7 +254,7 @@ public class TimeUtil {
 		}
 	}
 
-	/**
+	/*
 	 * 检验时间是否过期。 需要 把设置时间提前两分钟 来做此判断。
 	 * 
 	 * @param 被设置的时间
@@ -295,4 +295,18 @@ public class TimeUtil {
 		return d.getTime();
 	}
 
+	public static Date getDate(String timestr)
+	{
+		SimpleDateFormat formater = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		Date date = null;
+		try
+		{
+			date = formater.parse(timestr);
+		}
+		catch (ParseException e)
+		{
+			e.printStackTrace();
+		}
+		return date;
+	}
 }

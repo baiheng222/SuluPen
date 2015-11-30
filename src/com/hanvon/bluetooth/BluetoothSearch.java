@@ -1,11 +1,15 @@
 package com.hanvon.bluetooth;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Set;
 import java.util.UUID;
 
 import com.hanvon.sulupen.MainActivity;
 import com.hanvon.sulupen.R;
+import com.hanvon.sulupen.application.HanvonApplication;
 import com.hanvon.sulupen.utils.LogUtil;
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -18,6 +22,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.style.BackgroundColorSpan;
@@ -47,6 +52,7 @@ public class BluetoothSearch extends Activity implements OnClickListener{
 	Button bnLeft, bnRight;
 	LinearLayout layoutRight;
 	int count = 0;
+	private boolean isSaveAddress = false;
 	private Handler mHandler = new Handler() {
 		public void handleMessage(android.os.Message msg) {
 			switch (msg.what) {
@@ -57,10 +63,29 @@ public class BluetoothSearch extends Activity implements OnClickListener{
 			case BluetoothMsgReceive.BT_DISCONNECT:
 				LogUtil.i("-----recv BluetoothMsgReceive.BT_DISCONNECT---------");
 				setProgressBarIndeterminateVisibility(false);
-				//if (noPairedDeviceList.size() == 0){
-				//	noPairedDeviceList.clear();
-				//	deviceCount = 0;
-				//}
+				if (noPairedDeviceList.size() == 0){
+					noPairedDeviceList.clear();
+					deviceCount = 0;
+				}
+
+				if (!isSaveAddress){
+					try {
+						CheckBluetoothUnPair();
+					} catch (NoSuchMethodException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (IllegalAccessException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (IllegalArgumentException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (InvocationTargetException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					isSaveAddress = false;
+				}
 				setMessage(R.string.msg_fail);
 				bnLeft.setVisibility(View.VISIBLE);
 				layoutRight.setVisibility(View.VISIBLE);
@@ -72,6 +97,37 @@ public class BluetoothSearch extends Activity implements OnClickListener{
 		};
 	};
 
+	public void CheckBluetoothUnPair() throws NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
+		BluetoothAdapter adapter = BluetoothAdapter.getDefaultAdapter();
+		Set<BluetoothDevice> devices = adapter.getBondedDevices();
+		for(int i=0; i<devices.size(); i++)    
+		{
+		    BluetoothDevice device = (BluetoothDevice) devices.iterator().next();    
+		    LogUtil.i("===============devicename:==="+device.getName());
+		    if (device.getName().indexOf("hanvon-scanpen") != -1){
+		    	 Method m = device.getClass().getMethod("removeBond", (Class[]) null);
+				 m.invoke(device, (Object[]) null);
+				 break;
+		    }
+		}
+		deviceInfo = null;
+	}
+	
+	private void CheckBluetoothPair(){
+		BluetoothAdapter adapter = BluetoothAdapter.getDefaultAdapter();
+		Set<BluetoothDevice> devices = adapter.getBondedDevices();
+		for(int i=0; i<devices.size(); i++)  
+		{
+		    BluetoothDevice device = (BluetoothDevice) devices.iterator().next();    
+		    LogUtil.i("===============devicename:==="+device.getName());
+		    if (device.getName().indexOf("hanvon-scanpen") != -1){
+		    	String deviceAddress = device.getName() + "\n" + device.getAddress();
+		    	noPairedDeviceList.add(deviceAddress);
+		    	isSaveAddress = false;
+		    	break;
+		    }
+		}
+	}
 	@SuppressLint({ "NewApi", "ResourceAsColor" }) @Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -123,6 +179,12 @@ public class BluetoothSearch extends Activity implements OnClickListener{
 		this.registerReceiver(mReceiver, filter);
 		if (curBtAddress.equals("")) {
 			curBtAddress = BluetoothSetting.getBlueAddress();
+			SharedPreferences mSharedPreferences=getSharedPreferences("Blue", Activity.MODE_MULTI_PROCESS);
+			if (mSharedPreferences != null){
+				curBtAddress = mSharedPreferences.getString("address", "");
+				LogUtil.i("---------------isSaveAddress--true------");
+				isSaveAddress = true;
+			}
 		}
 
 		LogUtil.i("----------curBtAddress:"+curBtAddress);
@@ -168,18 +230,26 @@ public class BluetoothSearch extends Activity implements OnClickListener{
 				setProgressBarIndeterminateVisibility(false);
 		//		setTitle("搜索完成");
 				if (noPairedDeviceList.size() == 0){
-				    if (deviceInfo != null){
+				 //   if (deviceInfo != null){
 					    // 自动连接
 					 //   tryConnect();
 				    	LogUtil.i("------not find boolth------------");
-					    noPairedDeviceList.add(deviceInfo);
-				    }else{
-				    	setMessage(R.string.none_found);
-						bnLeft.setVisibility(View.VISIBLE);
-						layoutRight.setVisibility(View.VISIBLE);
-						bnLeft.setText(R.string.button_cancel);
-						bnRight.setText(R.string.bnTryAgain);
-				    }
+				    	CheckBluetoothPair();
+					 //   noPairedDeviceList.add(deviceInfo);
+				    	if (noPairedDeviceList.size() == 0){
+				    		setMessage(R.string.none_found);
+							bnLeft.setVisibility(View.VISIBLE);
+							layoutRight.setVisibility(View.VISIBLE);
+							bnLeft.setText(R.string.button_cancel);
+							bnRight.setText(R.string.bnTryAgain);
+				    	}
+				  //  }else{
+				  //  	setMessage(R.string.none_found);
+				//		bnLeft.setVisibility(View.VISIBLE);
+				//		layoutRight.setVisibility(View.VISIBLE);
+				//		bnLeft.setText(R.string.button_cancel);
+				//		bnRight.setText(R.string.bnTryAgain);
+				//    }
 				}
 				
 				if (noPairedDeviceList.size() == 1) {

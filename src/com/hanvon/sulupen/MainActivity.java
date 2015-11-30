@@ -4,6 +4,7 @@ package com.hanvon.sulupen;
 
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
@@ -52,6 +53,7 @@ import com.hanvon.sulupen.login.ShowUserMessage;
 import com.hanvon.sulupen.utils.CircleImageView;
 import com.hanvon.sulupen.utils.ConnectionDetector;
 import com.hanvon.sulupen.utils.LogUtil;
+import com.hanvon.sulupen.utils.MD5Util;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.lidroid.xutils.BitmapUtils;
 import com.lidroid.xutils.bitmap.BitmapCommonUtils;
@@ -440,8 +442,8 @@ import com.lidroid.xutils.bitmap.BitmapCommonUtils;
             
             case R.id.iv_newnote:
             	NoteBookRecord defaultNoteBook = new NoteBookRecord();
-            	defaultNoteBook.setNoteBookId(0);
             	defaultNoteBook.setNoteBookName("笔记本");
+				defaultNoteBook.setNoteBookId(MD5Util.md5("笔记本"));
                 Intent newNoteIntent = new Intent(this, ScanNoteActivity.class);
                 String flagStr = Integer.toString(FLAG_CREATE_NOTE_WITH_DEFAULT_NOTEBOOK);
                 newNoteIntent.putExtra("CreatFlag", flagStr);
@@ -482,7 +484,9 @@ import com.lidroid.xutils.bitmap.BitmapCommonUtils;
             break;
             
             case R.id.rl_count:
-            	Toast.makeText(this, "此版本暂不支持该功能！", Toast.LENGTH_SHORT).show();
+            	//Toast.makeText(this, "此版本暂不支持该功能！", Toast.LENGTH_SHORT).show();
+            	Intent statistics = new Intent(this, StatisticsActivity.class);
+            	startActivity(statistics);
             break;
             
             case R.id.rl_cloud:
@@ -567,6 +571,7 @@ import com.lidroid.xutils.bitmap.BitmapCommonUtils;
     @Override
 	protected void onDestroy() {
 		unregisterReceiver(btMsgReceiver);
+		LogUtil.i("-------onDestroy in Main Function--------------");
 		super.onDestroy();
 	}
 

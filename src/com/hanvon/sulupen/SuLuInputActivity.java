@@ -23,6 +23,7 @@ import android.content.IntentFilter;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Bundle;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.view.View;
 import android.view.View.OnLongClickListener;
 import android.view.Window;
@@ -65,6 +66,7 @@ public class SuLuInputActivity extends Activity implements OnClickListener, OnLo
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_inputmethod_setting);
+		Settings.getInstance(PreferenceManager.getDefaultSharedPreferences(getApplicationContext()));
 		//btMsgReceiver=new BluetoothMsgReceive(mHandler);
 		initView();
 		initData();
@@ -172,6 +174,15 @@ public class SuLuInputActivity extends Activity implements OnClickListener, OnLo
 
 		initBroast();
 	}
+	
+	@Override
+	public void onPause() {
+		// TODO Auto-generated method stub
+		super.onPause();
+		// 把用户的设置存入配置文件中
+		Settings.writeBack();
+	}
+
 
 	@Override
 	public void onClick(View v) {

@@ -16,6 +16,10 @@ public class NoteRecord implements Serializable	//Parcelable
     //数据库中每条记录的id
 	@DatabaseField(generatedId = true,dataType=DataType.INTEGER)
 	private int id;
+
+	//表示笔记本的唯一性的ID，用UUID随机生成保证唯一性
+	@DatabaseField(columnName = "noteID", dataType = DataType.INTEGER)
+	private int noteID;
 	
 	//笔记本名称字段，当recType为笔记本时，表示笔记本名字；当为笔记的时候，表示这条笔记所属的笔记本的名字。
     @DatabaseField(columnName = "noteBookName",dataType=DataType.STRING)
@@ -42,8 +46,12 @@ public class NoteRecord implements Serializable	//Parcelable
 	private String addrDetail;
 	
 	//0表示未上传到汉王云,1表示已上传到汉王云
-	@DatabaseField(columnName = "isUpdateHanvon", dataType = DataType.INTEGER)
-	private int isUpdateHanvon;
+	@DatabaseField(columnName = "isUpLoad", dataType = DataType.INTEGER)
+	private int isUpLoad;
+
+	//0表示未删除,1表示删除
+	@DatabaseField(columnName = "isDelete", dataType = DataType.INTEGER)
+	private int isDelete;
 	
 	//0表示键盘输入,1表示速录笔输入
 	@DatabaseField(columnName = "inputType", dataType = DataType.INTEGER)
@@ -55,29 +63,29 @@ public class NoteRecord implements Serializable	//Parcelable
 	
 	
 	//用于关联笔记本表的外键，笔记本的id
-	@DatabaseField(canBeNull = true, foreign = true, columnName = "notebookID", foreignAutoRefresh = true)
+	@DatabaseField(canBeNull = true, foreign = true, columnName = "noteBookId", foreignAutoRefresh = true)
 	private NoteBookRecord notebook;
 	
 	
 	@ForeignCollectionField
     private Collection<NotePhotoRecord> notePhotos;
 	
-	 public Collection<NotePhotoRecord> getNoteRecords()
-	 {
-	     return notePhotos;
-	 }
+	public Collection<NotePhotoRecord> getNoteRecords()
+	{
+		return notePhotos;
+	}
 
-	 public void setArticles(Collection<NotePhotoRecord> photos)
+	public void setArticles(Collection<NotePhotoRecord> photos)
 	 {
 	     this.notePhotos = photos;
 	 }
 	  
-	 /*获取笔记所包含的所有图片的集合*/
-	 public ArrayList<NotePhotoRecord> getNotePhotoList()
-	 {
-	     ArrayList<NotePhotoRecord> mNotesList = new ArrayList<NotePhotoRecord>(notePhotos);
-	     return mNotesList;
-	 }
+	/*获取笔记所包含的所有图片的集合*/
+	public ArrayList<NotePhotoRecord> getNotePhotoList()
+	{
+		ArrayList<NotePhotoRecord> mNotesList = new ArrayList<NotePhotoRecord>(notePhotos);
+		return mNotesList;
+	}
 	
 	
 	/*
@@ -183,12 +191,12 @@ public class NoteRecord implements Serializable	//Parcelable
 		this.addrDetail = addrDetail;
 	}
 
-	public int getIsUpdateHanvon() {
-		return isUpdateHanvon;
+	public int getUpLoad() {
+		return isUpLoad;
 	}
 
-	public void setIsUpdateHanvon(int isUpdateHanvon) {
-		this.isUpdateHanvon = isUpdateHanvon;
+	public void setUpLoad(int isUpdateHanvon) {
+		this.isUpLoad = isUpdateHanvon;
 	}
 	
 	public int getInputType() {
@@ -215,6 +223,26 @@ public class NoteRecord implements Serializable	//Parcelable
 	public void setNoteBook(NoteBookRecord nb)
 	{
 		this.notebook = nb;
+	}
+
+	public int getNoteID()
+	{
+		return noteID;
+	}
+
+	public void setNoteID(int noteID)
+	{
+		this.noteID = noteID;
+	}
+
+	public int getIsDelete()
+	{
+		return isDelete;
+	}
+
+	public void setIsDelete(int isDelete)
+	{
+		this.isDelete = isDelete;
 	}
 
 	public NoteRecord() {
@@ -244,10 +272,11 @@ public class NoteRecord implements Serializable	//Parcelable
 	@Override
 	public String toString() 
 	{
-		return "ScanRecord [id = " + id + ", noteBookName = " + noteBookName + ", title = " + noteTitle +  
-		        ", content = " + noteContent + ", createTime = " + createTime + ", createAddr = "
-				+ createAddr + ", weather = " + weather + ", addrDetail = " + addrDetail
-				+  ", isUpdateHanvon = " + isUpdateHanvon + ", inputType =" + inputType + ", version = " + version + "]";
+		return "ScanRecord [id = " + id + ", noteID = " + noteID + ", noteBookName = " + noteBookName +
+				", title = " + noteTitle + ", content = " + noteContent + ", createTime = " + createTime +
+				", createAddr = " + createAddr + ", weather = " + weather + ", addrDetail = " + addrDetail +
+				", isUpLoad = " + isUpLoad + ", isDelete = " + isDelete +
+				", inputType =" + inputType + ", version = " + version + "]";
 	}
 
 	

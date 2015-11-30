@@ -1,5 +1,6 @@
 package com.hanvon.sulupen.application;
 
+import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningAppProcessInfo;
 import android.content.SharedPreferences;
@@ -139,6 +140,7 @@ public class HanvonApplication extends FrontiaApplication {
 		TelephonyManager telephonyManager = (TelephonyManager)this.getSystemService( this.getApplicationContext().TELEPHONY_SERVICE);
 		AppDeviceId =  telephonyManager.getSimSerialNumber();
 		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+	//	SharedPreferences sharedPref=getSharedPreferences("Blue", Activity.MODE_MULTI_PROCESS);
 		BluetoothSetting.getInstance(sharedPref);
 
 		//BluetoothService.startService(this);

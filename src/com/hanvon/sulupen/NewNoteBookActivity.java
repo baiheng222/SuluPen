@@ -1,6 +1,7 @@
 package com.hanvon.sulupen;
 
 import java.util.List;
+import java.util.UUID;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -18,6 +19,7 @@ import android.widget.Toast;
 
 import com.hanvon.sulupen.db.bean.NoteBookRecord;
 import com.hanvon.sulupen.db.dao.NoteBookRecordDao;
+import com.hanvon.sulupen.utils.MD5Util;
 
 public class NewNoteBookActivity extends Activity implements OnClickListener {
 	private final String TAG = "NewNoteBookActivity";
@@ -88,20 +90,24 @@ public class NewNoteBookActivity extends Activity implements OnClickListener {
 			break;
 
 		case R.id.tv_done_btn:
-			if (!isNoteBookCreated()) {
+			if (!isNoteBookCreated()) 
+			{
 				saveNoteBookToDb();
-				if (flagIntent == FLAG_CREATE_FOR_CHANGE) {
+				if (flagIntent == FLAG_CREATE_FOR_CHANGE) 
+				{
 
-				} else {
-					Intent newIntent = new Intent(this,
-							NoteBookListActivity.class);
+				} 
+				else 
+				{
+					Intent newIntent = new Intent(this, NoteBookListActivity.class);
 					newIntent.putExtra("NoteBook", mCreatedNoteBook);
 					startActivity(newIntent);
 				}
 				finish();
-			} else {
-				Toast.makeText(this, "NoteBook exist", Toast.LENGTH_SHORT)
-						.show();
+			}
+			else
+			{
+				Toast.makeText(this, "NoteBook exist", Toast.LENGTH_SHORT).show();
 			}
 			break;
 
@@ -115,14 +121,25 @@ public class NewNoteBookActivity extends Activity implements OnClickListener {
 		}
 	}
 
-	public boolean isNoteBookCreated() {
+	public boolean isNoteBookCreated() 
+	{
+		String newName = mInput.getText().toString();
+
+		if (newName.length() < 1)
+		{
+			Toast.makeText(this, R.string.notebook_name_null, Toast.LENGTH_SHORT).show();
+			return true;
+		}
+		
 		boolean ret = false;
 		NoteBookRecordDao noteBookRecordDao = new NoteBookRecordDao(this);
 		List<NoteBookRecord> noteBooks = noteBookRecordDao.getAllNoteBooks();
 		String noteBookName = mInput.getText().toString();
-		for (int i = 0; i < noteBooks.size(); i++) {
+		for (int i = 0; i < noteBooks.size(); i++) 
+		{
 			Log.d(TAG, "notebook name is " + noteBooks.get(i).getNoteBookName());
-			if (noteBooks.get(i).getNoteBookName().equals(noteBookName)) {
+			if (noteBooks.get(i).getNoteBookName().equals(noteBookName)) 
+			{
 
 				ret = true;
 				break;
@@ -140,7 +157,9 @@ public class NewNoteBookActivity extends Activity implements OnClickListener {
 		String noteBookName = mInput.getText().toString();
 		Log.d(TAG, "noteBookName is " + noteBookName);
 		record.setNoteBookName(noteBookName);
-		record.setNoteBookId(1);
+		record.setNoteBookId(MD5Util.md5(noteBookName));
+		record.setNoteBookUpLoad(0);
+		record.setNoteBookDelete(0);
 
 		NoteBookRecordDao noteBookRecordDao = new NoteBookRecordDao(this);
 

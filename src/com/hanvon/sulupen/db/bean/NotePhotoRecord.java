@@ -27,6 +27,14 @@ public class NotePhotoRecord //implements Parcelable
     //关联笔记表的外键
     @DatabaseField(canBeNull = true, foreign = true, columnName = "noteID")
 	private NoteRecord noteRecord;
+
+	//0表示未上传到汉王云,1表示已上传到汉王云
+	@DatabaseField(columnName = "isUpLoad", dataType = DataType.INTEGER)
+	private int isUpLoad;
+
+	//0表示未删除,1表示删除
+	@DatabaseField(columnName = "isDelete", dataType = DataType.INTEGER)
+	private int isDelete;
 	
     /*
     public static final Parcelable.Creator<ScanRecord> CREATOR = new Creator()
@@ -91,9 +99,28 @@ public class NotePhotoRecord //implements Parcelable
 	{
 		this.noteRecord = rec;
 	}
-	
-    
-    public NotePhotoRecord() {
+
+	public int getIsUpLoad()
+	{
+		return isUpLoad;
+	}
+
+	public void setIsUpLoad(int isUpLoad)
+	{
+		this.isUpLoad = isUpLoad;
+	}
+
+	public int getIsDelete()
+	{
+		return isDelete;
+	}
+
+	public void setIsDelete(int isDelete)
+	{
+		this.isDelete = isDelete;
+	}
+
+	public NotePhotoRecord() {
 		super();
 	}
 

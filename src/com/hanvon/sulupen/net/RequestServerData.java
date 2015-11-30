@@ -223,4 +223,14 @@ public class RequestServerData {
 	public static RequestResult uploadFile(JSONObject json) {
 		return simpleRequest(HTTPTYPE.POST, UrlBankUtil.uploadFile(),json);
 	}
+	
+	/*三方绑定*/
+	public static RequestResult thirdBind(JSONObject json) {
+		return simpleRequest(HTTPTYPE.POST, UrlBankUtil.thirdBind(),json);
+	}
+	
+	/*三方解绑定*/
+	public static RequestResult thirdUnBind(JSONObject json) {
+		return simpleRequest(HTTPTYPE.POST, UrlBankUtil.thirdUnBind(),json);
+	}
 }

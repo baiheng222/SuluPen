@@ -94,6 +94,7 @@
             android:imeOptions="actionNext"
             android:maxLines="5"
             android:minLines="5"
+            android:paddingLeft="10dp"
             android:textColor="#191919"
             android:textSize="18dp" >
         </EditText>
@@ -120,6 +121,7 @@
             android:imeOptions="actionNext"
             android:maxLines="5"
             android:minLines="5"
+            android:paddingLeft="10dp"
             android:textColor="#191919"
             android:textSize="18dp" >
         </EditText>

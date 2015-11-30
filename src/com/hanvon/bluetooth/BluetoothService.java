@@ -1,7 +1,11 @@
 package com.hanvon.bluetooth;
 
+import java.io.BufferedOutputStream;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.zip.GZIPInputStream;
@@ -141,6 +145,7 @@ public class BluetoothService extends Service{
 				Editor mEditor=	mSharedPreferences.edit();
 				HanvonApplication.isDormant = false;
 				mEditor.putBoolean("isDormant", HanvonApplication.isDormant);
+				mEditor.putString("address", BluetoothSearch.curBtAddress);
 				mEditor.commit();
 				break;
 			case BluetoothChatService.STATE_CONNECTING:
@@ -192,6 +197,9 @@ public class BluetoothService extends Service{
 			// 文本类型
 			if (dataType == 2) {
 				JSONObject jsonObject = (JSONObject) msg.obj;
+				if (jsonObject == null || jsonObject.equals("")){
+					break;
+				}
 				 LogUtil.i("接收包:"+jsonObject.toString());
 				if (jsonObject != null) {
 					try {
@@ -533,6 +541,18 @@ public class BluetoothService extends Service{
 		}
 	}
 	
+	
+	public void saveBitmapFile(Bitmap bitmap){
+        File file=new File("/sdcard/1111111.jpg");//将要保存图片的路径  头像文件
+        try {
+                BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(file));
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bos);
+                bos.flush();
+                bos.close();
+        } catch (IOException e) {
+                e.printStackTrace();
+        }
+    }
 	@Override
 	public void onCreate() {
 		super.onCreate();

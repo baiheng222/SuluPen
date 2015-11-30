@@ -119,6 +119,10 @@
     <string name="third_bind">第三方绑定</string>
     <string name="loginout">退出登录</string>
     <string name="modify_name">请输入您的名字</string>
+    <string name="third_sina">&#160;&#160;新浪微博</string>
+    <string name="third_qq">&#160;&#160;QQ</string>
+    <string name="third_weixin">&#160;&#160;微信</string>
+    <string name="third_unbind">未绑定</string>
     <!-- 硬件基本信息显示 -->
     <string name="hw_electricity">电量：</string>
     <string name="hw_status">状态：</string>
@@ -214,5 +218,7 @@
     <string name="input_reach_max">Reach max length</string>
     <string name="same_notebook_name">The notebook is exist</string>
     <string name="notebook_name_null">The notebook name is empty</string>
+    <string name="title_activity_splash">SplashActivity</string>
+    <string name="title_activity_guide">GuideActivity</string>
 
 </resources>

@@ -66,6 +66,132 @@ public class HvnCloudManager {
             file.delete();
         }
 	}
+	
+	
+	
+	public String UploadNotesToHvnCloudForShare(String title,String content,List<ImageItem> mDataList) throws IOException{
+		
+		String filename = SHA1Util.encodeBySHA(title)+".txt";
+		String path = "/sdcard/" + filename;
+
+		FileWriter writer = new FileWriter(path, true);
+		writer.write("<div>/r/n<h1>"+title+"</h1>\r\n<p>"+content+"</p>");
+		
+		for(ImageItem item:mDataList){
+			writer.write("\r\n<image src=\"data:image/png;base64,");
+			
+			String base64 = getImageBase64(item.getSourcePath());
+    	    writer.write(base64);
+			writer.write("\">");
+			writer.flush();
+		}
+		writer.write("</div>");
+		writer.flush();
+
+		writer.close();
+		
+		String result = UploadFiletoHvnForShare(path,title,filename);
+		LogUtil.i("=============test:"+result);
+		DelteTmpFile(path);
+		return result;
+		
+	}
+	
+	
+	private String UploadFiletoHvnForShare(final String filePath,final String title,final String filname){
+		try {
+			final int blocknum;
+			final byte[] buffer;
+			int readBytes = BUF_SIZE;
+		    boolean isSuccess;
+			String requestData;
+		    final File file = new File(filePath);
+				
+			HttpURLConnection httpurlconnection = CreateConnectionForShare();
+		    String checksum =  MD5Util.getFileMD5String(file);
+	
+			FileInputStream fis = new FileInputStream(file); 
+			int length = fis.available();
+
+			if (length%BUF_SIZE != 0){
+	            blocknum = length/BUF_SIZE + 1;
+	        }else{
+	            blocknum = length/BUF_SIZE;
+	        }
+	        if (blocknum <= 1){
+	        	buffer =  new byte[length];
+	        }else{
+	        	buffer =  new byte[BUF_SIZE];
+	        }
+
+	        for(int i = 0;i < blocknum;i++){
+	            if (i == blocknum -1){
+	                readBytes = length - i*BUF_SIZE;
+	            	byte[] buffer1 = new byte[readBytes];
+	                readBytes = fis.read(buffer1);
+	            	requestData = SendBodyForShare(checksum,Base64Utils.encode(buffer1),filname,i*BUF_SIZE,length,title);
+	            }else{
+	            	readBytes = BUF_SIZE;
+	            	readBytes = fis.read(buffer);
+	            	requestData = SendBodyForShare(checksum,Base64Utils.encode(buffer),filname,i*BUF_SIZE,length,title);
+	            }
+
+				String str = uploadFileForShare(requestData,length);
+				LogUtil.i("---------str:"+str);
+				JSONObject jsonObj = null;
+				jsonObj = new JSONObject(str);
+				if (jsonObj.get("code").equals("0")) {
+				    LogUtil.i("************文件上传成功***************");
+				    int offset = jsonObj.getInt("offset");
+				    if (offset >= length){
+				    	htmlPageUrl = jsonObj.getString("htmlPageUrl");
+				    	if(htmlPageUrl == null){
+				    		return null;
+				    	}
+				    	return htmlPageUrl;
+				    }
+				} else{
+				    LogUtil.i("************文件上传失败***************");
+				    return null;
+				}
+	        }
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+		    e.printStackTrace();
+	    } catch (JSONException e) {
+		    // TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	    return null;
+	}
+	
+	
+	private String SendBodyForShare(String checksum,String data,String filename,int offset,int totalLength,String title){
+		JSONObject JSuserInfoJson = new JSONObject();
+		
+		LogUtil.i("---totalLength:"+totalLength+" ----filename:"+filename);
+	  	try {
+
+	  	  	JSuserInfoJson.put("ver", HanvonApplication.AppVer);
+	  	  	JSuserInfoJson.put("userid", "");
+	  	    JSuserInfoJson.put("devid", "");
+	  	    JSuserInfoJson.put("fuid", "");
+	  	    JSuserInfoJson.put("ftype", "4");
+	  	    JSuserInfoJson.put("fname", filename);
+	  	    JSuserInfoJson.put("title", title);
+	  	    JSuserInfoJson.put("flength", totalLength);
+	  	    JSuserInfoJson.put("offset", offset);
+			JSuserInfoJson.put("checksum", MD5Util.md5(data));
+	  	    JSuserInfoJson.put("iszip", String.valueOf(false));
+	  	    JSuserInfoJson.put("data", data);
+	  	}catch (JSONException e) {
+	  		e.printStackTrace();
+	  	}
+	//  	LogUtil.i(JSuserInfoJson.toString());
+
+	  	return JSuserInfoJson.toString();
+	}
+	
 
 	private String UploadFiletoHvn(final String filePath,final String title,final String filname){
 		try {
@@ -181,6 +307,53 @@ public class HvnCloudManager {
 
 		return httpurlconnection;
 	}
+	
+	
+	private HttpURLConnection CreateConnectionForShare() throws IOException{
+		URL url = null;
+		HttpURLConnection httpurlconnection = null;
+
+		url = new URL("http://cloud.hwyun.com/dws-cloud/rt/ap/v1/store/sharedata");
+		httpurlconnection = (HttpURLConnection) url.openConnection();
+		httpurlconnection.setConnectTimeout(60*1000);
+		httpurlconnection.setUseCaches(false);
+		httpurlconnection.setDoInput(true);
+		httpurlconnection.setDoOutput(true);
+		
+		//1.设备请求类型
+		httpurlconnection.setRequestMethod("POST");
+		
+		//2.设备请求头
+		httpurlconnection.setRequestProperty("token","wdf34568koisjfsjkj");
+		httpurlconnection.setRequestProperty("Content-Type","application/octet-stream");
+
+		return httpurlconnection;
+	}
+	
+	public String uploadFileForShare(final String requestData,int length) throws IOException, JSONException{
+	    HttpURLConnection httpurlconnection = null;
+		httpurlconnection = CreateConnectionForShare();
+		//3加密请求数据
+		httpurlconnection.getOutputStream().write(requestData.getBytes());
+		//5发送数据
+		httpurlconnection.getOutputStream().flush();
+		//5接收结果数据
+		InputStream in = null;
+		in = httpurlconnection.getInputStream();
+		
+		BufferedReader r = null;
+		r = new BufferedReader(new InputStreamReader(in,"utf-8"));
+
+		String line;
+		StringBuilder sb = new StringBuilder();
+
+		while ((line = r.readLine()) != null) {
+			sb.append(line);
+		}
+
+		LogUtil.i("--------"+sb.toString());
+		return sb.toString();
+    }
 
 	public String uploadFile(final String requestData,int length) throws IOException, JSONException{
 	    HttpURLConnection httpurlconnection = null;

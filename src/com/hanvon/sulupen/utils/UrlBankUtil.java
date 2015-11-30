@@ -205,5 +205,19 @@ public class UrlBankUtil {
 	public static String uploadFile(){
 		return  HanvanApkIp + "/store/upload";
 	}
+	
+	/**
+	 * 三方绑定
+	 */
+	public static String thirdBind(){
+		return  HanvanApkIp + "/user/thirdbinding";
+	}
+	
+	/**
+	 * 三方解绑定
+	 */
+	public static String thirdUnBind(){
+		return  HanvanApkIp + "/user/thirdunbind";
+	}
 }
 

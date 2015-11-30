@@ -1,5 +1,6 @@
 package com.hanvon.bluetooth;
 
+import android.app.Activity;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 

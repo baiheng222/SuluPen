@@ -29,6 +29,14 @@ public class LoginUtils {
 	private String figureurl;
 	private String nickname;
 	
+	private String qqOpenId = "";
+	private String wxOpenId = "";
+	private String wbOpenId = "";
+	
+	
+	private int accountFlag = 0;  //0 主账户  1 从账户qq 2 从账户 wx 3 从账户微博
+	private int accountCount = 0;
+	
 	public LoginUtils(Context mcontext,int userflag){
 		this.mContext = mcontext;
 		this.userflag = userflag;
@@ -79,33 +87,87 @@ public class LoginUtils {
 			    LogUtil.i("flagTask:"+flagTask+"    json:"+json.toString());
 			    if (flagTask == 1){
 			    	if (json.getString("code").equals("0")){
-			    		String qqNickname = json.getString("nickname");
-			    		String username = json.getString("user");
-			    		HanvonApplication.isActivity = true;
-			            SharedPreferences mSharedPreferences=mContext.getSharedPreferences("BitMapUrl", Activity.MODE_MULTI_PROCESS);
-				        Editor mEditor=	mSharedPreferences.edit();
-				        mEditor.putString("username", username);
-				        HanvonApplication.hvnName = username;
-				        if (qqNickname.equals("null")){
-				        	qqNickname = "";
-				        }
-				        HanvonApplication.strName = qqNickname;
-				        mEditor.putString("nickname", qqNickname);
-				        mEditor.putString("figureurl", figureurl);
-				        mEditor.putInt("flag", userflag);
-				        mEditor.putInt("status", 1);
-				        mEditor.commit();
+			    		if (accountFlag == 0){
+			    		    String nickname = json.getString("nickname");
+			    		    String username = json.getString("user");
+			    		    HanvonApplication.isActivity = true;
+			                SharedPreferences mSharedPreferences=mContext.getSharedPreferences("BitMapUrl", Activity.MODE_MULTI_PROCESS);
+				            Editor mEditor=	mSharedPreferences.edit();
+				            mEditor.putString("username", username);
+				            HanvonApplication.hvnName = username;
+				            if (nickname.equals("null")){
+				        	    nickname = "";
+				            }
+				            qqOpenId = json.getString("qqOpenId");
+				            wxOpenId = json.getString("wxOpenId");
+				            wbOpenId = json.getString("wbOpenId");
+				            if (qqOpenId.endsWith("null")){
+				        	    qqOpenId = "";
+				            }else{
+				        	    accountFlag = 1;
+				        	    accountCount++;
+				        	    new RequestTask(1).execute();
+				            }
+				            if (wxOpenId.equals("null")){
+				        	    wxOpenId = "";
+				            }else{
+				        	    accountFlag = 2;
+				        	    accountCount++;
+				        	    new RequestTask(1).execute();
+				            }
+				            if (wbOpenId.equals("null")){
+				        	    wbOpenId = "";
+				            }else{
+				        	    accountFlag = 3;
+				        	    accountCount++;
+				        	    new RequestTask(1).execute();
+				            }
 				        
-				        mContext.startActivity(new Intent(mContext, MainActivity.class));
-		                LoginActivity.instance.finish();
+				            HanvonApplication.strName = nickname;
+				            mEditor.putString("nickname", nickname);
+				            mEditor.putString("figureurl", figureurl);
+				            mEditor.putString("qqOpenId", qqOpenId);
+				            mEditor.putString("wxOpenId", wxOpenId);
+				            mEditor.putString("wbOpenId", wbOpenId);
+				            mEditor.putString("qqNickname", "");
+				            mEditor.putString("wxNickname", "");
+				            mEditor.putString("wbNickname", "");
+				            mEditor.putInt("flag", userflag);
+				            mEditor.putInt("status", 1);
+				            mEditor.commit();
+			    		}else if (accountFlag == 1){
+			    			String nickname = json.getString("nickname");
+			    			SharedPreferences mSharedPreferences=mContext.getSharedPreferences("BitMapUrl", Activity.MODE_MULTI_PROCESS);
+				            Editor mEditor=	mSharedPreferences.edit();
+				            mEditor.putString("qqNickname", nickname);
+				            mEditor.commit();
+			    			accountCount--;
+			    		}else if (accountFlag == 2){
+			    			String nickname = json.getString("nickname");
+			    			SharedPreferences mSharedPreferences=mContext.getSharedPreferences("BitMapUrl", Activity.MODE_MULTI_PROCESS);
+				            Editor mEditor=	mSharedPreferences.edit();
+				            mEditor.putString("wxNickname", nickname);
+				            mEditor.commit();
+			    			accountCount--;
+			    		}else if (accountFlag == 3){
+			    			String nickname = json.getString("nickname");
+			    			SharedPreferences mSharedPreferences=mContext.getSharedPreferences("BitMapUrl", Activity.MODE_MULTI_PROCESS);
+				            Editor mEditor=	mSharedPreferences.edit();
+				            mEditor.putString("wbNickname", nickname);
+				            mEditor.commit();
+			    			accountCount--;
+			    		}
+				        if (accountCount == 0){
+				            mContext.startActivity(new Intent(mContext, MainActivity.class));
+		                    LoginActivity.instance.finish();
+				        }
 			    	}else if (json.getString("code").equals("426")){
 			    		new RequestTask(2).execute();
 			    	}else if(json.getString("code").equals("520")){
 			    		Toast.makeText(mContext, "服务器忙，请稍后重试", Toast.LENGTH_SHORT).show();
 			    	 
 			    	}else{
-			    		Toast.makeText(mContext, "注册汉王云失败，请稍后重试", Toast.LENGTH_SHORT).show();
-			    	  
+			    		Toast.makeText(mContext, "注册汉王云失败，请稍后重试", Toast.LENGTH_SHORT).show();   	  
 			    	}
 			    }else if (flagTask == 2){
 			        if (json.getString("code").equals("0") || json.getString("code").equals("422")){
@@ -118,6 +180,12 @@ public class LoginUtils {
 				        mEditor.putString("username", qqName);
 				        mEditor.putString("nickname", nickname);
 				        mEditor.putString("figureurl", figureurl);
+				        mEditor.putString("qqOpenId", "");
+				        mEditor.putString("wxOpenId", "");
+				        mEditor.putString("wbOpenId", "");
+				        mEditor.putString("qqNickname", "");
+			            mEditor.putString("wxNickname", "");
+			            mEditor.putString("wbNickname", "");
 				        mEditor.putInt("flag", userflag);
 				        mEditor.putInt("status", 1);
 				        mEditor.commit();
@@ -138,10 +206,18 @@ public class LoginUtils {
 	 public RequestResult getUserInfo(){
 	    JSONObject paramJson=new JSONObject();
 	  	try {
-	  		if (userflag == 1){
-	    	    paramJson.put("user", "qq_"+SHA1Util.encodeBySHA(openid));
-	  		}else if (userflag == 2){
-	  			paramJson.put("user", "wx_"+SHA1Util.encodeBySHA(openid));
+	  		if (accountFlag == 0){
+	  		    if (userflag == 1){
+	    	        paramJson.put("user", "qq_"+SHA1Util.encodeBySHA(openid));
+	  		    }else if (userflag == 2){
+	  			    paramJson.put("user", "wx_"+SHA1Util.encodeBySHA(openid));
+	  		    }
+	  		}else if (accountFlag == 1){
+	  			paramJson.put("user", "qq_"+SHA1Util.encodeBySHA(qqOpenId));
+	  		}else if (accountFlag == 2){
+	  			paramJson.put("user", "wx_"+SHA1Util.encodeBySHA(wxOpenId));
+	  		}else if (accountFlag == 3){
+	  			paramJson.put("user", "wb_"+SHA1Util.encodeBySHA(wbOpenId));
 	  		}
 	  	} catch (JSONException e) {
 	  		e.printStackTrace();

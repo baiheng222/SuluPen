@@ -4,6 +4,7 @@ package com.hanvon.sulupen.db.bean;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.UUID;
 
 import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
@@ -18,12 +19,21 @@ public class NoteBookRecord implements Serializable
 	private int id;
 	
 	//笔记本ID,生成之后就不会再改变，是一个唯一的值，除非删除了这个笔记本，这个ID可以作为NoteRecord的外键
-	@DatabaseField(columnName = "noteBookId",dataType=DataType.INTEGER)
-    private int noteBookId;
+	//使用UUID随机生成的ID,保证在任何时候都是唯一的
+	@DatabaseField(columnName = "noteBookId",dataType=DataType.STRING)
+    private String noteBookId;
 	
 	//笔记本名称，笔记本名称是可以被修改的，虽然笔记本名称不会有两个同样的名称存在，
     @DatabaseField(columnName = "noteBookName",dataType=DataType.STRING)
     private String noteBookName;
+
+	//笔记本是否已经上传， 0 已经上传， 1 未上传
+	@DatabaseField(columnName = "noteBookUpLoad",dataType=DataType.INTEGER)
+	private int noteBookUpLoad;
+
+	//笔记本是否要删除， 用于与服务端同步后进行删除, 0 未删除， 1 删除
+	@DatabaseField(columnName = "noteBookDelete",dataType=DataType.INTEGER)
+	private int noteBookDelete;
     
     @ForeignCollectionField
     private Collection<NoteRecord> noteRecords;
@@ -79,17 +89,18 @@ public class NoteBookRecord implements Serializable
 	public void setId(int id) {
 		this.id = id;
 	}
-	
-	public int getNoteBookId() {
+
+	public String getNoteBookId()
+	{
 		return noteBookId;
 	}
 
-	public void setNoteBookId(int id) {
-		this.noteBookId = id;
+	public void setNoteBookId(String noteBookId)
+	{
+		this.noteBookId = noteBookId;
 	}
-	
-	
-    public String getNoteBookName() 
+
+	public String getNoteBookName()
     {
         return noteBookName;
     }
@@ -98,12 +109,33 @@ public class NoteBookRecord implements Serializable
     {
         this.noteBookName = name;
     }
-    
-    public NoteBookRecord() {
+
+	public int getNoteBookUpLoad()
+	{
+		return noteBookUpLoad;
+	}
+
+	public void setNoteBookUpLoad(int noteBookUpLoad)
+	{
+		this.noteBookUpLoad = noteBookUpLoad;
+	}
+
+	public int getNoteBookDelete()
+	{
+		return noteBookDelete;
+	}
+
+	public void setNoteBookDelete(int noteBookDelete)
+	{
+		this.noteBookDelete = noteBookDelete;
+	}
+
+	public NoteBookRecord()
+	{
 		super();
 	}
 
-	public NoteBookRecord(int id, int notebookid, String noteBookName) 
+	public NoteBookRecord(int id, String notebookid, String noteBookName)
 	{
 		super();
 		this.id = id;
@@ -114,7 +146,9 @@ public class NoteBookRecord implements Serializable
 	@Override
 	public String toString() 
 	{
-		return "NoteBookRecord [id = " + id + ", noteBookId = " + noteBookId + ", noteBookName = " + noteBookName; 
+		return "NoteBookRecord [id = " + id + ", noteBookId = " + noteBookId +
+				", noteBookName = " + noteBookName + ", noteBookUpLoad = " + noteBookUpLoad +
+				", noteBookDelete = " + noteBookDelete;
 	}
 	
 	/*

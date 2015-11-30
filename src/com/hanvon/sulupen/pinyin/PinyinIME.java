@@ -379,6 +379,9 @@ public class PinyinIME extends InputMethodService {
 		return super.onKeyUp(keyCode, event);
 	}
 
+	
+
+	
 	/**
 	 * 给EditText发送文本，在广播接收器MyReceiver的onReceive（）中调用。
 	 * 
@@ -519,11 +522,14 @@ public class PinyinIME extends InputMethodService {
 					}
 					resetToIdleState(false);
 					// 关闭输入法
-					requestHideSelf(0);
-					//if (mSkbContainer.handleBack(realAction))
-					// LogUtil.i(""+realAction);
-					//return true;
+					//requestHideSelf(0);
+					
+					
+//					if (mSkbContainer.handleBack(realAction))
+//					 LogUtil.i(""+realAction);
+//					return true;
 			}
+			
 		}
 		// Chinese related input is handle separately.
 		// 中文相关输入是单独处理的，不在这边处理。
@@ -532,6 +538,7 @@ public class PinyinIME extends InputMethodService {
 		}
 		if (null != mCandidatesContainer && mCandidatesContainer.isShown()
 				&& !mDecInfo.isCandidatesListEmpty()) {// 候选词视图显示的时候
+
 			if (keyCode == KeyEvent.KEYCODE_DPAD_CENTER) {
 				if (!realAction)
 					return true;
@@ -825,18 +832,18 @@ public class PinyinIME extends InputMethodService {
 			chooseCandidate(-1);
 			return true;
 		} else if (keyCode == KeyEvent.KEYCODE_BACK) {
-			if (!realAction)
-				return true;
-			resetToIdleState(false);
-			// 关闭输入法
-			LogUtil.i("");
-//			if(mSkbContainer!=null&&mSkbContainer.popupWinVoiceRecognition!=null){
-//				mSkbContainer.popupWinVoiceRecognition.dismiss();
-//				mSkbContainer.popupWinVoiceRecognition=null;
+//			if (!realAction)
 //				return true;
-//			}
-			requestHideSelf(0);
-			return true;
+//			resetToIdleState(false);
+//			// 关闭输入法
+//			LogUtil.i("");
+////			if(mSkbContainer!=null&&mSkbContainer.popupWinVoiceRecognition!=null){
+////				mSkbContainer.popupWinVoiceRecognition.dismiss();
+////				mSkbContainer.popupWinVoiceRecognition=null;
+////				return true;
+////			}
+//			requestHideSelf(0);
+//			return true;
 		}
 		return false;
 	}
@@ -905,15 +912,15 @@ public class PinyinIME extends InputMethodService {
 			resetToIdleState(false);
 		} else if (keyCode == KeyEvent.KEYCODE_BACK) {
 			
-			LogUtil.i("");
-//			if(mSkbContainer!=null&&mSkbContainer.popupWinVoiceRecognition!=null){
-//				mSkbContainer.popupWinVoiceRecognition.dismiss();
-//				mSkbContainer.popupWinVoiceRecognition=null;
-//				return true;
-//			}
-			resetToIdleState(false);
-			// 关闭输入法
-			requestHideSelf(0);
+//			LogUtil.i("");
+////			if(mSkbContainer!=null&&mSkbContainer.popupWinVoiceRecognition!=null){
+////				mSkbContainer.popupWinVoiceRecognition.dismiss();
+////				mSkbContainer.popupWinVoiceRecognition=null;
+////				return true;
+////			}
+//			resetToIdleState(false);
+//			// 关闭输入法
+//			requestHideSelf(0);
 		} else if (keyCode >= KeyEvent.KEYCODE_1
 				&& keyCode <= KeyEvent.KEYCODE_9) {
 			int activePos = keyCode - KeyEvent.KEYCODE_1;
@@ -1033,16 +1040,16 @@ public class PinyinIME extends InputMethodService {
 			sendKeyChar('\n');
 			resetToIdleState(false);
 		} else if (keyCode == KeyEvent.KEYCODE_BACK) {
-			resetToIdleState(false);
-			LogUtil.i("");
-//			if(mSkbContainer!=null&&mSkbContainer.popupWinVoiceRecognition!=null){
-//				mSkbContainer.popupWinVoiceRecognition.dismiss();
-//				mSkbContainer.popupWinVoiceRecognition=null;
-//				return true;
-//			}
-			// 关闭输入法
-			requestHideSelf(0);
-			return true;
+//			resetToIdleState(false);
+//			LogUtil.i("");
+////			if(mSkbContainer!=null&&mSkbContainer.popupWinVoiceRecognition!=null){
+////				mSkbContainer.popupWinVoiceRecognition.dismiss();
+////				mSkbContainer.popupWinVoiceRecognition=null;
+////				return true;
+////			}
+//			// 关闭输入法
+//			requestHideSelf(0);
+//			return true;
 		} else {
 			// 添加输入的拼音，然后进行词库查询，或者删除输入的拼音指定的字符或字符串，然后进行词库查询。
 			return processSurfaceChange(keyChar, keyCode);
@@ -1844,11 +1851,11 @@ public class PinyinIME extends InputMethodService {
 
 	@Override
 	public void requestHideSelf(int flags) {
-		if (mEnvironment.needDebug()) {
-			LogUtil.d( "DimissSoftInput.");
-		}
+		//if (mEnvironment.needDebug()) {
+		//	LogUtil.d( "DimissSoftInput.");
+		//}
 		dismissCandidateWindow();
-		FounctionContainer.disMissForeGround();
+		//FounctionContainer.disMissForeGround();
 		if (null != mSkbContainer && mSkbContainer.isShown()) {
 			mSkbContainer.dismissPopups();
 		}

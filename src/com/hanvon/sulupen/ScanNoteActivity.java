@@ -81,6 +81,7 @@ import com.hanvon.sulupen.utils.CustomDialog;
 import com.hanvon.sulupen.utils.HvnCloudManager;
 import com.hanvon.sulupen.utils.IntentConstants;
 import com.hanvon.sulupen.utils.LogUtil;
+import com.hanvon.sulupen.utils.MD5Util;
 import com.hanvon.sulupen.utils.TimeUtil;
 import com.hanvon.sulupen.utils.UiUtil;
 
@@ -395,6 +396,9 @@ public class ScanNoteActivity extends Activity implements OnClickListener{
 		            Log.d(TAG, "no notebook, need new one !!!!");
 		            mNoteBookRecord = new NoteBookRecord();
 		            mNoteBookRecord.setNoteBookName("笔记本01");
+					mNoteBookRecord.setNoteBookDelete(0);
+					mNoteBookRecord.setNoteBookUpLoad(0);
+					mNoteBookRecord.setNoteBookId(MD5Util.md5("笔记本01"));
 		        }
 		        else
 		        {
@@ -403,6 +407,9 @@ public class ScanNoteActivity extends Activity implements OnClickListener{
 		            {
 		                mNoteBookRecord = new NoteBookRecord();
 		                mNoteBookRecord.setNoteBookName("笔记本01");
+						mNoteBookRecord.setNoteBookDelete(0);
+						mNoteBookRecord.setNoteBookUpLoad(0);
+						mNoteBookRecord.setNoteBookId(MD5Util.md5("笔记本01"));
 		            }
 		        }
 
@@ -476,7 +483,7 @@ public class ScanNoteActivity extends Activity implements OnClickListener{
 				}
 				
 				toBrowseMode();
-				
+
 			}
 		}
 
@@ -496,6 +503,7 @@ public class ScanNoteActivity extends Activity implements OnClickListener{
 	
 	
 	private void toEditableMode(EditText view) {
+		
 		changeRecordMode(2);
 		etScanContent.setVisibility(View.VISIBLE);
 		etNoteTitle.setVisibility(View.VISIBLE);
@@ -828,6 +836,37 @@ public class ScanNoteActivity extends Activity implements OnClickListener{
 		}.start();
 	}	
 	
+	
+	public void UploadFilesToHvnCloudForShare(final String title,final String content,final List<ImageItem> mDataList){
+		
+		//final String result = null;
+		new Thread() {
+			@Override
+			public void run() {
+				String result = null;
+				HvnCloudManager hvnCloud = new HvnCloudManager();
+				try {
+					result = hvnCloud.UploadNotesToHvnCloudForShare(title, content, mDataList);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				LogUtil.i(result);
+				
+				if (result == null){
+					Message msg = new Message();
+                    msg.what = UPLLOAD_FILE_CLOUD_FAIL;
+                    handler.sendMessage(msg); 
+				}else{
+					strLinkPath = result;
+					Message msg = new Message();
+                    msg.what = UPLLOAD_FILE_CLOUD_SUCCESS; 
+                    handler.sendMessage(msg);	
+				}
+			}
+		}.start();
+	}	
+	
 	/**
 	 * 光标后追加文字
 	 * 
@@ -956,7 +995,7 @@ public class ScanNoteActivity extends Activity implements OnClickListener{
 			    				bShareClick = true;
 			    				pd = ProgressDialog.show(ScanNoteActivity.this, "", "生成连接中，请等待...");
 			            	    LogUtil.i("tong-------mDataList size:"+mDataList.size());
-			    				UploadFilesToHvnCloud(title1,content1,mDataList);
+			    				UploadFilesToHvnCloudForShare(title1,content1,mDataList);
 			    			}
 		                  
 	            	}
@@ -1198,7 +1237,7 @@ public class ScanNoteActivity extends Activity implements OnClickListener{
   
    }   
 	
-	/** 
+	/*
      * 分享功能 
      *  
      * @param context 

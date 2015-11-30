@@ -124,7 +124,8 @@ public class NoteBookRecordDao
     {
         try 
         {
-        	mNoteBookRecordList = mNoteBookRecordDao.queryForAll();
+        	//mNoteBookRecordList = mNoteBookRecordDao.queryForAll();
+			mNoteBookRecordList = mNoteBookRecordDao.queryBuilder().where().eq("noteBookDelete", 0).query();
         } 
         catch (SQLException e) 
         {
