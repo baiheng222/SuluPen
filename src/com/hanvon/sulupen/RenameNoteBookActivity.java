@@ -89,6 +89,8 @@ public class RenameNoteBookActivity extends Activity implements OnClickListener
 		}
 		
 		mNoteBookNeedToReName.setNoteBookName(newName);
+		//设置笔记的更新状态，因为修改了名称，需要与服务器同步，更新状态就要设置了
+		mNoteBookNeedToReName.setNoteBookUpLoad(2);
 		
 		NoteBookRecordDao mDao = new NoteBookRecordDao(this);
 		mDao.updataRecord(mNoteBookNeedToReName);

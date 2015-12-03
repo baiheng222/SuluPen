@@ -50,7 +50,15 @@ public class TimeUtil {
 		String dateString = formatter.format(currentTime);
 		return dateString;
 	}
-	
+
+	public  static String getCurTimeForMd5()
+	{
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-ddHH:mm:ss.SSS");
+		Date currentTime = new Date();
+		String dateString = formatter.format(currentTime);
+		return dateString;
+	}
+
 	/*
 	 * 获取当前时间 小时:分;秒 HH:mm:ss
 	 * 

@@ -130,7 +130,10 @@ public class NoteChooseAdapter extends BaseAdapter
 			if (mCheckArray[i] == 1)
 			{
 				Log.d(TAG, "delete note, item is " + i);
-				noteDao.deleteRecord(mDatas.get(i));
+				NoteRecord note = mDatas.get(i);
+				note.setIsDelete(1);
+				noteDao.updataRecord(note);
+				//noteDao.deleteRecord(mDatas.get(i));
 				
 			}
 		}
@@ -158,6 +161,7 @@ public class NoteChooseAdapter extends BaseAdapter
 				Log.d(TAG, "change notebook, item is " + i);
 				NoteRecord note = mDatas.get(i);
 				note.setNoteBook(notebook);
+				note.setUpLoad(2);
 				noteDao.updataRecord(note);
 			}
 		}

@@ -1,5 +1,6 @@
 package com.hanvon.sulupen.adapter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import android.app.AlertDialog;
@@ -18,6 +19,8 @@ import com.hanvon.sulupen.EditNoteBookActivity;
 import com.hanvon.sulupen.R;
 import com.hanvon.sulupen.RenameNoteBookActivity;
 import com.hanvon.sulupen.db.bean.NoteBookRecord;
+import com.hanvon.sulupen.db.bean.NoteRecord;
+import com.hanvon.sulupen.db.dao.NoteRecordDao;
 
 public class NoteBookEditListAdapter extends BaseAdapter
 {
@@ -105,9 +108,25 @@ public class NoteBookEditListAdapter extends BaseAdapter
 			@Override
 			public void onClick(DialogInterface dialog, int which) 
 			{
-				NoteBookRecord m = mDatas.get(pos); 
-				mContext.mNoteBookRecordDao.deleteRecord(m);
+				NoteBookRecord m = mDatas.get(pos);
+
+				//先删除笔记本下的笔记，做删除标记
+				ArrayList<NoteRecord> notes = m.getNoteRecordList();
+				NoteRecordDao noteDao = new NoteRecordDao(mContext);
+				for (int i = 0; i < notes.size(); i++)
+				{
+					NoteRecord n = notes.get(i);
+					n.setIsDelete(1);
+					noteDao.updataRecord(n);
+				}
+
+				m.setNoteBookDelete(1);
+				mContext.mNoteBookRecordDao.updataRecord(m);
+				//mContext.mNoteBookRecordDao.deleteRecord(m);
 				mDatas.remove(pos);
+
+
+
 				notifyDataSetChanged();
 			}
 		});

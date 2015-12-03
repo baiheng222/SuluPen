@@ -10,6 +10,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.UUID;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -398,7 +399,7 @@ public class ScanNoteActivity extends Activity implements OnClickListener{
 		            mNoteBookRecord.setNoteBookName("笔记本01");
 					mNoteBookRecord.setNoteBookDelete(0);
 					mNoteBookRecord.setNoteBookUpLoad(0);
-					mNoteBookRecord.setNoteBookId(MD5Util.md5("笔记本01"));
+					mNoteBookRecord.setNoteBookId(MD5Util.md5(TimeUtil.getCurTimeForMd5()));
 		        }
 		        else
 		        {
@@ -409,7 +410,7 @@ public class ScanNoteActivity extends Activity implements OnClickListener{
 		                mNoteBookRecord.setNoteBookName("笔记本01");
 						mNoteBookRecord.setNoteBookDelete(0);
 						mNoteBookRecord.setNoteBookUpLoad(0);
-						mNoteBookRecord.setNoteBookId(MD5Util.md5("笔记本01"));
+						mNoteBookRecord.setNoteBookId(MD5Util.md5(TimeUtil.getCurTimeForMd5()));
 		            }
 		        }
 
@@ -727,12 +728,13 @@ public class ScanNoteActivity extends Activity implements OnClickListener{
 				note.setNoteContent(content);
 
 				note.setCreateAddr(((HanvonApplication) getApplication()).getAddress());
-				note.setCreateTime((HanvonApplication.noteCreateTime!=null&&HanvonApplication.noteCreateTime.length()>0) ? HanvonApplication.noteCreateTime : TimeUtil.getcurTime(TimeUtil.FORMAT_FULL));
+				note.setCreateTime((HanvonApplication.noteCreateTime != null && HanvonApplication.noteCreateTime.length() > 0) ? HanvonApplication.noteCreateTime : TimeUtil.getcurTime(TimeUtil.FORMAT_FULL));
 				note.setWeather(((HanvonApplication) getApplication()).getWeather());
 				
 				note.setInputType(mInputFlag);
 				note.setAddrDetail(((HanvonApplication) getApplication()).getAddrDetail());
 				note.setNoteBook(noteBook);
+				note.setNoteID(UUID.randomUUID());
 				mScanRecordDao.add(note);
 				Log.d(TAG, "saved note is :" + note.toString());
 				
@@ -779,6 +781,7 @@ public class ScanNoteActivity extends Activity implements OnClickListener{
 					mScanRecord.setCreateTime(TimeUtil.getcurTime(TimeUtil.FORMAT_FULL));
 				}
 				//(noteInfo, noteInfo.getS_id())
+				mScanRecord.setUpLoad(2);
 				mScanRecordDao.updataRecord(mScanRecord);
 				
 				//添加图片
@@ -1410,6 +1413,7 @@ public class ScanNoteActivity extends Activity implements OnClickListener{
 		            mNoteBookRecord = notebook;
 		            tvTopic.setText(mNoteBookRecord.getNoteBookName());
 		            mScanRecord.setNoteBook(mNoteBookRecord);
+					mScanRecord.setUpLoad(2);
 		        }
 		        else
 		        {

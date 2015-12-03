@@ -156,7 +156,8 @@ public class NoteRecordDao
     {
         try 
         {
-        	mNoteRecordList = mNoteRecordDao.queryForAll();
+        	//mNoteRecordList = mNoteRecordDao.queryForAll();
+			mNoteRecordList = mNoteRecordDao.queryBuilder().where().eq("isDelete", 0).query();
         } 
         catch (SQLException e) 
         {
@@ -190,7 +191,8 @@ public class NoteRecordDao
     {
     	try
     	{
-    		return mNoteRecordDao.queryBuilder().where().eq("notebookID", id).query();
+    		//return mNoteRecordDao.queryBuilder().where().eq("notebookID", id).query();
+			return mNoteRecordDao.queryBuilder().where().eq("notebookID", id).and().eq("isDelete", 0).query();
     	}
     	catch (SQLException e)
     	{

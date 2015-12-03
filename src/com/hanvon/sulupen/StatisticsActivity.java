@@ -17,6 +17,12 @@ import android.widget.TextView;
 import com.hanvon.sulupen.charts.BarChartView;
 import com.hanvon.sulupen.charts.BudgetDoughnutChart;
 import com.hanvon.sulupen.charts.BudgetPieChart;
+import com.hanvon.sulupen.db.bean.NoteRecord;
+import com.hanvon.sulupen.db.bean.RecordInfo;
+import com.hanvon.sulupen.db.dao.NoteRecordDao;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class StatisticsActivity extends Activity
 {
@@ -38,6 +44,8 @@ public class StatisticsActivity extends Activity
     private TextView mTvMax;
     private LinearLayout mLlChart;
     private LinearLayout mLlBarChart;
+
+    private List<RecordInfo> mRecordInfoLis = new ArrayList<RecordInfo>();
 
     private void assignViews()
     {
@@ -80,4 +88,20 @@ public class StatisticsActivity extends Activity
         Log.d(TAG, "!!!! onResume");
 
     }
+
+    /*
+    void getAllNotes()
+    {
+        NoteRecordDao dao = new NoteRecordDao(this);
+        List<NoteRecord> notelist = dao.getAllNoteRecords();
+        if (null != notelist)
+        {
+            for (int i = 0; i < notelist.size(); i++)
+            {
+               RecordInfo recinfo = new RecordInfo();
+                recinfo.setNoteBookId(notelist.get(i).getNoteBook());
+            }
+        }
+    }
+    */
 }

@@ -20,6 +20,7 @@ import android.widget.Toast;
 import com.hanvon.sulupen.db.bean.NoteBookRecord;
 import com.hanvon.sulupen.db.dao.NoteBookRecordDao;
 import com.hanvon.sulupen.utils.MD5Util;
+import com.hanvon.sulupen.utils.TimeUtil;
 
 public class NewNoteBookActivity extends Activity implements OnClickListener {
 	private final String TAG = "NewNoteBookActivity";
@@ -76,8 +77,10 @@ public class NewNoteBookActivity extends Activity implements OnClickListener {
 	}
 
 	@Override
-	public void onClick(View view) {
-		switch (view.getId()) {
+	public void onClick(View view)
+	{
+		switch (view.getId())
+		{
 		case R.id.tv_cancel_btn:
 			if (flagIntent == FLAG_CREATE_FOR_CHANGE) {
 				Intent retIntent = new Intent(this, ChangNoteBookActivity.class);
@@ -90,9 +93,16 @@ public class NewNoteBookActivity extends Activity implements OnClickListener {
 			break;
 
 		case R.id.tv_done_btn:
-			if (!isNoteBookCreated()) 
+
+			String newName = mInput.getText().toString();
+			if (newName.length() < 1)
 			{
-				saveNoteBookToDb();
+				Toast.makeText(this, R.string.notebook_name_null, Toast.LENGTH_SHORT).show();
+				return;
+			}
+
+			if (saveNoteBookToDb())
+			{
 				if (flagIntent == FLAG_CREATE_FOR_CHANGE) 
 				{
 
@@ -107,7 +117,7 @@ public class NewNoteBookActivity extends Activity implements OnClickListener {
 			}
 			else
 			{
-				Toast.makeText(this, "NoteBook exist", Toast.LENGTH_SHORT).show();
+				Toast.makeText(this, R.string.same_notebook_name, Toast.LENGTH_SHORT).show();
 			}
 			break;
 
@@ -121,8 +131,11 @@ public class NewNoteBookActivity extends Activity implements OnClickListener {
 		}
 	}
 
-	public boolean isNoteBookCreated() 
+	public boolean isNoteBookCreated()
 	{
+		NoteBookRecord notebook = null;
+
+
 		String newName = mInput.getText().toString();
 
 		if (newName.length() < 1)
@@ -130,6 +143,7 @@ public class NewNoteBookActivity extends Activity implements OnClickListener {
 			Toast.makeText(this, R.string.notebook_name_null, Toast.LENGTH_SHORT).show();
 			return true;
 		}
+
 		
 		boolean ret = false;
 		NoteBookRecordDao noteBookRecordDao = new NoteBookRecordDao(this);
@@ -149,35 +163,68 @@ public class NewNoteBookActivity extends Activity implements OnClickListener {
 		return ret;
 	}
 
-	public void saveNoteBookToDb() {
-		NoteBookRecord record = new NoteBookRecord();
-
-		// record.setRecType("notebook");
-
-		String noteBookName = mInput.getText().toString();
-		Log.d(TAG, "noteBookName is " + noteBookName);
-		record.setNoteBookName(noteBookName);
-		record.setNoteBookId(MD5Util.md5(noteBookName));
-		record.setNoteBookUpLoad(0);
-		record.setNoteBookDelete(0);
+	public boolean saveNoteBookToDb()
+	{
+		//去得当前笔记本列表，并用输入的笔记本名称与列表中的笔记本名称比对
+		NoteBookRecord notebook = null;
 
 		NoteBookRecordDao noteBookRecordDao = new NoteBookRecordDao(this);
+		List<NoteBookRecord> noteBooks = noteBookRecordDao.getAllNoteBooksIncludeDeleted();
+		String noteBookName = mInput.getText().toString();
 
-		noteBookRecordDao.add(record);
+		for (int i = 0; i < noteBooks.size(); i++)
+		{
+			Log.d(TAG, "notebook name is " + noteBooks.get(i).getNoteBookName());
+			if (noteBooks.get(i).getNoteBookName().equals(noteBookName))
+			{
 
-		mCreatedNoteBook = record;
+				notebook = noteBooks.get(i);
+				break;
+			}
+		}
+
+		if (null != notebook)
+		{
+			//当输入的笔记本名称与列表中的某一个笔记本名称相同，并且，笔记本不是被标记删除的，表示想要新建的笔记本已经存在
+			if (notebook.getNoteBookDelete() == 0)
+			{
+				return false;
+			}
+			else
+			{
+				notebook.setNoteBookDelete(0);
+				noteBookRecordDao.updataRecord(notebook);
+				mCreatedNoteBook = notebook;
+				return true;
+			}
+		}
+
+		notebook = new NoteBookRecord();
+
+		Log.d(TAG, "noteBookName is " + noteBookName);
+		notebook.setNoteBookName(noteBookName);
+		String time = TimeUtil.getCurTimeForMd5();
+		Log.d(TAG, "!!!!!!!!! !!!! time is " + time);
+		notebook.setNoteBookId(MD5Util.md5(time));
+		notebook.setNoteBookUpLoad(0);
+		notebook.setNoteBookDelete(0);
+
+		noteBookRecordDao.add(notebook);
+
+		mCreatedNoteBook = notebook;
 
 		Log.d(TAG, "send result to MainActivity");
 
 		if (flagIntent == FLAG_CREATE_FOR_CHANGE) {
 			Intent retIntent = new Intent(this, ChangNoteBookActivity.class);
-			retIntent.putExtra("NoteBook", record);
+			retIntent.putExtra("NoteBook", notebook);
 			setResult(RESULT_OK, retIntent);
 		} else {
 			Intent retIntent = new Intent(this, MainActivity.class);
 			setResult(RESULT_OK, retIntent);
 		}
 
+		return true;
 	}
 
 	/*

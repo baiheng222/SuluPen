@@ -134,7 +134,7 @@ import com.lidroid.xutils.bitmap.BitmapCommonUtils;
 	            updateInfo.checkVersion();
 		    }
         }
-		
+
         if (BluetoothService.getServiceInstance() != null){
 		    if (!isConnected()){
                 LogUtil.i("--------Before Call BluetoothCheck（）-------1-------");
@@ -441,14 +441,17 @@ import com.lidroid.xutils.bitmap.BitmapCommonUtils;
                 break;
             
             case R.id.iv_newnote:
+				/*
             	NoteBookRecord defaultNoteBook = new NoteBookRecord();
             	defaultNoteBook.setNoteBookName("笔记本");
 				defaultNoteBook.setNoteBookId(MD5Util.md5("笔记本"));
+				defaultNoteBook.setNoteBookUpLoad(0);
+				defaultNoteBook.setNoteBookDelete(0);
+				*/
                 Intent newNoteIntent = new Intent(this, ScanNoteActivity.class);
                 String flagStr = Integer.toString(FLAG_CREATE_NOTE_WITH_DEFAULT_NOTEBOOK);
                 newNoteIntent.putExtra("CreatFlag", flagStr);
-               // newNoteIntent.setFlags(FLAG_CREATE_NOTE_WITH_DEFAULT_NOTEBOOK);
-                newNoteIntent.putExtra("NoteBook", defaultNoteBook);
+                //newNoteIntent.putExtra("NoteBook", defaultNoteBook);
                 startActivityForResult(newNoteIntent, 1);
                 break;
             case R.id.iv_rightbtn:

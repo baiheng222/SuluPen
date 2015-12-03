@@ -116,10 +116,23 @@ public class NoteBookRecordDao
             e.printStackTrace();
         }
     }
-    
 
+	//获取全部笔记本的列表,包含有删除标记的
+	public List<NoteBookRecord> getAllNoteBooksIncludeDeleted()
+	{
+		try
+		{
+			mNoteBookRecordList = mNoteBookRecordDao.queryForAll();
+			//mNoteBookRecordList = mNoteBookRecordDao.queryBuilder().where().eq("noteBookDelete", 0).query();
+		}
+		catch (SQLException e)
+		{
+			e.printStackTrace();
+		}
+		return mNoteBookRecordList;
+	}
 	
-	//获取全部笔记本的列表
+	//获取全部笔记本的列表,不包含有删除标记的
     public List<NoteBookRecord> getAllNoteBooks() 
     {
         try 

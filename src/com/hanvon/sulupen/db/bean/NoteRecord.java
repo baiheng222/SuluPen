@@ -3,6 +3,7 @@ package com.hanvon.sulupen.db.bean;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.UUID;
 
 import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
@@ -17,11 +18,11 @@ public class NoteRecord implements Serializable	//Parcelable
 	@DatabaseField(generatedId = true,dataType=DataType.INTEGER)
 	private int id;
 
-	//表示笔记本的唯一性的ID，用UUID随机生成保证唯一性
-	@DatabaseField(columnName = "noteID", dataType = DataType.INTEGER)
-	private int noteID;
+	//表示笔记的唯一性的ID，用UUID随机生成保证唯一性
+	@DatabaseField(columnName = "noteID", dataType = DataType.UUID)
+	private UUID noteID;
 	
-	//笔记本名称字段，当recType为笔记本时，表示笔记本名字；当为笔记的时候，表示这条笔记所属的笔记本的名字。
+	//所属笔记本名称
     @DatabaseField(columnName = "noteBookName",dataType=DataType.STRING)
     private String noteBookName;
 	
@@ -225,12 +226,12 @@ public class NoteRecord implements Serializable	//Parcelable
 		this.notebook = nb;
 	}
 
-	public int getNoteID()
+	public UUID getNoteID()
 	{
 		return noteID;
 	}
 
-	public void setNoteID(int noteID)
+	public void setNoteID(UUID noteID)
 	{
 		this.noteID = noteID;
 	}

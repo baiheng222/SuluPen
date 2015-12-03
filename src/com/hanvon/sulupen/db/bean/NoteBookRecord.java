@@ -19,7 +19,7 @@ public class NoteBookRecord implements Serializable
 	private int id;
 	
 	//笔记本ID,生成之后就不会再改变，是一个唯一的值，除非删除了这个笔记本，这个ID可以作为NoteRecord的外键
-	//使用UUID随机生成的ID,保证在任何时候都是唯一的
+	//使用时间串通过MD5加密生成的字符串作为ID,保证在任何时候都是唯一的
 	@DatabaseField(columnName = "noteBookId",dataType=DataType.STRING)
     private String noteBookId;
 	
@@ -50,7 +50,16 @@ public class NoteBookRecord implements Serializable
 	
     public ArrayList<NoteRecord> getNoteRecordList()
     {
-    	ArrayList<NoteRecord> mNotesList = new ArrayList<NoteRecord>(noteRecords);
+    	ArrayList<NoteRecord> noteslist = new ArrayList<NoteRecord>(noteRecords);
+		ArrayList<NoteRecord> mNotesList = new ArrayList<NoteRecord>();
+		for (int i = 0; i < noteslist.size();i++)
+		{
+			if (noteslist.get(i).getIsDelete() == 0)
+			{
+				mNotesList.add(noteslist.get(i));
+			}
+		}
+
     	return mNotesList;
     }
     
