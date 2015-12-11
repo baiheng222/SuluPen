@@ -6,12 +6,15 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.zip.GZIPInputStream;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import com.hanvon.sulupen.MainActivity;
 import com.hanvon.sulupen.ScanNoteActivity;
 import com.hanvon.sulupen.application.HanvonApplication;
 import com.hanvon.sulupen.datas.ScanRecordInfo;
@@ -90,8 +93,9 @@ public class BluetoothService extends Service{
 	 * Handler 消息接收器
 	 * 
 	 * @param msg
+	 * @throws UnsupportedEncodingException 
 	 */
-	public void handlerMsg(Message msg) {
+	public void handlerMsg(Message msg) throws UnsupportedEncodingException {
 		switch (msg.what) {
 		/**
 		 * 蓝牙升级文件传输时间限制
@@ -338,9 +342,11 @@ public class BluetoothService extends Service{
 								String imageStr = jsonData.getString("scan_image");
 								// LogUtil.i("scanRecordMode"+PreferHelper.getBoolean(DeviceDetailActivity.isReceiveImg,
 								// false));
+								byte[] scanByte = Base64.decode(scanContent, Base64.DEFAULT);
+								String content = new String(scanByte, "unicode");
 								if (ScanNoteActivity.scanNoteAct != null)
 									ScanNoteActivity.scanNoteAct
-											.appendText(scanContent);
+											.appendText(content);
 
 								if (ScanNoteActivity.scanNoteAct
 										.getIsSendScanImage()) {
@@ -349,7 +355,7 @@ public class BluetoothService extends Service{
 										LogUtil.i("----imageStr:--"+imageStr);
 										byte[] imagebyte = Base64.decode(imageStr,
 												Base64.DEFAULT);
-										
+
 										//ungzip bmpByte
 										byte[] imagebyte_ungziped= unGZip(imagebyte);
 										Bitmap bmp = BitmapFactory.decodeByteArray(
@@ -582,7 +588,12 @@ public class BluetoothService extends Service{
 	
 	private Handler msgHandler = new Handler() {
 		public void handleMessage(Message msg) {
-			handlerMsg(msg);
+			try {
+				handlerMsg(msg);
+			} catch (UnsupportedEncodingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 
 		};
 	};

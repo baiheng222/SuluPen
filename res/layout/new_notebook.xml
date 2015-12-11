@@ -8,6 +8,7 @@
     android:layout_width="match_parent"
     android:layout_height="48dp"
     android:layout_alignParentTop="true"
+    android:focusable="false"
     android:background="#f6f6f6" >
     
     	<TextView
@@ -53,6 +54,7 @@
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:background="#e2e2e2"
+        android:focusable="false"
         android:layout_below="@id/rl_title">
         
         <TextView
@@ -86,6 +88,9 @@
        	    android:layout_height="match_parent"
        	    android:textColor="#c8c8c8"
        	    android:background="@null"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:imeOptions="actionSearch"
        	    android:paddingLeft="16dp"/>
         
     </RelativeLayout>

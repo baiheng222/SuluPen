@@ -3,6 +3,8 @@ package com.hanvon.sulupen.db.bean;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.UUID;
+
 /**
  * Created by fan on 2015/11/27.
  */
@@ -11,8 +13,8 @@ public class RecordInfo //implements Parcelable
     private int mYear;
     private int mMonth;
     private int mDay;
-    private int mRecordId;
-    private int mNoteBookId;
+    private UUID mRecordId;
+    private String mNoteBookId;
 
     public int getYear()
     {
@@ -44,22 +46,22 @@ public class RecordInfo //implements Parcelable
         this.mDay = mDay;
     }
 
-    public int getRecordId()
+    public UUID getRecordId()
     {
         return mRecordId;
     }
 
-    public void setRecordId(int mRecordId)
+    public void setRecordId(UUID mRecordId)
     {
         this.mRecordId = mRecordId;
     }
 
-    public int getNoteBookId()
+    public String getNoteBookId()
     {
         return mNoteBookId;
     }
 
-    public void setNoteBookId(int mNoteBookId)
+    public void setNoteBookId(String  mNoteBookId)
     {
         this.mNoteBookId = mNoteBookId;
     }

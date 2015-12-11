@@ -11,6 +11,7 @@ import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.json.JSONException;
@@ -25,6 +26,7 @@ import android.widget.Toast;
 
 import com.hanvon.sulupen.application.HanvonApplication;
 import com.hanvon.sulupen.datas.ImageItem;
+import com.hanvon.sulupen.db.bean.NotePhotoRecord;
 import com.hanvon.sulupen.net.HttpClientHelper;
 
 public class HvnCloudManager {
@@ -67,7 +69,48 @@ public class HvnCloudManager {
         }
 	}
 	
+	public void WriteFileForShareSelect(String title,String content,ArrayList<NotePhotoRecord> mDataList) throws IOException{
+		
+		String filename = SHA1Util.encodeBySHA("selectshare")+".txt";
+		String path = "/sdcard/" + filename;
+
+		FileWriter writer = new FileWriter(path, true);
+		writer.write("<div>/r/n<h1>"+title+"</h1>\r\n<p>"+content+"</p>");
+		
+		for(int i=0;i<mDataList.size();i++){
+			writer.write("\r\n<image src=\"data:image/png;base64,");
+			
+			String base64 = getImageBase64(mDataList.get(i).getLocalUrl());
+    	    writer.write(base64);
+			writer.write("\">");
+			writer.flush();
+		}
+		writer.write("</div>");
+		writer.flush();
+
+		writer.close();
+		
+//		String result = UploadFiletoHvnForShare(path,title,filename);
+//		LogUtil.i("=============test:"+result);
+//		DelteTmpFile(path);
+//		return result;
+		
+	}
 	
+	public String ShareForSelect()
+	{
+		String filename = SHA1Util.encodeBySHA("selectshare")+".txt";
+		String path = "/sdcard/" + filename;
+		
+		String result = UploadFiletoHvnForShare(path,"",filename);
+		LogUtil.i("=============test:"+result);
+		DelteTmpFile(path);
+		return result;
+		
+	}
+	
+	
+	 
 	
 	public String UploadNotesToHvnCloudForShare(String title,String content,List<ImageItem> mDataList) throws IOException{
 		
@@ -313,7 +356,8 @@ public class HvnCloudManager {
 		URL url = null;
 		HttpURLConnection httpurlconnection = null;
 
-		url = new URL("http://cloud.hwyun.com/dws-cloud/rt/ap/v1/store/sharedata");
+		//url = new URL("http://cloud.hwyun.com/dws-cloud/rt/ap/v1/store/sharedata");
+		url = new URL("http://cloud.hwyun.com/dws-cloud/rt/ap/v1/app/note/sharedata");               
 		httpurlconnection = (HttpURLConnection) url.openConnection();
 		httpurlconnection.setConnectTimeout(60*1000);
 		httpurlconnection.setUseCaches(false);

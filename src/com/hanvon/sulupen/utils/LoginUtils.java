@@ -1,5 +1,7 @@
 package com.hanvon.sulupen.utils;
 
+import java.io.File;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -135,6 +137,12 @@ public class LoginUtils {
 				            mEditor.putInt("flag", userflag);
 				            mEditor.putInt("status", 1);
 				            mEditor.commit();
+				            String outputDirectory = "/data/data/com.hanvon.sulupen/users/"+username+"/";
+							File file = new File(outputDirectory);
+							// 创建用户在sdcard上的目录
+							if (!file.exists()) {
+							    file.mkdirs();
+							}
 			    		}else if (accountFlag == 1){
 			    			String nickname = json.getString("nickname");
 			    			SharedPreferences mSharedPreferences=mContext.getSharedPreferences("BitMapUrl", Activity.MODE_MULTI_PROCESS);
@@ -190,6 +198,13 @@ public class LoginUtils {
 				        mEditor.putInt("status", 1);
 				        mEditor.commit();
 				        
+				        String outputDirectory = "/data/data/com.hanvon.sulupen/users/"+qqName+"/";
+						File file = new File(outputDirectory);
+						// 创建用户在sdcard上的目录
+						if (!file.exists()) {
+						    file.mkdirs();
+						}
+						
 				        mContext.startActivity(new Intent(mContext, MainActivity.class));
 		                LoginActivity.instance.finish();
 			        }else{

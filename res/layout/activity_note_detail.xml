@@ -260,8 +260,8 @@
                  android:background="@drawable/delete_note" />
 
 
-
-               <ImageView
+                <!--  
+                <ImageView
                    android:id="@+id/ivChangelag"
                    android:layout_width="wrap_content"
                    android:layout_height="wrap_content"
@@ -269,25 +269,31 @@
                    android:layout_centerVertical="true"
                    android:layout_toRightOf="@+id/ivShare"
                    android:background="@drawable/lag_note" />
+                   -->
 
-               <ImageView
-                   android:id="@+id/ivScan"
-                   android:layout_width="wrap_content"
-                   android:layout_height="wrap_content"
-                   android:layout_centerVertical="true"
-                   android:layout_centerHorizontal="true"
-               
-                   android:background="@drawable/scan_note" />
+            <View
+            android:id= "@+id/vstrut"
+            android:layout_width= "0dp"
+            android:layout_height= "0dp"
+            android:layout_centerHorizontal="true" />
 
                <ImageView
                    android:id="@+id/ivInsertImage"
                    android:layout_width="wrap_content"
                    android:layout_height="wrap_content"
-                   android:layout_centerVertical="true"
-                  
-                   android:layout_marginRight="37dp"
+                    android:layout_centerVertical="true"
+                   android:layout_marginRight="64dp"
                    android:layout_toLeftOf="@+id/ivDelete"
                    android:background="@drawable/image_note" />
+
+               <ImageView
+                   android:id="@+id/ivScan"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                   android:layout_marginLeft="64dp"
+                   android:layout_toRightOf="@+id/ivShare"
+                   android:background="@drawable/scan_note" />
 
             </RelativeLayout>
 

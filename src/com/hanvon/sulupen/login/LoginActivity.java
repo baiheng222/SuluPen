@@ -331,6 +331,14 @@ OnClickListener, PlatformActionListener  {
 
 					LogUtil.i("--------nickname:"+nickname+"  username:"+username);
 					HanvonApplication.userFlag = 0;
+					// 创建用户在sd上的文件目录
+					String outputDirectory = "/data/data/com.hanvon.sulupen/users/"+username+"/";
+					File file = new File(outputDirectory);
+					// 如果目标目录不存在，则创建
+					if (!file.exists()) {
+					    file.mkdirs();
+					}
+
 					if (flag != null){
 						if (Integer.valueOf(flag) == 1){
 							//startActivity(new Intent(LoginActivity.this, MyCloudMsg.class));

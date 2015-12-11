@@ -162,28 +162,50 @@ public class NoteBookRecordDao
     	
     	return noteBookRecord;
     }
-    
+
+	public NoteBookRecord geNoteBookRecordByNameAndID(String id, String name)
+	{
+		NoteBookRecord notebook = null;
+
+		mNoteBookRecordList = getAllNoteBooks();
+
+
+		for (int i = 0; i <mNoteBookRecordList.size(); i++)
+		{
+			if (mNoteBookRecordList.get(i).getNoteBookId().equals(id) &&
+					mNoteBookRecordList.get(i).getNoteBookName().equals(name))
+			{
+				notebook = mNoteBookRecordList.get(i);
+				break;
+			}
+		}
+
+		return notebook;
+	}
+
+	public NoteBookRecord geNoteBookRecordByStringID(String id)
+	{
+		NoteBookRecord notebook = null;
+
+		mNoteBookRecordList = getAllNoteBooks();
+
+		for (int i = 0; i <mNoteBookRecordList.size(); i++)
+		{
+			if (mNoteBookRecordList.get(i).getNoteBookId().equals(id))
+			{
+				notebook = mNoteBookRecordList.get(i);
+				break;
+			}
+		}
+
+		return notebook;
+	}
+
     public NoteBookRecord getNoteBookRecordByName(String name)
     {
         NoteBookRecord notebook = null;
-        try 
-        {
-            mNoteBookRecordList = mNoteBookRecordDao.queryForAll();
-        } 
-        catch (SQLException e) 
-        {
-            e.printStackTrace();
-        }
-        /*
-        try
-        {
-            return mNoteBookRecordDao.queryBuilder().where().eq("noteBookName", name).query();
-        }
-        catch (SQLException e)
-        {
-            e.printStackTrace();
-            return null;
-        }*/
+
+		mNoteBookRecordList = getAllNoteBooks();
         
         for (int i = 0; i <mNoteBookRecordList.size(); i++)
         {
@@ -196,5 +218,79 @@ public class NoteBookRecordDao
         
         return notebook;
     }
+
+	//获取所有需要删除的笔记本的列表
+	public List<NoteBookRecord> getAllNoteBooksNeedToDelete()
+	{
+		try
+		{
+			//mNoteBookRecordList = mNoteBookRecordDao.queryForAll();
+			mNoteBookRecordList = mNoteBookRecordDao.queryBuilder().where().eq("noteBookDelete", 1).query();
+		}
+		catch (SQLException e)
+		{
+			e.printStackTrace();
+		}
+		return mNoteBookRecordList;
+	}
+
+	//获取所有需要上传的笔记本的列表
+	public List<NoteBookRecord> getAllNoteBooksNeedToUpload()
+	{
+		try
+		{
+			//mNoteBookRecordList = mNoteBookRecordDao.queryForAll();
+			mNoteBookRecordList = mNoteBookRecordDao.queryBuilder().where().ne("noteBookUpLoad", 1).and().eq("noteBookDelete", 0).query();
+		}
+		catch (SQLException e)
+		{
+			e.printStackTrace();
+		}
+		return mNoteBookRecordList;
+	}
+
+	//删除已经同步的需要删除的笔记本
+	public void deleteSyncedNoteBooks(String notebookID)
+	{
+		List<NoteBookRecord> booklist = null;
+		try
+		{
+			booklist = mNoteBookRecordDao.queryBuilder().where().eq("noteBookId", notebookID).and().eq("noteBookDelete", 1).query();
+		}
+		catch (SQLException e)
+		{
+			e.printStackTrace();
+		}
+
+		if (null != booklist)
+		{
+			for (int i = 0; i < booklist.size(); i++)
+			{
+				if (booklist.get(i).getNoteBookDelete() == 1)
+				{
+					Log.d(TAG, "!!!!!!!!!!!!!!! delete notebook");
+					deleteRecord(booklist.get(i));
+				}
+			}
+		}
+		else
+		{
+			Log.d(TAG, "Notebook not found !!!!!!!!!!!!!!!!1");
+		}
+	}
+
+	public void deleteAllSyncedNoteBooks()
+	{
+		List<NoteBookRecord> list =  getAllNoteBooksNeedToDelete();
+		if (null == list)
+		{
+			Log.d(TAG, "No notebook need to delete");
+			return;
+		}
+		for (int i = 0; i < list.size(); i++)
+		{
+			deleteRecord(list.get(i));
+		}
+	}
 
 }

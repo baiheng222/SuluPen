@@ -98,6 +98,7 @@ public class ImageChooseActivity extends Activity {
 				// intent.putExtra(IntentConstants.EXTRA_IMAGE_LIST,
 				// (Serializable) temp);
 				ScanNoteActivity.scanNoteAct.mDataList.addAll(temp);
+				ScanNoteActivity.scanNoteAct.setImageChangeFlag(true);
 				startActivity(intent);
 				
 				if(ScanNoteActivity.scanNoteAct.getGridViewFromNote().getVisibility() == View.GONE)

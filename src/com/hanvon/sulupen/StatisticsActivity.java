@@ -9,6 +9,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.ViewGroup.LayoutParams;
+import android.view.Window;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -64,6 +65,7 @@ public class StatisticsActivity extends Activity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_statistics);
 
         assignViews();
@@ -75,6 +77,16 @@ public class StatisticsActivity extends Activity
         mPieChartView = mPieChart.getView(this);
         mBarChartView = mBarChart.getView(this);
         //mRenderer.setClickEnabled(true);
+
+        if (null == mPieChartView)
+        {
+            return;
+        }
+
+        if (null == mBarChartView)
+        {
+            return;
+        }
 
         mLlChart.addView(mPieChartView, new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
         mLlBarChart.addView(mBarChartView, new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));

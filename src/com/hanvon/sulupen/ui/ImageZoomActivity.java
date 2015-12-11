@@ -54,6 +54,7 @@ public class ImageZoomActivity extends Activity
 		{
 			public void onClick(View v)
 			{
+				ScanNoteActivity.scanNoteAct.setImageChangeFlag(true);
 				if (mDataList.size() == 1)
 				{
 					removeImgs();

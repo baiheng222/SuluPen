@@ -36,6 +36,7 @@ import android.os.PowerManager.WakeLock;
 import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -80,6 +81,7 @@ import com.hanvon.sulupen.ui.ImageZoomActivity;
 import com.hanvon.sulupen.utils.CustomConstants;
 import com.hanvon.sulupen.utils.CustomDialog;
 import com.hanvon.sulupen.utils.HvnCloudManager;
+import com.hanvon.sulupen.utils.HvnCloudRequest;
 import com.hanvon.sulupen.utils.IntentConstants;
 import com.hanvon.sulupen.utils.LogUtil;
 import com.hanvon.sulupen.utils.MD5Util;
@@ -94,7 +96,7 @@ public class ScanNoteActivity extends Activity implements OnClickListener{
 	
     private ImageView mBcakImage;
     private ImageView mShareImage;
-    private ImageView mChangeTag;
+ //   private ImageView mChangeTag;
     private ImageView mInsertImag;
     private ImageView mDeleteImage;
 
@@ -161,6 +163,8 @@ public class ScanNoteActivity extends Activity implements OnClickListener{
 	private boolean flag;
 	
 	private int mInputFlag = 0;
+	
+	private boolean changeImageFlag = false;
 	
 	private Handler handler = new Handler() {
 		@SuppressLint("ShowToast")
@@ -298,13 +302,14 @@ public class ScanNoteActivity extends Activity implements OnClickListener{
 		LogUtil.i("tong-----scannote onStop");
 		//saveNoteToDb();
 		super.onStop();
+		
 	}
 
 	private void initView() {
 
 		mBcakImage= (ImageView) findViewById(R.id.come_back);
 		mShareImage = (ImageView) findViewById(R.id.ivShare);
-		mChangeTag = (ImageView) findViewById(R.id.ivChangelag);
+//		mChangeTag = (ImageView) findViewById(R.id.ivChangelag);
 		mInsertImag = (ImageView) findViewById(R.id.ivInsertImage);
 		mDeleteImage = (ImageView) findViewById(R.id.ivDelete);
 		
@@ -321,13 +326,18 @@ public class ScanNoteActivity extends Activity implements OnClickListener{
 		tvTopic = (TextView) this.findViewById(R.id.tvMyTopic);
 		IVsendImag = (ImageView)this.findViewById(R.id.ivScan);
 		
+		
+		etScanContent.addTextChangedListener(textWatcher);
+		etNoteTitle.addTextChangedListener(textWatcher);
+		
+		
 		tvNoteTitle.setOnClickListener(this);
 		tvScanContent.setOnClickListener(this);
 		tvTopic.setOnClickListener(this);
 		IVsendImag.setOnClickListener(this);
 		mDeleteImage.setOnClickListener(this);
 		
-		mChangeTag.setOnClickListener(this);
+//		mChangeTag.setOnClickListener(this);
 		mBcakImage.setOnClickListener(this);
 		mShareImage.setOnClickListener(this);
 		mInsertImag.setOnClickListener(this);
@@ -343,6 +353,7 @@ public class ScanNoteActivity extends Activity implements OnClickListener{
 		mGridView = (GridView) findViewById(R.id.gridview);
 		mGridView.setSelector(new ColorDrawable(Color.TRANSPARENT));
 		mGridView.setVisibility(View.GONE);
+	
 		
 		//只在这里setAdapter会导致进入历史笔记后添加的图片显示不一致的问题.因为这里Activity的mDataList和adapter内操作的mDataList的本体不是一个,在onResume中设置(或重新)setAdapter可解决该问题
 		// mAdapter = new ImagePublishAdapter(this, mDataList);
@@ -366,6 +377,32 @@ public class ScanNoteActivity extends Activity implements OnClickListener{
 		});
 		
 	}
+	
+	
+	
+	private TextWatcher textWatcher = new TextWatcher() {  
+		  
+		@Override  
+		public void onTextChanged(CharSequence s, int start, int before,  
+		int count) {  
+			LogUtil.i("tong--------------onTextChanged");
+			mScanRecord.setUpLoad(2);
+
+		}  
+		  
+		@Override  
+		public void beforeTextChanged(CharSequence s, int start, int count,  
+		int after) {  
+
+		  
+		}  
+		  
+		@Override  
+		public void afterTextChanged(Editable s) {  
+
+		  
+		}  
+		};  
 	
 	
 	private int getDataSize() {
@@ -730,7 +767,9 @@ public class ScanNoteActivity extends Activity implements OnClickListener{
 				note.setCreateAddr(((HanvonApplication) getApplication()).getAddress());
 				note.setCreateTime((HanvonApplication.noteCreateTime != null && HanvonApplication.noteCreateTime.length() > 0) ? HanvonApplication.noteCreateTime : TimeUtil.getcurTime(TimeUtil.FORMAT_FULL));
 				note.setWeather(((HanvonApplication) getApplication()).getWeather());
-				
+
+				note.setIsDelete(0);
+				note.setUpLoad(0);
 				note.setInputType(mInputFlag);
 				note.setAddrDetail(((HanvonApplication) getApplication()).getAddrDetail());
 				note.setNoteBook(noteBook);
@@ -781,7 +820,11 @@ public class ScanNoteActivity extends Activity implements OnClickListener{
 					mScanRecord.setCreateTime(TimeUtil.getcurTime(TimeUtil.FORMAT_FULL));
 				}
 				//(noteInfo, noteInfo.getS_id())
-				mScanRecord.setUpLoad(2);
+				if(changeImageFlag)
+				{
+					mScanRecord.setUpLoad(2);
+				}
+				//mScanRecord.setUpLoad(2);
 				mScanRecordDao.updataRecord(mScanRecord);
 				
 				//添加图片
@@ -996,7 +1039,7 @@ public class ScanNoteActivity extends Activity implements OnClickListener{
 			    	    String content1 = etScanContent.getText().toString();
 			    			if (!content1.equals("")){
 			    				bShareClick = true;
-			    				pd = ProgressDialog.show(ScanNoteActivity.this, "", "生成连接中，请等待...");
+			    				pd = ProgressDialog.show(ScanNoteActivity.this, "", getString(R.string.link_mess));
 			            	    LogUtil.i("tong-------mDataList size:"+mDataList.size());
 			    				UploadFilesToHvnCloudForShare(title1,content1,mDataList);
 			    			}
@@ -1039,25 +1082,25 @@ public class ScanNoteActivity extends Activity implements OnClickListener{
 	            break;
 	            
    */
-	            case R.id.ivChangelag:
-	            	//点击第二个图标，上传云
-		            	String title = etNoteTitle.getText().toString();
-		    			String content = etScanContent.getText().toString();
-		    			if (!content.equals("")){
-		    				if (HanvonApplication.hvnName == ""){
-		    					Toast.makeText(this, "未登录，请先登录！", Toast.LENGTH_SHORT).show();
-		    					break;
-		    				}
-		    				if (!HanvonApplication.isActivity){
-		    					Toast.makeText(this, "用户未激活，请激活后重新登录！", Toast.LENGTH_SHORT).show();
-		    					break;
-		    				}
-		    				pd = ProgressDialog.show(ScanNoteActivity.this, "", "文件上传中...");
-		            	    UploadFilesToHvnCloud(title,content,mDataList);
-		    			}
-	            	
-	            	//startChangeNoteBook();
-	            	break;
+//	            case R.id.ivChangelag:
+//	            	//点击第二个图标，上传云
+//		            	String title = etNoteTitle.getText().toString();
+//		    			String content = etScanContent.getText().toString();
+//		    			if (!content.equals("")){
+//		    				if (HanvonApplication.hvnName == ""){
+//		    					Toast.makeText(this, "未登录，请先登录！", Toast.LENGTH_SHORT).show();
+//		    					break;
+//		    				}
+//		    				if (!HanvonApplication.isActivity){
+//		    					Toast.makeText(this, "用户未激活，请激活后重新登录！", Toast.LENGTH_SHORT).show();
+//		    					break;
+//		    				}
+//		    				pd = ProgressDialog.show(ScanNoteActivity.this, "", "文件上传中...");
+//		            	    UploadFilesToHvnCloud(title,content,mDataList);
+//		    			}
+//	            	
+//	            	//startChangeNoteBook();
+//	            	break;
 	            	
 	    		case R.id.come_back:
 	    			//如果输入法存在，隐藏输入法
@@ -1385,6 +1428,11 @@ public class ScanNoteActivity extends Activity implements OnClickListener{
 		startActivityForResult(openCameraIntent, TAKE_PICTURE);
 	}
 	
+	public void setImageChangeFlag(boolean flag)
+	{
+		changeImageFlag = flag;
+	}
+	
 	protected void onActivityResult(int requestCode, int resultCode, Intent data)
 	{
 		switch (requestCode)
@@ -1401,6 +1449,8 @@ public class ScanNoteActivity extends Activity implements OnClickListener{
 				ImageItem item = new ImageItem();
 				item.sourcePath = path;
 				mDataList.add(item);
+				changeImageFlag = true;
+				mScanRecord.setUpLoad(2);
 			}
 			break;
 			
@@ -1459,6 +1509,7 @@ public class ScanNoteActivity extends Activity implements OnClickListener{
 		mInputFlag = 0;
 		// 保存笔记操作
 		releaseWakeLock();
+		changeImageFlag = false;
 	
 	}
 }

@@ -34,6 +34,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 /** 
  * App自动更新之通知栏下载 
  * @author 402-9 
@@ -55,6 +56,7 @@ public class UpdateAppService {
     	this.context=context;
     	this.updateType = flag;
   	}
+
 	//创建通知 
 	public void CreateInform(String Url) {  
 		updateUrl = Url;

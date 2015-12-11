@@ -5,6 +5,7 @@ package com.hanvon.sulupen.charts;
  */
 import org.achartengine.ChartFactory;
 import org.achartengine.GraphicalView;
+import org.achartengine.model.CategorySeries;
 import org.achartengine.renderer.DefaultRenderer;
 import org.achartengine.renderer.SimpleSeriesRenderer;
 
@@ -12,10 +13,23 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 
+import com.hanvon.sulupen.db.bean.NoteBookRecord;
+import com.hanvon.sulupen.db.dao.NoteBookRecordDao;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
 /**
  * Budget demo pie chart.
  */
-public class BudgetPieChart extends AbstractDemoChart {
+public class BudgetPieChart extends AbstractDemoChart
+{
+    private final String TAG = "BudgetPieChart";
+    private List<NoteBookRecord> mNoteBookList = null;
+    private double[] values = new double[] { 12, 14, 11, 10, 19 };
+    //int[] colors = new int[] { Color.BLUE, Color.GREEN, Color.MAGENTA, Color.YELLOW, Color.CYAN };
+
     /**
      * Returns the chart name.
      *
@@ -43,6 +57,7 @@ public class BudgetPieChart extends AbstractDemoChart {
     public Intent execute(Context context) {
         double[] values = new double[] { 12, 14, 11, 10, 19 };
         int[] colors = new int[] { Color.BLUE, Color.GREEN, Color.MAGENTA, Color.YELLOW, Color.CYAN };
+
         DefaultRenderer renderer = buildCategoryRenderer(colors);
         renderer.setZoomButtonsVisible(false);
         renderer.setZoomEnabled(false);
@@ -59,22 +74,84 @@ public class BudgetPieChart extends AbstractDemoChart {
         return intent;
     }
 
-    public GraphicalView getView(Context context) {
-        double[] values = new double[] { 12, 14, 11, 10, 19 };
-        int[] colors = new int[] { Color.BLUE, Color.GREEN, Color.MAGENTA, Color.YELLOW, Color.CYAN };
+    public static String getRandColorCode()
+    {
+        String r, g, b;
+        Random random = new Random();
+        r = Integer.toHexString(random.nextInt(256)).toUpperCase();
+        g = Integer.toHexString(random.nextInt(256)).toUpperCase();
+        b = Integer.toHexString(random.nextInt(256)).toUpperCase();
+
+        r = r.length() == 1 ? "0" + r : r;
+        g = g.length() == 1 ? "0" + g : g;
+        b = b.length() == 1 ? "0" + b : b;
+
+        return "#" + r + g + b;
+    }
+
+    protected CategorySeries buildCategoryDataset(String title, double[] values)
+    {
+        CategorySeries series = new CategorySeries(title);
+        int k = 0;
+        for (double value : values)
+        {
+            series.add("", value);
+        }
+
+        return series;
+    }
+
+    public GraphicalView getView(Context context)
+    {
+        CategorySeries series = new CategorySeries("Notebooks");
+        int valuesize = 0;
+
+        NoteBookRecordDao noteBookRecordDao = new NoteBookRecordDao(context);
+        mNoteBookList = noteBookRecordDao.getAllNoteBooks();
+        if (null != mNoteBookList)
+        {
+            values = new double[mNoteBookList.size()];
+            for (int i = 0; i < mNoteBookList.size(); i++)
+            {
+                values[i] = mNoteBookList.get(i).getNoteRecordList().size();
+                if (values[i] > 0)
+                {
+                    series.add(mNoteBookList.get(i).getNoteBookName(), values[i]);
+                    valuesize++;
+                }
+
+            }
+        }
+
+        if (valuesize == 0)
+        {
+            return  null;
+        }
+
+        int[] colors = new int[valuesize];
+        for (int i = 0; i < valuesize; i++)
+        {
+            colors[i] = Color.parseColor(getRandColorCode());    //Integer.parseInt(getRandColorCode());
+        }
+
         DefaultRenderer renderer = buildCategoryRenderer(colors);
         renderer.setZoomButtonsVisible(false);
         renderer.setZoomEnabled(false);
-        renderer.setChartTitleTextSize(20);
+        //renderer.setChartTitleTextSize(20);
+        renderer.setLabelsTextSize(20);
+        renderer.setLabelsColor(Color.BLACK);
         renderer.setDisplayValues(true);
         renderer.setShowLabels(true);
+        renderer.setPanEnabled(false);
+        renderer.setShowLegend(false);
+        /*
         SimpleSeriesRenderer r = renderer.getSeriesRendererAt(0);
-        r.setGradientEnabled(true);
-        r.setGradientStart(0, Color.BLUE);
-        r.setGradientStop(0, Color.GREEN);
+        //r.setGradientEnabled(true);
+        //r.setGradientStart(0, Color.BLUE);
+        //r.setGradientStop(0, Color.GREEN);
         r.setHighlighted(true);
-        GraphicalView view = ChartFactory.getPieChartView(context,
-                buildCategoryDataset("Project budget", values), renderer);
+        */
+        GraphicalView view = ChartFactory.getPieChartView(context, series, renderer);
         return view;
     }
 }

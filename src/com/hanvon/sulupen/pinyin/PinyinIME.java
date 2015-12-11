@@ -68,11 +68,13 @@ import com.hanvon.bluetooth.BluetoothService;
 import com.hanvon.bluetooth.ConstPool;
 import com.hanvon.sulupen.R;
 import com.hanvon.sulupen.utils.LogUtil;
+import com.hanvon.sulupen.utils.UiUtil;
+
+import java.io.UnsupportedEncodingException;
 //import com.hanvon.sulupen.helper.EnvironmentHelper;
 //import com.hanvon.sulupen.helper.FileHelper;
 //import com.hanvon.sulupen.ui.DeviceListActivity;
 //import com.hanvon.sulupen.ScanNoteActivity;
-import com.hanvon.sulupen.utils.UiUtil;
 
 /**
  * Main class of the Pinyin input method. 输入法服务
@@ -261,7 +263,18 @@ public class PinyinIME extends InputMethodService {
             	String scanContent;
 				try {
 					scanContent = jsonData.getString("scan_text");
-					commitResultText(scanContent);
+					byte[] scanByte = Base64.decode(scanContent, Base64.DEFAULT);
+					String content;
+					try {
+						content = new String(scanByte, "unicode");
+						commitResultText(content);
+					} catch (UnsupportedEncodingException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+
+					
+					
 					String imageStr=jsonData.getString("scan_image");
 					
 					if(imageStr.length() != 0)

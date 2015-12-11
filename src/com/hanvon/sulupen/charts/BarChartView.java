@@ -3,6 +3,7 @@ package com.hanvon.sulupen.charts;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Paint.Align;
 
 import org.achartengine.ChartFactory;
 import org.achartengine.GraphicalView;
@@ -61,10 +62,12 @@ public class BarChartView
     {
         XYMultipleSeriesRenderer renderer = new XYMultipleSeriesRenderer();
         renderer.setPanEnabled(false);
-        renderer.setAxisTitleTextSize(16);
-        renderer.setChartTitleTextSize(20);
-        renderer.setLabelsTextSize(15);
-        renderer.setLegendTextSize(15);
+        renderer.setAxisTitleTextSize(20);
+        //renderer.setChartTitleTextSize(20);
+        renderer.setLabelsTextSize(20);
+        renderer.setDisplayValues(true);
+        //renderer.setLegendTextSize(15);
+        renderer.setShowLegend(false);
         renderer.setMargins(new int[] {20, 30, 15, 0});
         SimpleSeriesRenderer r = new SimpleSeriesRenderer();
         //r.setColor(Color.BLUE);
@@ -80,11 +83,19 @@ public class BarChartView
         //renderer.setChartTitle("");
         //renderer.setXTitle("x values");
         //renderer.setYTitle("y values");
-        renderer.setXAxisMin(1);
-        renderer.setXAxisMax(12);
+
+        renderer.setXLabels(12);
+        renderer.setXAxisMin(0.5);
+        renderer.setXAxisMax(12.5);
         renderer.setYAxisMin(0);
         renderer.setYAxisMax(210);
         renderer.setBarSpacing(0.5f);
+        renderer.setZoomButtonsVisible(false);
+        renderer.setZoomEnabled(false);
+        renderer.setPanEnabled(false);
+        renderer.setXLabelsAlign(Align.LEFT);//刻度线与X轴坐标文字左侧对齐
+        renderer.setYLabelsAlign(Align.LEFT);
+        renderer.setXLabelsColor(Color.BLUE);
     }
 
     public GraphicalView getView(Context context)

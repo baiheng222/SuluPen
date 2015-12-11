@@ -6,10 +6,13 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
+import org.json.JSONException;
+
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.DialogInterface;
@@ -52,6 +55,7 @@ import com.hanvon.sulupen.login.LoginActivity;
 import com.hanvon.sulupen.login.ShowUserMessage;
 import com.hanvon.sulupen.utils.CircleImageView;
 import com.hanvon.sulupen.utils.ConnectionDetector;
+import com.hanvon.sulupen.utils.HvnCloudSynchro;
 import com.hanvon.sulupen.utils.LogUtil;
 import com.hanvon.sulupen.utils.MD5Util;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
@@ -107,13 +111,38 @@ import com.lidroid.xutils.bitmap.BitmapCommonUtils;
 				mEpen.setBackgroundResource(R.drawable.epen_manager_nor);
 				break;
 			case BluetoothMsgReceive.HARD_WARE_UPDATE:
-				new UpdateAppService(MainActivity.this,2).CreateInform(HanvonApplication.HardUpdateUrl);
+				showUpdataDialog();
+			//	new UpdateAppService(MainActivity.this,2).CreateInform(HanvonApplication.HardUpdateUrl);
 				break;
 				
 			}
 		};
 	};
 
+	public void showUpdataDialog() {
+	    AlertDialog.Builder builer = new Builder(MainActivity.this);
+	    builer.setTitle("硬件版本升级");
+	    builer.setMessage("有最新的硬件版本，是否需要下载更新？");
+	    builer.setCancelable(false);
+	    builer.setPositiveButton("下载", new DialogInterface.OnClickListener() {
+	    	 public void onClick(DialogInterface dialog, int which) {
+	    		 int dPowerState = BluetoothService.getServiceInstance().curBatteryPower;
+					LogUtil.i("----------dPowerState:"+dPowerState);
+					if (dPowerState < 50){
+			    		Toast.makeText(MainActivity.this, "电量过低，请充电后进行硬件版本升级！", Toast.LENGTH_SHORT).show();
+			    		return;
+			    	}
+	    		new UpdateAppService(MainActivity.this,2).CreateInform(HanvonApplication.HardUpdateUrl); 
+		     }
+	    });
+	    //当点取消按钮时进行登录
+	    builer.setNegativeButton("以后再说", new DialogInterface.OnClickListener() {
+	        public void onClick(DialogInterface dialog, int which) {
+	        }
+	    });
+	    AlertDialog dialog = builer.create();
+	    dialog.show();
+	}
     @Override
     protected void onCreate(Bundle savedInstanceState) 
     {
@@ -493,7 +522,15 @@ import com.lidroid.xutils.bitmap.BitmapCommonUtils;
             break;
             
             case R.id.rl_cloud:
-            	Toast.makeText(this, "此版本暂不支持该功能！", Toast.LENGTH_SHORT).show();  
+            	/******************ceshi***********************/
+    			HvnCloudSynchro sync = new HvnCloudSynchro(MainActivity.this);
+    			try {
+    				sync.QuerySync();
+    			} catch (JSONException e) {
+    				// TODO Auto-generated catch block
+    				e.printStackTrace();
+    			}
+            //	Toast.makeText(this, "此版本暂不支持该功能！", Toast.LENGTH_SHORT).show();  
             break;    
         }
     }

@@ -128,6 +128,14 @@ public class SettingActivity extends Activity implements OnClickListener
                     {
                         NoteRecordDao noteDao = new NoteRecordDao(SettingActivity.this);
                         noteDao.deleteRecordsDB();
+                        
+                        //在清空缓存的时候，同时清空保存的同步的时间，--------有待讨论
+                        SharedPreferences mSharedPreferences=getSharedPreferences("syncTime", Activity.MODE_MULTI_PROCESS);
+                        if (mSharedPreferences != null){
+						    Editor mEditor = mSharedPreferences.edit();
+						    mEditor.putString("OldSyncTime","");
+						    mEditor.commit();
+                        }
                     }
                 });
                 

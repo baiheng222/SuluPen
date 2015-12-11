@@ -123,7 +123,7 @@ public class SearchActivity extends Activity implements OnClickListener
 		 mTitle = (TextView) findViewById(R.id.tv_title);
 		 mRightBtn = (TextView) findViewById(R.id.tv_rightbtn);
 		 mInput = (ClearEditText) findViewById(R.id.ced_search);
-		 
+
 		 mInput.setOnEditorActionListener(new OnEditorActionListener() 
 		 { 
 			 public boolean onEditorAction(TextView v, int actionId, KeyEvent event)  

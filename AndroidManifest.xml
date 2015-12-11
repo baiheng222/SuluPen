@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.hanvon.sulupen"
     android:versionCode="14"
-    android:versionName="1.0.1.023" >
+    android:versionName="1.0.1.025" >
 
     <uses-sdk
         android:minSdkVersion="15"
@@ -155,6 +155,7 @@
         </activity>
 
         <activity android:name=".NewNoteBookActivity"
+                  android:windowSoftInputMode="stateVisible|adjustResize"
                   android:screenOrientation="portrait">
         </activity>
         <activity android:name=".NoteBookListActivity"
@@ -165,13 +166,12 @@
             android:label="蓝牙"
             android:screenOrientation="portrait"
             android:theme="@style/CusterDialog" />
-        <activity android:name=".NoteDetailActivity"
-                  android:screenOrientation="portrait">
-        </activity>
+
         <activity android:name=".EditNoteBookActivity"
                   android:screenOrientation="portrait">
         </activity>
         <activity android:name=".RenameNoteBookActivity"
+                  android:windowSoftInputMode="stateVisible|adjustResize"
                   android:screenOrientation="portrait">
         </activity>
         <activity android:name=".ChooseNoteActivity"
@@ -257,6 +257,12 @@
         </activity>
         <activity android:name=".SoftUpdate" >
         </activity>
+        <receiver android:name="com.hanvon.sulupen.utils.NetworkChangeReceiver">  
+            <intent-filter>  
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>  
+            </intent-filter>  
+        </receiver>  
+        
         <activity
             android:name="com.mob.tools.MobUIShell"
             android:configChanges="keyboardHidden|orientation|screenSize"

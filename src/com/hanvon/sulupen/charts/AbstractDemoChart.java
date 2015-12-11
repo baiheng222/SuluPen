@@ -151,7 +151,7 @@ public abstract class AbstractDemoChart implements IDemoChart {
         CategorySeries series = new CategorySeries(title);
         int k = 0;
         for (double value : values) {
-            series.add("Project " + ++k, value);
+            series.add("", value);
         }
 
         return series;

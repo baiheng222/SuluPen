@@ -31,6 +31,7 @@ import com.tencent.mm.sdk.openapi.IWXAPI;
 import com.tencent.mm.sdk.openapi.WXAPIFactory;
 import com.tencent.tauth.Tencent;
 
+import java.io.File;
 import java.util.List;
 //import org.json.JSONObject;
 
@@ -144,6 +145,19 @@ public class HanvonApplication extends FrontiaApplication {
 		BluetoothSetting.getInstance(sharedPref);
 
 		//BluetoothService.startService(this);
+		//创建应用目录
+		String outputDirectory = "/data/data/com.hanvon.sulupen/down/";
+		File file = new File(outputDirectory);
+		// 如果目标目录不存在，则创建
+		if (!file.exists()) {
+		    file.mkdirs();
+		}
+		outputDirectory = "/data/data/com.hanvon.sulupen/users/";
+		File userfile = new File(outputDirectory);
+		// 如果目标目录不存在，则创建
+		if (!userfile.exists()) {
+			userfile.mkdirs();
+		}
 	}
 
 	private void InitLocation() {

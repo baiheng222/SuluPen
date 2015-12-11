@@ -220,5 +220,18 @@
     <string name="notebook_name_null">The notebook name is empty</string>
     <string name="title_activity_splash">SplashActivity</string>
     <string name="title_activity_guide">GuideActivity</string>
+    
+    <string name="link_mess">生成连接中，请等待...</string>
+    <string name="share_from_hanvon">来自汉王速记的分享</string>
+    
+     <string name="start_input">启用汉王输入法</string>
+	<string name="open_guide_first">选择汉王输入法</string>
+    <string name="open_guide_second">切换到汉王输入法</string>
+    <string name="open_bn_choose">去勾选></string>
+    <string name="open_bn_choosed">已勾选</string>
+    <string name="open_bn_switch">去切换></string>
+    <string name="open_bn_switched">已切换</string>
+
+
 
 </resources>

@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.UUID;
 
 
 //import com.hanvon.sulupen.db.bean.NoteBookInfo;
@@ -222,5 +223,85 @@ public class NoteRecordDao
         }
         return note;
     }
-    
+
+	//获取需要删除的笔记的列表
+	public List<NoteRecord> getAllNotesToDelete()
+	{
+		try
+		{
+			return mNoteRecordDao.queryBuilder().where().eq("isDelete", 1).query();
+		}
+		catch (SQLException e)
+		{
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	//获取需要上传的笔记的列表
+	public List<NoteRecord> getAllNotesToUpload()
+	{
+		try
+		{
+			return mNoteRecordDao.queryBuilder().where().ne("isUpLoad", 1).and().eq("isDelete", 0).query();
+		}
+		catch (SQLException e)
+		{
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	public NoteRecord getNoteRecordByUUID(UUID uuid)
+	{
+		NoteRecord noterecord = null;
+		List<NoteRecord> noteRecords = null;
+		try
+		{
+			noteRecords = mNoteRecordDao.queryBuilder().where().eq("isDelete", 0).query();
+		}
+		catch (SQLException e)
+		{
+			e.printStackTrace();
+			return null;
+		}
+
+		for (int i = 0; i < noteRecords.size(); i++)
+		{
+			if (noteRecords.get(i).getNoteID().equals(uuid))
+			{
+				noterecord = noteRecords.get(i);
+				break;
+			}
+		}
+
+		return noterecord;
+	}
+
+	//通过UUID删除记录
+	public void deleteSyncedNoteByID(UUID uuid)
+	{
+		NoteRecord note = getNoteRecordByUUID(uuid);
+
+		if (null != note)
+		{
+			deleteRecord(note);
+		}
+
+	}
+
+	public void deleteAllSyncedNotes()
+	{
+		List<NoteRecord> list = getAllNotesToDelete();
+		if (null == list)
+		{
+			Log.d(TAG, "no note to be delete");
+			return;
+		}
+
+		for (int i = 0; i < list.size(); i++)
+		{
+			deleteRecord(list.get(i));
+		}
+	}
 }

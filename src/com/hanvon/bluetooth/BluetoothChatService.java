@@ -15,10 +15,12 @@ import java.util.UUID;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.hanvon.sulupen.application.HanvonApplication;
 import com.hanvon.sulupen.utils.LogUtil;
 
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.bluetooth.BluetoothAdapter;
@@ -26,6 +28,8 @@ import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothServerSocket;
 import android.bluetooth.BluetoothSocket;
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -177,6 +181,12 @@ public class BluetoothChatService {
 		bundle.putString(TOAST, "设备断开连接");
 		msg.setData(bundle);
 		mHandler.sendMessage(msg);
+		
+		HanvonApplication.isDormant = false;
+		SharedPreferences mSharedPreferences=context.getSharedPreferences("Blue", Activity.MODE_MULTI_PROCESS);
+		Editor mEditor=	mSharedPreferences.edit();
+		mEditor.putBoolean("isDormant", HanvonApplication.isDormant);
+		mEditor.commit();
 	}
 	
 	public synchronized void start() {

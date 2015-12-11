@@ -64,18 +64,18 @@ public class HardUpdate {
 			    JSONObject json=new JSONObject(jsonCode);
 			    LogUtil.i(json.toString());
 			    if (json.get("code").equals("0")) {
-			    	if (BluetoothService.getServiceInstance().curBatteryStatus == BatteryManager.BATTERY_STATUS_CHARGING) {
-			    		LogUtil.i("----------系统正在进行充电！----------------");
-					} else {
-						dPowerState = BluetoothService.getServiceInstance().curBatteryPower;
-						LogUtil.i("----------dPowerState:"+dPowerState);
-						if (dPowerState < 30){
-				    		Toast.makeText(mContext, "有新的版本需要更新，电量过低，请充电后进行文件升级！", Toast.LENGTH_SHORT).show();
-				    		/*退出蓝牙的动作并跳转到主界面*/
-				    		return;
-				    	}
-					}
-			    		
+			    //	if (BluetoothService.getServiceInstance().curBatteryStatus == BatteryManager.BATTERY_STATUS_CHARGING) {
+			    //		LogUtil.i("----------系统正在进行充电！----------------");
+				//	} else {
+				//		dPowerState = BluetoothService.getServiceInstance().curBatteryPower;
+				//		LogUtil.i("----------dPowerState:"+dPowerState);
+				//		if (dPowerState < 50){
+				 //   		Toast.makeText(mContext, "有新的版本需要更新，电量过低，请充电后进行文件升级！", Toast.LENGTH_SHORT).show();
+				 //   		/*退出蓝牙的动作并跳转到主界面*/
+				 //   		return;
+				  //  	}
+				//	}
+
 			    	FileUrl = json.getString("result");
 			    	HanvonApplication.HardUpdateName = 	FileUrl.substring(FileUrl.lastIndexOf("/")+1);
 			    	LogUtil.i("---------hard update name:"+HanvonApplication.HardUpdateName);

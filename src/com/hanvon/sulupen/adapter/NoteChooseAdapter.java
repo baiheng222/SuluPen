@@ -1,5 +1,6 @@
 package com.hanvon.sulupen.adapter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
@@ -24,13 +25,14 @@ public class NoteChooseAdapter extends BaseAdapter
 	private LayoutInflater mInflater;
 	private List<NoteRecord> mDatas;
 	private int[] mCheckArray;
+	private List<NoteRecord> mSelectDatas ;
 	
 	public NoteChooseAdapter(Context context, List<NoteRecord> data)
 	{
 		mContext = context;
 		mDatas = data;
 		mInflater = LayoutInflater.from(context);
-		
+		mSelectDatas = new ArrayList<NoteRecord>();
 		initCheckList();
 		
 		/*
@@ -121,6 +123,32 @@ public class NoteChooseAdapter extends BaseAdapter
 		
 		return convertView;
 	}
+	
+	//获得选中的
+	public List<NoteRecord> getSelecetNote()
+	{
+		
+		for (int i = 0; i < mCheckArray.length;i ++)
+		{
+			if (mCheckArray[i] == 1)
+			{
+				NoteRecord note = mDatas.get(i);
+	            mSelectDatas.add(note);	
+									
+			}
+		}
+
+		return mSelectDatas;
+	}
+	
+	
+	public void clearSelectData()
+	{
+		mSelectDatas.clear();
+
+	}
+	
+	
 	
 	public void delSelectedNotes()
 	{
