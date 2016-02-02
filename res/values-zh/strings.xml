@@ -63,4 +63,5 @@
     <string name="input_reach_max">文字超长</string>
     <string name="same_notebook_name">笔记本已经存在</string>
     <string name="notebook_name_null">笔记本名称为空</string>
+    <string name="string_year">年</string>
 </resources>

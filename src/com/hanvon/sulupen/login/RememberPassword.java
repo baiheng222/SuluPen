@@ -23,6 +23,7 @@ import com.hanvon.sulupen.utils.LogUtil;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.media.Image;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -31,6 +32,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 public class RememberPassword extends Activity implements OnClickListener{
@@ -41,6 +43,8 @@ public class RememberPassword extends Activity implements OnClickListener{
 	private String strUserCode;
 	private int RmbFlag; //0 - 不合法  1 手机找回  2 邮箱找回
 	
+	private ImageView Ivback;
+	
 	private ProgressDialog pd;
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -49,9 +53,11 @@ public class RememberPassword extends Activity implements OnClickListener{
 
 		CEgetUser = (ClearEditText)findViewById(R.id.rmb_getuser);
 		BTensure = (Button)findViewById(R.id.rmb_reset_ensure);
-
+        Ivback = (ImageView)findViewById(R.id.rmbpwd_back);
+        
 		CEgetUser.setOnClickListener(this);
 		BTensure.setOnClickListener(this);
+		Ivback.setOnClickListener(this);
 	}
 	
 	@Override
@@ -87,6 +93,10 @@ public class RememberPassword extends Activity implements OnClickListener{
 			        sendCodeToEmail();
 		    	}
 			    break;
+		    case R.id.rmbpwd_back:
+		    	startActivity(new Intent(RememberPassword.this, LoginActivity.class));
+    		    RememberPassword.this.finish();
+		    	break;
 		}	
 	}
 	

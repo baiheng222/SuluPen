@@ -334,7 +334,7 @@ public class HvnCloudManager {
 		URL url = null;
 		HttpURLConnection httpurlconnection = null;
 
-		url = new URL("http://cloud.hwyun.com/dws-cloud/rt/ap/v1/store/upload");
+		url = new URL("http://dpi.hanvon.com/rt/ap/v1/store/upload");
 		httpurlconnection = (HttpURLConnection) url.openConnection();
 		httpurlconnection.setConnectTimeout(60*1000);
 		httpurlconnection.setUseCaches(false);
@@ -357,7 +357,7 @@ public class HvnCloudManager {
 		HttpURLConnection httpurlconnection = null;
 
 		//url = new URL("http://cloud.hwyun.com/dws-cloud/rt/ap/v1/store/sharedata");
-		url = new URL("http://cloud.hwyun.com/dws-cloud/rt/ap/v1/app/note/sharedata");               
+		url = new URL("http://dpi.hanvon.com/rt/ap/v1/app/note/sharedata");               
 		httpurlconnection = (HttpURLConnection) url.openConnection();
 		httpurlconnection.setConnectTimeout(60*1000);
 		httpurlconnection.setUseCaches(false);

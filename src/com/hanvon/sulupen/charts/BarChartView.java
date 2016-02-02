@@ -58,6 +58,23 @@ public class BarChartView
         return dataset;
     }
 
+    private XYMultipleSeriesDataset getBarDataset(int[] datas)
+    {
+        XYMultipleSeriesDataset dataset = new XYMultipleSeriesDataset();
+        int nr = datas.length;
+        //Random r = new Random();
+        for (int i = 0; i < SERIES_NR; i++)
+        {
+            CategorySeries series = new CategorySeries("year");
+            for (int k = 0; k < nr; k++)
+            {
+                series.add(datas[k]);
+            }
+            dataset.addSeries(series.toXYSeries());
+        }
+        return dataset;
+    }
+
     public XYMultipleSeriesRenderer getBarDemoRenderer()
     {
         XYMultipleSeriesRenderer renderer = new XYMultipleSeriesRenderer();
@@ -88,7 +105,7 @@ public class BarChartView
         renderer.setXAxisMin(0.5);
         renderer.setXAxisMax(12.5);
         renderer.setYAxisMin(0);
-        renderer.setYAxisMax(210);
+        renderer.setYAxisMax(50);
         renderer.setBarSpacing(0.5f);
         renderer.setZoomButtonsVisible(false);
         renderer.setZoomEnabled(false);
@@ -96,13 +113,15 @@ public class BarChartView
         renderer.setXLabelsAlign(Align.LEFT);//刻度线与X轴坐标文字左侧对齐
         renderer.setYLabelsAlign(Align.LEFT);
         renderer.setXLabelsColor(Color.BLUE);
+        renderer.setYLabelsColor(0, Color.BLUE);
     }
 
-    public GraphicalView getView(Context context)
+    public GraphicalView getView(Context context, int[] datas)
     {
-        XYMultipleSeriesRenderer renderer = getBarDemoRenderer();
+        XYMultipleSeriesRenderer renderer =getBarDemoRenderer();
         setChartSettings(renderer);
-        GraphicalView view = ChartFactory.getBarChartView(context, getBarDemoDataset(), renderer, BarChart.Type.DEFAULT);
+        //GraphicalView view = ChartFactory.getBarChartView(context, getBarDemoDataset(), renderer, BarChart.Type.DEFAULT);
+        GraphicalView view = ChartFactory.getBarChartView(context, getBarDataset(datas), renderer, BarChart.Type.DEFAULT);
         return view;
     }
 }

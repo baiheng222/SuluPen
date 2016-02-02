@@ -285,13 +285,17 @@ public class PinyinIME extends InputMethodService {
 						//ungzip bmpByte
 						byte[] imagebyte_ungziped= unGZip(imagebyte);
 						LogUtil.i("tong------------unGzip end");
+						
+                        if(imagebyte_ungziped != null)
+                        {
+    						Bitmap bmp = BitmapFactory.decodeByteArray(
+    								imagebyte_ungziped, 0, imagebyte_ungziped.length);
+    						if (bmp != null) {
+    							LogUtil.i("tong---------bmp is not null");
+    							mMoreFunctionContainer.setScanImage(bmp);
+    						}	
+                        }
 
-						Bitmap bmp = BitmapFactory.decodeByteArray(
-								imagebyte_ungziped, 0, imagebyte_ungziped.length);
-						if (bmp != null) {
-							LogUtil.i("tong---------bmp is not null");
-							mMoreFunctionContainer.setScanImage(bmp);
-						}	
 					    
 
 					    LogUtil.i("tong------------bmp");
@@ -1201,13 +1205,13 @@ public class PinyinIME extends InputMethodService {
 	 */
 	public void commitResultText(String resultText) {
 	    System.out.println("tong----------in commitResultText:"+resultText);
-		//如果添加后的字符大于2000，给予提示
-		if((editString.length()+resultText.length())>2000)
-		{
-			UiUtil.showToast(this, "您的笔记内容已达最大！");
-			return;
-			
-		}
+//		//如果添加后的字符大于2000，给予提示
+//		if((editString.length()+resultText.length())>2000)
+//		{
+//			UiUtil.showToast(this, "您的笔记内容已达最大！");
+//			return;
+//			
+//		}
 		LogUtil.i("");
 		InputConnection ic = getCurrentInputConnection();
 		if (null != ic)
@@ -3120,12 +3124,12 @@ public class PinyinIME extends InputMethodService {
 	public void appendEditText(String content)
 	{
 		//2000给予提示
-		if((editString.length()+content.length())>2000)
-		{
-			UiUtil.showToast(this, "您的笔记内容已达最大！");
-			return;
-			
-		}
+//		if((editString.length()+content.length())>2000)
+//		{
+//			UiUtil.showToast(this, "您的笔记内容已达最大！");
+//			return;
+//			
+//		}
 		
 		System.out.println("tong---------in appendEditText content is:"+content);
 		editString.append(content);

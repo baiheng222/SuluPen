@@ -210,7 +210,7 @@ public class BluetoothSearch extends Activity implements OnClickListener{
 				if (device.getBondState() != BluetoothDevice.BOND_BONDED) {
 					String name = device.getName();
 					String deviceInfo = name + "\n" + device.getAddress();
-					LogUtil.i("----DeviceInfo---:"+deviceInfo);
+					LogUtil.i("----DeviceInfo-=====--:"+deviceInfo);
 					//汉王速录笔以"hanvon-scanpen"开始，如果不是汉王速录笔，不在列表中进行显示
 					if (deviceInfo.indexOf("hanvon-scanpen") != -1){
 						connectAddress = deviceInfo.substring(deviceInfo.length() - 17);
@@ -220,7 +220,8 @@ public class BluetoothSearch extends Activity implements OnClickListener{
 						    if(deviceCount == 1){
 						        noPairedDeviceList.add(deviceInfo);
 						    }
-						   // mBtAdapter.cancelDiscovery();
+						    LogUtil.i("----DeviceInfo-==111111===--:"+deviceInfo);
+						    mBtAdapter.cancelDiscovery();
 					    }
 					}
 				}

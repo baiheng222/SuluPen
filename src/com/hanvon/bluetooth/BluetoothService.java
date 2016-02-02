@@ -86,6 +86,7 @@ public class BluetoothService extends Service{
 			bais.close();
 		} catch (Exception ex) {
 			ex.printStackTrace();
+			LogUtil.i("---unzip error:"+ex.getMessage());
 		}
 		return b;
 	}
@@ -358,18 +359,24 @@ public class BluetoothService extends Service{
 
 										//ungzip bmpByte
 										byte[] imagebyte_ungziped= unGZip(imagebyte);
-										Bitmap bmp = BitmapFactory.decodeByteArray(
-												imagebyte_ungziped, 0, imagebyte_ungziped.length);
-										if (bmp != null)
-											ScanNoteActivity.scanNoteAct.setScanImage(bmp);
-										//saveBitmapFile(bmp);
+										if (imagebyte_ungziped != null){
+										    Bitmap bmp = BitmapFactory.decodeByteArray(
+												    imagebyte_ungziped, 0, imagebyte_ungziped.length);
+										    if (bmp != null)
+											    ScanNoteActivity.scanNoteAct.setScanImage(bmp);
+										    //saveBitmapFile(bmp);
+										}
 									}
 						
 								}
 							}
 							// 输入法模式
 							else if(scanRecordMode == 3){
-								ScanNoteActivity.scanNoteAct.setInputFlag(1);
+//								if (ScanNoteActivity.scanNoteAct != null)
+//								{
+//									ScanNoteActivity.scanNoteAct.setInputFlag(1);
+//								}
+								
 								PinyinIME.pinyinIME.mHandler
 										.obtainMessage(
 												BluetoothChatService.BLUETOOTH_MESSAGE_READ,
@@ -413,6 +420,7 @@ public class BluetoothService extends Service{
 									public void run() {
 										getBluetoothChatService().sendBTData(1,
 												"/sdcard/"+HanvonApplication.HardUpdateName);
+											//	"/storage/sdcard0/aa/upgradePackage.0008.zip");
 										LogUtil.i("Hard send name:"+"/sdcard/"+HanvonApplication.HardUpdateName);
 									}
 								}).start();

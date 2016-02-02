@@ -101,8 +101,9 @@ public class BudgetPieChart extends AbstractDemoChart
         return series;
     }
 
-    public GraphicalView getView(Context context)
+    public GraphicalView getView(Context context, int[] colors, CategorySeries series)
     {
+        /*
         CategorySeries series = new CategorySeries("Notebooks");
         int valuesize = 0;
 
@@ -133,17 +134,24 @@ public class BudgetPieChart extends AbstractDemoChart
         {
             colors[i] = Color.parseColor(getRandColorCode());    //Integer.parseInt(getRandColorCode());
         }
+        */
 
         DefaultRenderer renderer = buildCategoryRenderer(colors);
+        renderer.setApplyBackgroundColor(false);
+        renderer.setBackgroundColor(Color.argb(100, 50, 50, 50));
         renderer.setZoomButtonsVisible(false);
         renderer.setZoomEnabled(false);
         //renderer.setChartTitleTextSize(20);
         renderer.setLabelsTextSize(20);
         renderer.setLabelsColor(Color.BLACK);
         renderer.setDisplayValues(true);
-        renderer.setShowLabels(true);
+        renderer.setShowLabels(false);
         renderer.setPanEnabled(false);
-        renderer.setShowLegend(false);
+        renderer.setShowLegend(true);
+        renderer.setLegendTextSize(30);
+        renderer.setMargins(new int[]{0, 0, 0, 0});
+        renderer.setFitLegend(true);
+        //renderer.setLegendHeight(60);
         /*
         SimpleSeriesRenderer r = renderer.getSeriesRendererAt(0);
         //r.setGradientEnabled(true);

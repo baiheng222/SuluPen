@@ -66,6 +66,12 @@ public class RecordInfo //implements Parcelable
         this.mNoteBookId = mNoteBookId;
     }
 
+    public String toString()
+    {
+        return "mYear " + mYear + ", mMoth " + mMonth + ", mDay " + mDay + ", UUID "
+                + mRecordId + ", mNoteBookId " + mNoteBookId;
+    }
+
     /*
     @Override
     public int describeContents()

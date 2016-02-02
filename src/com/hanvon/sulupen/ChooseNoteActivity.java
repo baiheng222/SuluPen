@@ -244,12 +244,14 @@ public class ChooseNoteActivity extends Activity implements OnClickListener
 				NoteRecord note = mNotesAdapter.getSelecetNote().get(i);
 				String title =note.getNoteTitle();
 				String content = note.getNoteContent();
-				if(content != null)
+
+				ArrayList<NotePhotoRecord> notephoteRecordDate = note.getNotePhotoList();
+				hvnCloud.WriteFileForShareSelect(title,content,notephoteRecordDate);	
+				
+				if((content != null) || (notephoteRecordDate.size() != 0) )
 				{
 					upFlag = true;
 				}
-				ArrayList<NotePhotoRecord> notephoteRecordDate = note.getNotePhotoList();
-				hvnCloud.WriteFileForShareSelect(title,content,notephoteRecordDate);		
 				
 			}
 			

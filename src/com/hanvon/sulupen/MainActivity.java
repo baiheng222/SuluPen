@@ -25,6 +25,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -53,9 +54,9 @@ import com.hanvon.sulupen.db.bean.NoteBookRecord;
 import com.hanvon.sulupen.db.dao.NoteBookRecordDao;
 import com.hanvon.sulupen.login.LoginActivity;
 import com.hanvon.sulupen.login.ShowUserMessage;
+import com.hanvon.sulupen.sync.CloudSynchroProcess;
 import com.hanvon.sulupen.utils.CircleImageView;
 import com.hanvon.sulupen.utils.ConnectionDetector;
-import com.hanvon.sulupen.utils.HvnCloudSynchro;
 import com.hanvon.sulupen.utils.LogUtil;
 import com.hanvon.sulupen.utils.MD5Util;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
@@ -99,6 +100,8 @@ import com.lidroid.xutils.bitmap.BitmapCommonUtils;
     
 	private BluetoothMsgReceive btMsgReceiver;
 	private boolean isConnectedEpen;
+
+	private long mExitTime;
 	
 	private Handler mHandler = new Handler() {
 		public void handleMessage(android.os.Message msg) {
@@ -175,15 +178,52 @@ import com.lidroid.xutils.bitmap.BitmapCommonUtils;
         }
     }
 
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event)
+	{
+		if (keyCode == KeyEvent.KEYCODE_BACK)
+		{
+			if (leftMenu != null)
+			{
+				Log.d(TAG, "leftmenu is not null");
+				if (leftMenu.isMenuShowing())
+				{
+					Log.d(TAG, "!!!!! left menu shown");
+					leftMenu.toggle();
+					return true;
+				}
+				else
+				{
+					Log.d(TAG, "!!!!! left menu hidden");
+				}
+			}
+			
+			if ((System.currentTimeMillis() - mExitTime) > 2000)
+			{
+				//Object mHelperUtils;
+				Toast.makeText(this, "再按一次退出程序", Toast.LENGTH_SHORT).show();
+				mExitTime = System.currentTimeMillis();
+
+			}
+			else
+			{
+				finish();
+			}
+			return true;
+		}
+		return super.onKeyDown(keyCode, event);
+	}
+
     @Override
-	protected void onStart() {
+	protected void onStart()
+	{
 		super.onStart();
-		LogUtil.i("---------MAIN---1---------------------"+HanvonApplication.hvnName);
+		LogUtil.i("---------MAIN---1---------------------" + HanvonApplication.hvnName);
 		 IntentFilter mFilter = new IntentFilter(BluetoothIntenAction.ACTION_EPEN_BATTERY_CHANGE);
-			mFilter.addAction(BluetoothIntenAction.ACTION_EPEN_BT_CONNECTED);
-			mFilter.addAction(BluetoothIntenAction.ACTION_EPEN_BT_DISCONNECT);
-			mFilter.addAction(BluetoothIntenAction.ACTION_EPEN_HARD_WARE_UPDATE);
-			this.registerReceiver(btMsgReceiver, mFilter);
+		mFilter.addAction(BluetoothIntenAction.ACTION_EPEN_BT_CONNECTED);
+		mFilter.addAction(BluetoothIntenAction.ACTION_EPEN_BT_DISCONNECT);
+		mFilter.addAction(BluetoothIntenAction.ACTION_EPEN_HARD_WARE_UPDATE);
+		this.registerReceiver(btMsgReceiver, mFilter);
 			if (BluetoothService.getServiceInstance() != null){
 		    	if (BluetoothService.getServiceInstance().getBluetoothChatService()
 			    		  .getState() == BluetoothChatService.STATE_CONNECTED) {
@@ -208,7 +248,7 @@ import com.lidroid.xutils.bitmap.BitmapCommonUtils;
 		    	if (HanvonApplication.userFlag == 0){
 		    		mIvLogin.setBackgroundResource(R.drawable.logicon);
 		    	}else{
-		    		mIvLogin.setImageDrawable((getResources().getDrawable(R.drawable.logicon)));
+					mIvLogin.setImageDrawable((getResources().getDrawable(R.drawable.logicon)));
 		    	}
 		    	
 		    	//(getResources().getDrawable(R.drawable.logicon));
@@ -307,7 +347,6 @@ import com.lidroid.xutils.bitmap.BitmapCommonUtils;
 		{
 			e.printStackTrace();
 		}
-    	
 
     	ShowUserInfo();
     }
@@ -318,6 +357,7 @@ import com.lidroid.xutils.bitmap.BitmapCommonUtils;
 		SharedPreferences mSharedPreferences=this.getSharedPreferences("BitMapUrl", Activity.MODE_MULTI_PROCESS);
 		int flag = mSharedPreferences.getInt("flag", 0);
 		HanvonApplication.userFlag = flag;
+		HanvonApplication.isActivity = mSharedPreferences.getBoolean("isActivity", false);
 		String nickname=mSharedPreferences.getString("nickname", "");
 		boolean isHasNick = mSharedPreferences.getBoolean("isHasNick", true);
 		if (flag == 0){
@@ -495,6 +535,7 @@ import com.lidroid.xutils.bitmap.BitmapCommonUtils;
             	}
             	break;
             case R.id.tv_leftbtn:
+            	Log.d(TAG, "!!!!!! left menu clicked!!!!");
             	leftMenu.toggle();
                 //Intent newIntent1 = new Intent(this, LoginActivity.class);
     		    //startActivity(newIntent1);
@@ -523,7 +564,7 @@ import com.lidroid.xutils.bitmap.BitmapCommonUtils;
             
             case R.id.rl_cloud:
             	/******************ceshi***********************/
-    			HvnCloudSynchro sync = new HvnCloudSynchro(MainActivity.this);
+            	CloudSynchroProcess sync = new CloudSynchroProcess(MainActivity.this,0);
     			try {
     				sync.QuerySync();
     			} catch (JSONException e) {

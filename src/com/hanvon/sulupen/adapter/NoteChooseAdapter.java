@@ -153,7 +153,7 @@ public class NoteChooseAdapter extends BaseAdapter
 	public void delSelectedNotes()
 	{
 		NoteRecordDao noteDao = new NoteRecordDao(mContext);
-		for (int i = 0; i < mCheckArray.length;i ++)
+		for (int i = 0; i < mCheckArray.length; i++)
 		{
 			if (mCheckArray[i] == 1)
 			{
@@ -165,11 +165,14 @@ public class NoteChooseAdapter extends BaseAdapter
 				
 			}
 		}
-		
-		for (int i = 0; i < mCheckArray.length;i ++)
+
+		for (int i = mCheckArray.length -1; i >=0; i--)
+		//for (int i = 0; i < mCheckArray.length; i++)
 		{
+			Log.d(TAG, "i is " + i + ", mCheckArray size is " + mCheckArray.length);
 			if (mCheckArray[i] == 1)
 			{
+				Log.d(TAG, " !!!!!!!!!!!!!!! i is " + i + "mDatas.size is " + mDatas.size());
 				mDatas.remove(i);
 			}
 		}
@@ -182,7 +185,7 @@ public class NoteChooseAdapter extends BaseAdapter
 	public void batchReNameNoteBook(NoteBookRecord notebook)
 	{
 		NoteRecordDao noteDao = new NoteRecordDao(mContext);
-		for (int i = 0; i < mCheckArray.length;i ++)
+		for (int i = 0; i < mCheckArray.length; i++)
 		{
 			if (mCheckArray[i] == 1)
 			{
@@ -194,7 +197,7 @@ public class NoteChooseAdapter extends BaseAdapter
 			}
 		}
 		
-		for (int i = 0; i < mCheckArray.length;i ++)
+		for (int i = 0; i < mCheckArray.length; i++)
 		{
 			if (mCheckArray[i] == 1)
 			{

@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.hanvon.sulupen"
     android:versionCode="14"
-    android:versionName="1.0.1.025" >
+    android:versionName="1.0.1.033" >
 
     <uses-sdk
         android:minSdkVersion="15"
@@ -257,12 +257,19 @@
         </activity>
         <activity android:name=".SoftUpdate" >
         </activity>
+        <!-- 
         <receiver android:name="com.hanvon.sulupen.utils.NetworkChangeReceiver">  
             <intent-filter>  
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>  
             </intent-filter>  
-        </receiver>  
-        
+        </receiver>
+         
+        <receiver android:name="com.hanvon.sulupen.sync.MyBroadcastReceiver">
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+            </intent-filter>
+        </receiver>
+        -->
         <activity
             android:name="com.mob.tools.MobUIShell"
             android:configChanges="keyboardHidden|orientation|screenSize"

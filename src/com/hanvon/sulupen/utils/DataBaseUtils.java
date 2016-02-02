@@ -1,6 +1,7 @@
 package com.hanvon.sulupen.utils;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.hanvon.sulupen.db.bean.NoteBookRecord;
 import com.hanvon.sulupen.db.bean.NotePhotoRecord;
@@ -10,6 +11,7 @@ import com.hanvon.sulupen.db.dao.NoteBookRecordDao;
 import com.hanvon.sulupen.db.dao.NoteRecordDao;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -179,14 +181,28 @@ public class DataBaseUtils
         List<NoteRecord> notes = mNoteRecordDao.getAllNoteRecords();
         for (int i = 0; i < notes.size(); i++)
         {
+            String crTiem = notes.get(i).getCreateTime();
+            if (crTiem.isEmpty())
+            {
+                Log.i("DataBaseUtils", "create time string is null !!!!!!");
+                continue;
+            }
+            Log.i("DataBaseUtils", "create time is  " + notes.get(i).getCreateTime());
             Date date = TimeUtil.getDate(notes.get(i).getCreateTime());
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(date);
+            Log.i("DataBaseUtils", "day is " + calendar.get(Calendar.DAY_OF_MONTH));
+            Log.i("DataBaseUtils", "month is " + calendar.get(Calendar.MONTH));
+            Log.i("DataBaseUtils", "year is " + calendar.get(Calendar.YEAR));
             RecordInfo tmp = new RecordInfo();
             tmp.setRecordId(notes.get(i).getNoteID());
-            tmp.setDay(date.getDay());
-            tmp.setMonth(date.getMonth());
-            tmp.setYear(date.getYear());
+            tmp.setDay(calendar.get(Calendar.DAY_OF_MONTH));
+            tmp.setMonth(calendar.get(Calendar.MONTH));
+            tmp.setYear(calendar.get(Calendar.YEAR));
             tmp.setNoteBookId(notes.get(i).getNoteBook().getNoteBookId());
             mInfos.add(tmp);
+
+            Log.i("DataBaseUtils", "date info is -- " + tmp.toString());
         }
         return mInfos;
     }

@@ -149,6 +149,8 @@ public class RegisterUserFromPhone extends Activity implements OnClickListener{
 				    	SharedPreferences mSharedPreferences=getSharedPreferences("BitMapUrl", Activity.MODE_MULTI_PROCESS);
 						Editor mEditor=	mSharedPreferences.edit();
 						mEditor.putString("username", strPhoneNumber);
+						HanvonApplication.isActivity = true;
+						mEditor.putBoolean("isActivity", HanvonApplication.isActivity);
 						mEditor.putString("nickname", "");
 						HanvonApplication.hvnName = strPhoneNumber;
 						HanvonApplication.strName = "";

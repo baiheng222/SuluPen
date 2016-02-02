@@ -33,8 +33,6 @@ import com.hanvon.sulupen.application.HanvonApplication;
 import com.hanvon.sulupen.db.bean.NoteBookRecord;
 import com.hanvon.sulupen.utils.Base64Utils;
 import com.hanvon.sulupen.utils.LogUtil;
-import com.hanvon.sulupen.utils.ObserverCallBack;
-import com.hanvon.sulupen.utils.ThreadPoolUtils;
 
 import junit.framework.TestCase;
 

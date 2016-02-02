@@ -104,7 +104,8 @@
     <string name="userid_found">用户信息已存在，正在跳转登录操作…</string>
     <string name="logining">使用%s帐号登录中…</string>
     <string name="auth_cancel">授权操作已取消</string>
-    <string name="auth_error">授权操作遇到错误，请阅读Logcat输出</string>
+    <string name="auth_error">授权操作遇到错误</string>
+    <string name="client_error">未安装第三方客户端,请先进行第三方客户端的安装!</string>
     <string name="auth_complete">授权成功，正在跳转登录操作…</string>
     <!-- 账户基本信息显示用到的字段 -->
     <string name="account">账户</string>
@@ -231,7 +232,7 @@
     <string name="open_bn_choosed">已勾选</string>
     <string name="open_bn_switch">去切换></string>
     <string name="open_bn_switched">已切换</string>
-
+    <string name="string_year">Year</string>
 
 
 </resources>

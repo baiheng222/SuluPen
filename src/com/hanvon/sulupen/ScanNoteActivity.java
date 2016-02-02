@@ -12,9 +12,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
+import android.R.string;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.ClipboardManager.OnPrimaryClipChangedListener;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -35,6 +39,9 @@ import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
 import android.provider.MediaStore;
 import android.text.Editable;
+import android.text.InputFilter;
+import android.text.Selection;
+import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -81,7 +88,6 @@ import com.hanvon.sulupen.ui.ImageZoomActivity;
 import com.hanvon.sulupen.utils.CustomConstants;
 import com.hanvon.sulupen.utils.CustomDialog;
 import com.hanvon.sulupen.utils.HvnCloudManager;
-import com.hanvon.sulupen.utils.HvnCloudRequest;
 import com.hanvon.sulupen.utils.IntentConstants;
 import com.hanvon.sulupen.utils.LogUtil;
 import com.hanvon.sulupen.utils.MD5Util;
@@ -121,10 +127,18 @@ public class ScanNoteActivity extends Activity implements OnClickListener{
     private String  strLinkPath = null;
     private Boolean bShareClick = false;
     
+    
+    private CharSequence temp; 
+    private int selectionStart; 
+    private int selectionEnd; 
+    
+    private int editStart;
+    private int editEnd;
 	//private TopicDialog topicDlg;
 
 	private String curTopicId = "";
 	
+	private ClipboardManager cb;
 	
 	private final static int RESULT_CHAGNE_NOTEBOOK = 4;
 	
@@ -166,6 +180,8 @@ public class ScanNoteActivity extends Activity implements OnClickListener{
 	
 	private boolean changeImageFlag = false;
 	
+	private Toast mToast;
+	
 	private Handler handler = new Handler() {
 		@SuppressLint("ShowToast")
 		@Override
@@ -191,6 +207,10 @@ public class ScanNoteActivity extends Activity implements OnClickListener{
 			case BluetoothMsgReceive.BT_DISCONNECT:
 			//	getRightButton().setEnabled(false);
 				break;
+		   case BluetoothChatService.BLUETOOTH_MESSAGE_READ:
+			    setInputFlag(1);
+				break;
+				
 			case UPLLOAD_FILE_CLOUD_SUCCESS:
 				if(bShareFlag )
 				{
@@ -291,6 +311,8 @@ public class ScanNoteActivity extends Activity implements OnClickListener{
         initData();
         //copyPhoto();
         mbUiThreadHandler = new Handler();
+        
+        
 	}
 
 
@@ -327,8 +349,13 @@ public class ScanNoteActivity extends Activity implements OnClickListener{
 		IVsendImag = (ImageView)this.findViewById(R.id.ivScan);
 		
 		
-		etScanContent.addTextChangedListener(textWatcher);
-		etNoteTitle.addTextChangedListener(textWatcher);
+//		etScanContent.setFilters(new InputFilter[]{new InputFilter.LengthFilter(2000)});
+//		etScanContent.addTextChangedListener(textWatcher);
+//		etNoteTitle.addTextChangedListener(textWatcher);
+		
+		
+		
+		etScanContent.setFilters(new InputFilter[]{new MaxTextLengthFilter(2001)});
 		
 		
 		tvNoteTitle.setOnClickListener(this);
@@ -376,9 +403,45 @@ public class ScanNoteActivity extends Activity implements OnClickListener{
 			}
 		});
 		
+		
 	}
 	
-	
+	 class MaxTextLengthFilter implements InputFilter{
+	        
+	        private int mMaxLength;
+	        
+	        public MaxTextLengthFilter(int max){
+	            mMaxLength = max - 1;
+	         //  Toast.makeText(ScanNoteActivity.this,"字符不能超过15个",Toast.LENGTH_LONG).show();
+	           
+	          //  toast.setGravity(Gravity.TOP, 0, 235);
+	        }
+	        @Override
+	        public CharSequence filter(CharSequence source, int start, int end, 
+	                Spanned dest, int dstart ,int dend){
+	            int keep = mMaxLength - (dest.length() - (dend - dstart));
+	            if(keep < (end - start)){
+	             //   toast.show();
+	            }
+	            if (source != null
+	                    && source.length() > 0
+	                    && (((dest == null ? 0 : dest.length()) + source.length()) >= mMaxLength)) {
+	            	showToast("您的笔记内容已达最大！");
+	            	//Toast.makeText(ScanNoteActivity.this,"已经达到最大限制2000个字符!",Toast.LENGTH_LONG).show();
+	                return "";
+	            }
+
+	            if(keep <= 0){
+	            	showToast("您的笔记内容已达最大！");
+	            	//Toast.makeText(ScanNoteActivity.this,"已经达到最大限制2000个字符!",Toast.LENGTH_LONG).show();
+	                return "";
+	            }else if(keep >= end - start){
+	                return null;
+	            }else{
+	                return source.subSequence(start,start + keep);
+	            }
+	        }
+	    }
 	
 	private TextWatcher textWatcher = new TextWatcher() {  
 		  
@@ -386,7 +449,43 @@ public class ScanNoteActivity extends Activity implements OnClickListener{
 		public void onTextChanged(CharSequence s, int start, int before,  
 		int count) {  
 			LogUtil.i("tong--------------onTextChanged");
+			
 			mScanRecord.setUpLoad(2);
+	/*		
+			temp = s; 
+				
+			EditText editText = (EditText) getCurrentFocus();
+			//Editable edit = curEditText.getEditableText();
+			
+		    Editable editable = editText.getText();  
+		    int len = editable.length(); 
+		    
+	
+	         
+	        if(len > 2000) 
+	        { 
+	        	showToast("您的笔记内容已达最大！");
+	            int selEndIndex = Selection.getSelectionEnd(editable); 
+	            String str = editable.toString(); 
+	            //截取新字符串 
+	            String newStr = str.substring(0,2000); 
+	            editText.setText(newStr); 
+	            editable = editText.getText(); 
+	             
+	            //新字符串的长度 
+	            int newLen = editable.length(); 
+	            //旧光标位置超过字符串长度 
+	            if(selEndIndex > newLen) 
+	            { 
+	                selEndIndex = editable.length(); 
+	            } 
+	            //设置新光标所在的位置 
+	            Selection.setSelection(editable, selEndIndex); 
+	             
+	        }  
+			
+			*/
+		
 
 		}  
 		  
@@ -395,16 +494,91 @@ public class ScanNoteActivity extends Activity implements OnClickListener{
 		int after) {  
 
 		  
+
+			
 		}  
 		  
 		@Override  
 		public void afterTextChanged(Editable s) {  
 
-		  
+			
+//			LogUtil.i("tong----------afterTextChanged "+s);
+//			//2000给予提示
+//			EditText editText = (EditText) getCurrentFocus();
+//			
+//            selectionStart = editText.getSelectionStart(); 
+//            selectionEnd = editText.getSelectionEnd(); 
+//            LogUtil.i("tong-----selectionStart:"+selectionStart);
+//            LogUtil.i("tong-----selectionEnd:"+selectionEnd);
+//            LogUtil.i("tong-----temp length:"+temp.length());
+//            LogUtil.i("tong-----s length:"+s.length());
+//
+//            editText.removeTextChangedListener(textWatcher);
+//            
+//            if(temp.length() > 2000)
+//            {
+//            	showToast("您的笔记内容已达最大！");
+//            }
+//            
+//            while (temp.length() > 2000) { 
+//            	LogUtil.i("tong---->2000");
+//            //	myUiUtil.showToast(ScanNoteActivity.this, "您的笔记内容已达最大！");
+//            //    Toast.makeText(ScanNoteActivity.this, "您的笔记内容已达最大！", 
+//            //            Toast.LENGTH_SHORT).show(); 
+//				if (selectionStart >= 1) {
+//					s.delete(selectionStart - 1, selectionEnd);
+//					int tempSelection = selectionEnd;
+//					selectionStart--;
+//					selectionEnd--;
+//				}
+//            } 
+//        	editText.setText(s);
+//            editText.setSelection(selectionStart);
+//        	editText.addTextChangedListener(textWatcher);
 		}  
-		};  
+		
+		private int calculateLength(String etstring) {
+		    char[] ch = etstring.toCharArray();
+
+		    int varlength = 0;
+		    for (int i = 0; i < ch.length; i++) {
+		      // changed by zyf 0825 , bug 6918，加入中文标点范围 ， TODO 标点范围有待具体化
+		      if ((ch[i] >= 0x2E80 && ch[i] <= 0xFE4F) || (ch[i] >= 0xA13F && ch[i] <= 0xAA40) || ch[i] >= 0x80) { // 中文字符范围0x4e00 0x9fbb
+		        varlength = varlength + 2;
+		      } else {
+		        varlength++;
+		      }
+		    }
+		    Log.d("TextChanged", "varlength = " + varlength);
+		    // 这里也可以使用getBytes,更准确嘛
+		    // varlength = etstring.getBytes(CharSet.forName("GBK")).lenght;// 编码根据自己的需求，注意u8中文占3个字节...
+		    return varlength;
+		  }
+		
+		}; 
+		
+
 	
-	
+		
+public void showToast(String text) {  
+	LogUtil.i("tong---------showToast");
+	        if(mToast == null) { 
+	        	LogUtil.i("tong---------showToast null");
+	            mToast = Toast.makeText(ScanNoteActivity.this, text, Toast.LENGTH_SHORT);  
+	        } else {  
+	            mToast.setText(text);    
+	            mToast.setDuration(Toast.LENGTH_SHORT);  
+	        }  
+	        mToast.show();  
+	    }  
+	      
+	    public void cancelToast() {  
+	            if (mToast != null) { 
+	            	LogUtil.i("tong---------showToast cancel");
+	                mToast.cancel();  
+	            }  
+	        }  
+		
 	private int getDataSize() {
 		return mDataList == null ? 0 : mDataList.size();
 	}
@@ -758,7 +932,7 @@ public class ScanNoteActivity extends Activity implements OnClickListener{
 			{
 				note.setNoteTitle("");
 			}
-			if (!content.equals("")) 
+			if ((!content.equals("")) || (mDataList.size() != 0) ) 
 			{
 				
 				note.setNoteBookName(notebookName);
@@ -808,7 +982,7 @@ public class ScanNoteActivity extends Activity implements OnClickListener{
 			if (!title.equals("")) {
 				mScanRecord.setNoteTitle(title);
 			}
-			if (!content.equals("")) {
+			if ((!content.equals("")) || (mDataList.size() != 0)) {
 				mScanRecord.setNoteContent(content);
 				mScanRecord.setInputType(mInputFlag);
 				//for test
@@ -944,13 +1118,13 @@ public class ScanNoteActivity extends Activity implements OnClickListener{
 		Editable edit = curEditText.getEditableText();
 		
 		
-		//2000给予提示
-		if((edit.length()+str.length())>2000)
-		{
-			UiUtil.showToast(this, "您的笔记内容已达最大！");
-			return;
-
-		}
+//		//2000给予提示
+//		if((edit.length()+str.length())>2000)
+//		{
+//			UiUtil.showToast(this, "您的笔记内容已达最大！");
+//			return;
+//
+//		}
 //		int index = etScanContent.getSelectionStart();
 //		Editable edit = etScanContent.getEditableText();
 		 
@@ -1037,7 +1211,7 @@ public class ScanNoteActivity extends Activity implements OnClickListener{
 		            	bShareFlag = true;
 		            	String title1 = etNoteTitle.getText().toString();
 			    	    String content1 = etScanContent.getText().toString();
-			    			if (!content1.equals("")){
+			    			if ((!content1.equals("")) || (mDataList.size() != 0)){
 			    				bShareClick = true;
 			    				pd = ProgressDialog.show(ScanNoteActivity.this, "", getString(R.string.link_mess));
 			            	    LogUtil.i("tong-------mDataList size:"+mDataList.size());
@@ -1103,6 +1277,7 @@ public class ScanNoteActivity extends Activity implements OnClickListener{
 //	            	break;
 	            	
 	    		case R.id.come_back:
+	    			cancelToast();
 	    			//如果输入法存在，隐藏输入法
 	    			InputMethodManager immALL = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
 	    			if(immALL != null)
@@ -1329,6 +1504,13 @@ public class ScanNoteActivity extends Activity implements OnClickListener{
 		mGridView.setAdapter(mAdapter);
 		notifyDataChanged(); // 当在ImageZoomActivity中删除图片时，返回这里需要刷新
 		//imm.hideSoftInputFromWindow(etNoteTitle.getWindowToken(),0);
+		etScanContent.addTextChangedListener(textWatcher);
+		etNoteTitle.addTextChangedListener(textWatcher);
+		
+		
+		
+
+		
 	}
 
 	

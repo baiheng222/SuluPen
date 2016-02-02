@@ -178,6 +178,8 @@ public class RegisterUserFromEmail extends Activity implements OnClickListener{
 						Editor mEditor=	mSharedPreferences.edit();
 						mEditor.putString("nickname", "");
 						mEditor.putString("username", strEmail);
+						HanvonApplication.isActivity = false;
+						mEditor.putBoolean("isActivity", HanvonApplication.isActivity);
 					//	mEditor.putString("email", strEmail);
 					//	mEditor.putString("phone", "");
 						HanvonApplication.hvnName = strEmail;

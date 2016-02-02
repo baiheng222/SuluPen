@@ -96,6 +96,7 @@ public class LoginUtils {
 			                SharedPreferences mSharedPreferences=mContext.getSharedPreferences("BitMapUrl", Activity.MODE_MULTI_PROCESS);
 				            Editor mEditor=	mSharedPreferences.edit();
 				            mEditor.putString("username", username);
+				            mEditor.putBoolean("isActivity", HanvonApplication.isActivity);
 				            HanvonApplication.hvnName = username;
 				            if (nickname.equals("null")){
 				        	    nickname = "";
@@ -186,6 +187,7 @@ public class LoginUtils {
 				        HanvonApplication.hvnName = qqName;
 				        HanvonApplication.strName = nickname;
 				        mEditor.putString("username", qqName);
+				        mEditor.putBoolean("isActivity", HanvonApplication.isActivity);
 				        mEditor.putString("nickname", nickname);
 				        mEditor.putString("figureurl", figureurl);
 				        mEditor.putString("qqOpenId", "");

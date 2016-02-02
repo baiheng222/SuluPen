@@ -305,7 +305,7 @@ public class TimeUtil {
 
 	public static Date getDate(String timestr)
 	{
-		SimpleDateFormat formater = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		SimpleDateFormat formater = new SimpleDateFormat(FORMAT_FULL);
 		Date date = null;
 		try
 		{

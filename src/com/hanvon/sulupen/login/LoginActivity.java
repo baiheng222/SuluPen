@@ -86,6 +86,7 @@ OnClickListener, PlatformActionListener  {
 	private static final int MSG_AUTH_CANCEL = 3;
 	private static final int MSG_AUTH_ERROR= 4;
 	private static final int MSG_AUTH_COMPLETE = 5;
+	private static final int MSG_CLIENT_ERROR= 6;
 	
 	private String openid;
 	private String figureurl;
@@ -222,7 +223,7 @@ OnClickListener, PlatformActionListener  {
 				paramJson.put("user", strUserName);
 				paramJson.put("pwd", strPassWord);
 				LogUtil.i(paramJson.toString());
-				String responce = HttpClientHelper.sendPostRequest("http://cloud.hwyun.com/dws-cloud/rt/ap/v1/user/login", paramJson.toString());
+				String responce = HttpClientHelper.sendPostRequest("http://dpi.hanvon.com/rt/ap/v1/user/login", paramJson.toString());
 
 				Message message = new Message();
 				Bundle bundle = new Bundle();
@@ -303,6 +304,7 @@ OnClickListener, PlatformActionListener  {
 					Editor mEditor=	mSharedPreferences.edit();
 					mEditor.putString("nickname", nickname);
 					mEditor.putString("username", username);
+					mEditor.putBoolean("isActivity", HanvonApplication.isActivity);
 					HanvonApplication.hvnName = username;
 			        HanvonApplication.strName = nickname;
 					mEditor.putBoolean("isHasNick", isHasNick);
@@ -497,7 +499,11 @@ OnClickListener, PlatformActionListener  {
 	
 	public void onError(Platform platform, int action, Throwable t) {
 		if (action == Platform.ACTION_USER_INFOR) {
-			UIHandler.sendEmptyMessage(MSG_AUTH_ERROR, this);
+			if (t.toString().contains("ClientNotExistException")){
+				UIHandler.sendEmptyMessage(MSG_CLIENT_ERROR, this);
+			}else{
+				UIHandler.sendEmptyMessage(MSG_AUTH_ERROR, this);
+			}
 		}
 		t.printStackTrace();
 	}
@@ -551,6 +557,11 @@ OnClickListener, PlatformActionListener  {
 				System.out.println("--------MSG_AUTH_COMPLETE-------");
 			}
 			break;
+			case MSG_CLIENT_ERROR:
+				Toast.makeText(this, R.string.client_error, Toast.LENGTH_SHORT).show();
+				System.out.println("-------MSG_CLIENT_ERROR--------");
+				pd.dismiss();
+				break;
 		}
 		return false;
 	}
