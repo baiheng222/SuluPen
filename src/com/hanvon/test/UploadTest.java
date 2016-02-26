@@ -27,8 +27,10 @@ import org.jsoup.select.Elements;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.telephony.TelephonyManager;
 import android.util.Base64;
 
+import com.baidu.location.BDLocation;
 import com.hanvon.sulupen.application.HanvonApplication;
 import com.hanvon.sulupen.db.bean.NoteBookRecord;
 import com.hanvon.sulupen.utils.Base64Utils;
@@ -236,4 +238,28 @@ public class UploadTest extends TestCase {
 			   LogUtil.i("======"+JSuserInfoJson.toString());
 		   
 		}
+	 
+	 
+	 public void TestBDLocation(){
+		 BDLocation location = new BDLocation();
+		 
+		 LogUtil.i("----国家："+location.getCountry());
+		 LogUtil.i("----省份："+location.getProvince());
+		 LogUtil.i("----城市："+location.getCity());
+		 LogUtil.i("----区县："+location.getDistrict());
+		 LogUtil.i("----经度："+location.getLatitude());
+		 LogUtil.i("----维度："+location.getDerect());
+	 }
+	 
+	 
+	 public void testOs(){
+		 String type = android.os.Build.MODEL;
+		 String ver = android.os.Build.VERSION.RELEASE;
+		 
+		 LogUtil.i("----型号："+type);
+		 LogUtil.i("----版本："+ver);
+	 }
+	 
+	 
+	 
 }

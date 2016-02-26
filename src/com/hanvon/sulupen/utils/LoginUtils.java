@@ -77,6 +77,8 @@ public class LoginUtils {
 				result = getUserInfo();
 			}else if(flagTask == 2){
 		        result = registerToHvn();
+			}else if (flagTask == 3){
+				result = UploadDeviceStat();
 			}
 			return result;
 		}
@@ -207,12 +209,14 @@ public class LoginUtils {
 						    file.mkdirs();
 						}
 						
-				        mContext.startActivity(new Intent(mContext, MainActivity.class));
-		                LoginActivity.instance.finish();
+						new RequestTask(3).execute();
 			        }else{
 			    	    Toast.makeText(mContext, "注册汉王云失败，请稍后重试", Toast.LENGTH_SHORT).show();
 			    	   
 			        }
+			    }else if (flagTask == 3){
+			    	mContext.startActivity(new Intent(mContext, MainActivity.class));
+	                LoginActivity.instance.finish();
 			    }
 		    } catch (JSONException e) {
 			    e.printStackTrace();
@@ -250,8 +254,10 @@ public class LoginUtils {
     public RequestResult registerToHvn(){
     	JSONObject paramJson=new JSONObject();
   	    try {
+  	    	paramJson.put("devid", HanvonApplication.AppDeviceId);
   		    paramJson.put("openId", openid);
 		    paramJson.put("nickName", nickname);
+		    paramJson = StatisticsUtils.StatisticsJson(paramJson);
   	    } catch (JSONException e) {
   		    e.printStackTrace();
   	    }
@@ -266,4 +272,31 @@ public class LoginUtils {
  	    LogUtil.i(result.toString());
   	    return result;
     }
+    
+    public RequestResult UploadDeviceStat(){
+
+	    JSONObject devinfo = new JSONObject();
+	  	try {
+	  	   	devinfo.put("userid", HanvonApplication.hvnName);
+	  	   	devinfo.put("devid", HanvonApplication.AppDeviceId);
+	  	   	devinfo.put("devModel", "Android");
+	  	   	devinfo.put("softName", HanvonApplication.AppSid);
+	  	   	devinfo.put("osName", android.os.Build.MODEL);
+	  	   	devinfo.put("osVer",android.os.Build.VERSION.RELEASE);
+	  	   	devinfo.put("softVer", HanvonApplication.AppVer);
+	  	   	devinfo.put("longitude", HanvonApplication.curLongitude);
+	  	   	devinfo.put("latitude", HanvonApplication.curLatitude);
+	  	   	devinfo.put("locationCountry", HanvonApplication.curCountry);
+	  	   	devinfo.put("locationProvince", HanvonApplication.curProvince);
+	  	   	devinfo.put("locationCity", HanvonApplication.curCity);
+	  	   	devinfo.put("locationArea", HanvonApplication.curDistrict);
+	  	} catch (JSONException e) {
+	  	    e.printStackTrace();
+	  	}
+
+	  	LogUtil.i(devinfo.toString());
+	  	RequestResult result=new RequestResult();
+	  	result=RequestServerData.deviceStatUpload(devinfo);
+	  	return result;
+	}
 }

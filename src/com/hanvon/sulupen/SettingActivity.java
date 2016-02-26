@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
+import android.text.StaticLayout;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -27,6 +28,7 @@ import com.hanvon.sulupen.application.HanvonApplication;
 import com.hanvon.sulupen.db.dao.NoteRecordDao;
 import com.hanvon.sulupen.login.LoginActivity;
 import com.hanvon.sulupen.utils.LogUtil;
+import com.hanvon.sulupen.utils.StatisticsUtils;
 import com.tencent.tauth.Tencent;
 
 public class SettingActivity extends Activity implements OnClickListener
@@ -90,6 +92,8 @@ public class SettingActivity extends Activity implements OnClickListener
         switch (view.getId())
         {
             case R.id.rl_setting_inputmethod:
+            	StatisticsUtils.IncreaseImeSettting();
+            	StatisticsUtils.IncreaseSettingPage();
                 Intent input = new Intent(this, SuLuInputActivity.class);
                 startActivity(input);
             break;

@@ -12,17 +12,19 @@ import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 
 import com.hanvon.sulupen.db.bean.*;
+import com.hanvon.sulupen.utils.LogUtil;
 
 public class SCanRecordHelper extends OrmLiteSqliteOpenHelper 
 {
 	private final static String DATABASENAME = "hanvon2.db";
 	private final static int DATABASEVERSION = 1;
+	private final static int UPDATEDATABASEVERSION = 2;
 	//private Dao<ScanRecord, Integer> mDao = null;
 	private static SCanRecordHelper instance;
 	private Map<String, Dao> daos = new HashMap<String, Dao>();
 	public SCanRecordHelper(Context context) 
 	{
-		super(context, DATABASENAME, null, DATABASEVERSION);
+		super(context, DATABASENAME, null, UPDATEDATABASEVERSION);
 	}
 
 	@Override
@@ -33,6 +35,7 @@ public class SCanRecordHelper extends OrmLiteSqliteOpenHelper
 			TableUtils.createTable(mConnectionSource, NoteBookRecord.class);
 			TableUtils.createTable(mConnectionSource, NoteRecord.class);
 			TableUtils.createTable(mConnectionSource, NotePhotoRecord.class);
+			TableUtils.createTable(mConnectionSource, StatisticsFunction.class);
 		} 
 		catch (SQLException e) 
 		{
@@ -48,6 +51,18 @@ public class SCanRecordHelper extends OrmLiteSqliteOpenHelper
 	public void onUpgrade(SQLiteDatabase mSqliteDatabase,
 			ConnectionSource mConnectionSource, int oldVersion, int newVersion) 
 	{
+		switch(newVersion){
+		    case UPDATEDATABASEVERSION:
+			    try {
+				    TableUtils.createTable(mConnectionSource, StatisticsFunction.class);
+			    } catch (SQLException e) {
+				    // TODO Auto-generated catch block
+				   e.printStackTrace();
+			    }
+			    LogUtil.i("---数据库升级成功--------------");
+		        break;
+		}
+	/*	
 		// 先删除就得版本，再创建新的版本
 		try 
 		{
@@ -60,6 +75,7 @@ public class SCanRecordHelper extends OrmLiteSqliteOpenHelper
 		{
 			e.printStackTrace();
 		}
+		*/
 	}
 	
 	/**

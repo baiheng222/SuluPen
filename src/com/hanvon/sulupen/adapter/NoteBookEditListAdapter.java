@@ -6,6 +6,7 @@ import java.util.List;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.text.StaticLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +22,7 @@ import com.hanvon.sulupen.RenameNoteBookActivity;
 import com.hanvon.sulupen.db.bean.NoteBookRecord;
 import com.hanvon.sulupen.db.bean.NoteRecord;
 import com.hanvon.sulupen.db.dao.NoteRecordDao;
+import com.hanvon.sulupen.utils.StatisticsUtils;
 
 public class NoteBookEditListAdapter extends BaseAdapter
 {
@@ -34,6 +36,8 @@ public class NoteBookEditListAdapter extends BaseAdapter
 		mContext = context;
 		mDatas = data;
 		mInflater = LayoutInflater.from(context);
+		
+		StatisticsUtils.IncreaseEditNoteBookPage();
 	}
 	
 	@Override
@@ -190,10 +194,12 @@ public class NoteBookEditListAdapter extends BaseAdapter
 			{
 				case R.id.iv_del_notebook_icon:
 					Log.d(TAG, "del icon clicked");
+					StatisticsUtils.IncreaseDeleteNoteBook();
 					delNoteBook(position);
 				break;
 				
 				case R.id.iv_rename_notebook_icon:
+					StatisticsUtils.IncreaseRemNoteBook();
 					Log.d(TAG, "rename icon clicked");
 					renameNoteBook(position);
 				break;

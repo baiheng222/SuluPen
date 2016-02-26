@@ -1,31 +1,22 @@
 package com.hanvon.bluetooth;
 
-import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Set;
-import java.util.UUID;
-
-import com.hanvon.sulupen.MainActivity;
 import com.hanvon.sulupen.R;
-import com.hanvon.sulupen.application.HanvonApplication;
 import com.hanvon.sulupen.utils.LogUtil;
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
-import android.bluetooth.BluetoothSocket;
 import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
-import android.text.style.BackgroundColorSpan;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;

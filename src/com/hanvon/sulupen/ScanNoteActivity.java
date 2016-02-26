@@ -42,6 +42,7 @@ import android.text.Editable;
 import android.text.InputFilter;
 import android.text.Selection;
 import android.text.Spanned;
+import android.text.StaticLayout;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -91,6 +92,7 @@ import com.hanvon.sulupen.utils.HvnCloudManager;
 import com.hanvon.sulupen.utils.IntentConstants;
 import com.hanvon.sulupen.utils.LogUtil;
 import com.hanvon.sulupen.utils.MD5Util;
+import com.hanvon.sulupen.utils.StatisticsUtils;
 import com.hanvon.sulupen.utils.TimeUtil;
 import com.hanvon.sulupen.utils.UiUtil;
 
@@ -312,7 +314,7 @@ public class ScanNoteActivity extends Activity implements OnClickListener{
         //copyPhoto();
         mbUiThreadHandler = new Handler();
         
-        
+        StatisticsUtils.IncreaseEditNoteRecodePage();
 	}
 
 
@@ -1024,6 +1026,12 @@ public void showToast(String text) {
 		// 清空选择图片的pref文件记录
 		removeTempFromPref();
 		mDataList = new ArrayList<ImageItem>();	
+		
+		if (mInputFlag == 0){
+			StatisticsUtils.IncreaseKeyboardMode();
+		}else{
+			StatisticsUtils.IncreaseScanMode();
+		}
 	}
 	
 	public void UploadFilesToHvnCloud(final String title,final String content,final List<ImageItem> mDataList){
@@ -1199,7 +1207,7 @@ public void showToast(String text) {
 				toEditableMode(etScanContent);
 				break;
 	            case R.id.ivShare:
-                    
+	            	StatisticsUtils.IncreaseShare();
 	            	//跳转到分享和上传功能界面
 //	            	Intent intent = new Intent(ScanNoteActivity.this,ShareNoteActivity.class);
 //	            	intent.putExtra("title", etNoteTitle.getText().toString());
@@ -1222,11 +1230,13 @@ public void showToast(String text) {
 
 	            	 break;
 	            case R.id.ivInsertImage:
+	            	StatisticsUtils.IncreaseAddImage();
 					new PopupWindows(ScanNoteActivity.this, mGridView);    
 			    //    imm.hideSoftInputFromWindow(etScanContent.getWindowToken(),0);
 					break;
 	            case R.id.ivScan:
 	    			LogUtil.i("tong------------home_go_home");
+	    			StatisticsUtils.IncreaseRectification();
 	    			if (BluetoothService.getServiceInstance() != null){
 	    			    if (isConnected()) {
 	    			        sendRecevieImagetoEpen();
@@ -1234,6 +1244,7 @@ public void showToast(String text) {
 	    			}
 	            	break;
 	            case R.id.ivDelete:
+	            	StatisticsUtils.IncreaseDelete();
 	            	showBottomDlg();
 	            	break;
 /*

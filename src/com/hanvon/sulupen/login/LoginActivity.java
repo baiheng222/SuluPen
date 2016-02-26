@@ -2,19 +2,12 @@ package com.hanvon.sulupen.login;
 
 import java.io.File;
 import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import cn.sharesdk.framework.Platform;
 import cn.sharesdk.framework.PlatformActionListener;
-import cn.sharesdk.framework.ShareSDK;
 import cn.sharesdk.tencent.qq.QQ;
-import cn.sharesdk.tencent.qzone.QZone;
 import cn.sharesdk.wechat.friends.Wechat;
 
 import com.hanvon.sulupen.application.HanvonApplication;
@@ -28,9 +21,9 @@ import com.hanvon.sulupen.utils.LogUtil;
 import com.hanvon.sulupen.utils.ClearEditText;
 import com.hanvon.sulupen.utils.ConnectionDetector;
 import com.hanvon.sulupen.utils.LoginUtils;
-import com.hanvon.sulupen.utils.LoginUtils;
+import com.hanvon.sulupen.utils.StatisticsUtils;
+import com.hanvon.sulupen.utils.UrlBankUtil;
 import com.mob.tools.utils.UIHandler;
-import com.tencent.mm.sdk.modelmsg.SendAuth;
 import com.tencent.tauth.Tencent;
 
 import android.app.Activity;
@@ -127,6 +120,8 @@ OnClickListener, PlatformActionListener  {
 		if (intent != null){
 			flag = intent.getStringExtra("flag");
 		}
+		
+		StatisticsUtils.IncreaseLoginPage();
 	}
 
 	public void onClick(View v) {
@@ -152,6 +147,7 @@ OnClickListener, PlatformActionListener  {
 					Toast.makeText(LoginActivity.this, "用户名或者密码不允许为空", Toast.LENGTH_SHORT).show();
 					return;
 				}
+				StatisticsUtils.IncreaseHvnLogin();
 				/*
 				if ((strPassWord.length() < 6) || (strPassWord.length() > 16)){
 					Toast.makeText(LoginActivity.this, "密码应为6-16位字母和数字组合!", Toast.LENGTH_SHORT).show();
@@ -172,6 +168,7 @@ OnClickListener, PlatformActionListener  {
             	judgeUserIsOk();
 				break;
             case R.id.registuser:
+            	StatisticsUtils.IncreaseRegister();
             	LogUtil.i("INTO Create user Before");
             	Intent intent = new Intent(LoginActivity.this, RegisterUserGetCodePhone.class);
                 LoginActivity.this.startActivity(intent);
@@ -184,10 +181,12 @@ OnClickListener, PlatformActionListener  {
                 break;
                 
             case R.id.login_qq:
+            	StatisticsUtils.IncreaseQQLogin();
             	QQUserLogin();
             	break;
             
             case R.id.login_weixin:
+            	StatisticsUtils.IncreaseWXLogin();
             	weiXinUserLogin();
             	break;
 
@@ -222,8 +221,9 @@ OnClickListener, PlatformActionListener  {
 				paramJson.put("sid", HanvonApplication.AppSid);
 				paramJson.put("user", strUserName);
 				paramJson.put("pwd", strPassWord);
+				paramJson = StatisticsUtils.StatisticsJson(paramJson);
 				LogUtil.i(paramJson.toString());
-				String responce = HttpClientHelper.sendPostRequest("http://dpi.hanvon.com/rt/ap/v1/user/login", paramJson.toString());
+				String responce = HttpClientHelper.sendPostRequest(UrlBankUtil.getHvnLoginUrl(), paramJson.toString());
 
 				Message message = new Message();
 				Bundle bundle = new Bundle();

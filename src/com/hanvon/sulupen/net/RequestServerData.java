@@ -233,4 +233,10 @@ public class RequestServerData {
 	public static RequestResult thirdUnBind(JSONObject json) {
 		return simpleRequest(HTTPTYPE.POST, UrlBankUtil.thirdUnBind(),json);
 	}
+	
+	
+	/*设备信息上传*/
+	public static RequestResult deviceStatUpload(JSONObject json) {
+		return simpleRequest(HTTPTYPE.POST, UrlBankUtil.getDevicestatUrl(),json);
+	}
 }

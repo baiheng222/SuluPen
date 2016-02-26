@@ -19,6 +19,8 @@ import com.hanvon.sulupen.application.HanvonApplication;
 import com.hanvon.sulupen.utils.Base64Utils;
 import com.hanvon.sulupen.utils.LogUtil;
 import com.hanvon.sulupen.utils.MD5Util;
+import com.hanvon.sulupen.utils.StatisticsUtils;
+import com.hanvon.sulupen.utils.UrlBankUtil;
 
 /**
  * 
@@ -102,11 +104,12 @@ public class FilesManager {
 		
 		LogUtil.i("---totalLength:"+totalLength+" ----filename:"+filename);
 	  	try {
+	  		JSuserInfoJson = StatisticsUtils.StatisticsJson(JSuserInfoJson);
 	  		JSuserInfoJson.put("uid", HanvonApplication.AppUid);
 	  		JSuserInfoJson.put("sid", HanvonApplication.AppSid);
 	  	  	JSuserInfoJson.put("ver", HanvonApplication.AppVer);
 	  	  	JSuserInfoJson.put("userid", HanvonApplication.hvnName);
-	  	    JSuserInfoJson.put("devid", "wwww");
+	  	    JSuserInfoJson.put("devid", HanvonApplication.AppDeviceId);
 	  	    JSuserInfoJson.put("fuid", fuid);
 	  	    JSuserInfoJson.put("ftype", "4");
 	  	    JSuserInfoJson.put("fname", filename);
@@ -129,7 +132,7 @@ public class FilesManager {
 		URL url = null;
 		HttpURLConnection httpurlconnection = null;
 
-		url = new URL("http://dpi.hanvon.com/rt/ap/v1/store/upload");
+		url = new URL(UrlBankUtil.getHvnUploadUrl());
 		httpurlconnection = (HttpURLConnection) url.openConnection();
 		httpurlconnection.setConnectTimeout(60*1000);
 		httpurlconnection.setUseCaches(false);

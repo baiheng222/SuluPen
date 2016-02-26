@@ -31,6 +31,7 @@ import com.hanvon.sulupen.R;
 import com.hanvon.sulupen.utils.LogUtil;
 import com.hanvon.sulupen.utils.ClearEditText;
 import com.hanvon.sulupen.utils.ConnectionDetector;
+import com.hanvon.sulupen.utils.StatisticsUtils;
 
 public class RegisterUserFromPhone extends Activity implements OnClickListener{
 
@@ -115,6 +116,8 @@ public class RegisterUserFromPhone extends Activity implements OnClickListener{
 				result = CheckAuthCodeToServer();
 			} else if(flagTask == 2) {
 				result = registerApi();
+			}else if(flagTask == 3){
+				result = UploadDeviceStat();
 			}
 			return result;
 		}
@@ -160,9 +163,7 @@ public class RegisterUserFromPhone extends Activity implements OnClickListener{
 					    mEditor.putInt("status", 1);
 					    mEditor.commit();
 
-					    startActivity(new Intent(RegisterUserFromPhone.this, MainActivity.class));
-					    RegisterUserFromPhone.this.finish();
-					    pd.dismiss();
+					    new RequestTask(3).execute();
 				    } else if (json.get("code").equals("520")){
 				    	pd.dismiss();
 					    Toast.makeText(RegisterUserFromPhone.this, "服务器异常，请稍后再试!", Toast.LENGTH_SHORT).show();
@@ -170,6 +171,10 @@ public class RegisterUserFromPhone extends Activity implements OnClickListener{
 				    	pd.dismiss();
 					    Toast.makeText(RegisterUserFromPhone.this, "注册失败!", Toast.LENGTH_SHORT).show();
 				    }
+			    }else if (flagTask == 3){
+			    	startActivity(new Intent(RegisterUserFromPhone.this, MainActivity.class));
+				    RegisterUserFromPhone.this.finish();
+				    pd.dismiss();
 			    }
 		    } catch (JSONException e) {
 		    	pd.dismiss();
@@ -208,6 +213,7 @@ public class RegisterUserFromPhone extends Activity implements OnClickListener{
   	    	JSuserInfoJson.put("pwd", strPassword);
   	    	JSuserInfoJson.put("mobile", strPhoneNumber);
   	    	JSuserInfoJson.put("registeWay","1");
+  	    	JSuserInfoJson = StatisticsUtils.StatisticsJson(JSuserInfoJson);
   	    } catch (JSONException e) {
   		    e.printStackTrace();
   	    }
@@ -217,6 +223,33 @@ public class RegisterUserFromPhone extends Activity implements OnClickListener{
   	    result=RequestServerData.userRegister(JSuserInfoJson);
   	    return result;
     }
+	
+	public RequestResult UploadDeviceStat(){
+
+	    JSONObject devinfo = new JSONObject();
+	  	try {
+	  	   	devinfo.put("userid", HanvonApplication.hvnName);
+	  	   	devinfo.put("devid", HanvonApplication.AppDeviceId);
+	  	   	devinfo.put("devModel", "Android");
+	  	   	devinfo.put("softName", HanvonApplication.AppSid);
+	  	   	devinfo.put("osName", android.os.Build.MODEL);
+	  	   	devinfo.put("osVer",android.os.Build.VERSION.RELEASE);
+	  	   	devinfo.put("softVer", HanvonApplication.AppVer);
+	  	   	devinfo.put("longitude", HanvonApplication.curLongitude);
+	  	   	devinfo.put("latitude", HanvonApplication.curLatitude);
+	  	   	devinfo.put("locationCountry", HanvonApplication.curCountry);
+	  	   	devinfo.put("locationProvince", HanvonApplication.curProvince);
+	  	   	devinfo.put("locationCity", HanvonApplication.curCity);
+	  	   	devinfo.put("locationArea", HanvonApplication.curDistrict);
+	  	} catch (JSONException e) {
+	  	    e.printStackTrace();
+	  	}
+
+	  	LogUtil.i(devinfo.toString());
+	  	RequestResult result=new RequestResult();
+	  	result=RequestServerData.deviceStatUpload(devinfo);
+	  	return result;
+	}
 	
 	@Override  
 	public boolean onKeyDown(int keyCode, KeyEvent event)

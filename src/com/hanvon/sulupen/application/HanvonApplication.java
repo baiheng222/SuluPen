@@ -3,6 +3,7 @@ package com.hanvon.sulupen.application;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningAppProcessInfo;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
@@ -27,6 +28,7 @@ import com.hanvon.bluetooth.BluetoothService;
 import com.hanvon.bluetooth.BluetoothSetting;
 import com.hanvon.sulupen.helper.PreferHelper;
 import com.hanvon.sulupen.utils.LogUtil;
+import com.hanvon.sulupen.utils.StatisticsUtils;
 import com.tencent.mm.sdk.openapi.IWXAPI;
 import com.tencent.mm.sdk.openapi.WXAPIFactory;
 import com.tencent.tauth.Tencent;
@@ -51,10 +53,15 @@ public class HanvonApplication extends FrontiaApplication {
 	public String curAddress = "";
 	public String addrDetail="";
 	public String netState = "";
-	public String curCity="";
+	public static String curCity="";
 	
-	
-	
+	/************增加统计需要的国家、省份、城市、区县以及经纬度************************/
+	public static String curCountry = "";
+	public static String curProvince = "";
+	public static String curDistrict = "";
+	public static String curLongitude = "";//经度
+	public static String curLatitude = "";//维度
+	/***********************END*********************************/
 	
 	public static String strName = "";
 	public static String strEmail = "";
@@ -91,6 +98,7 @@ public class HanvonApplication extends FrontiaApplication {
 	
 	//public static boolean isUpdate = false;
 	public static String HardUpdateUrl = "";
+	private static Context mContext;
 	@Override
 	public void onCreate() {
 
@@ -143,6 +151,9 @@ public class HanvonApplication extends FrontiaApplication {
 		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
 	//	SharedPreferences sharedPref=getSharedPreferences("Blue", Activity.MODE_MULTI_PROCESS);
 		BluetoothSetting.getInstance(sharedPref);
+		/***********新增行为功能统计********************/
+		SharedPreferences functionSharedPref=getSharedPreferences("function", Activity.MODE_MULTI_PROCESS);
+		StatisticsUtils.getInstance(functionSharedPref);
 
 		//BluetoothService.startService(this);
 		//创建应用目录
@@ -158,8 +169,13 @@ public class HanvonApplication extends FrontiaApplication {
 		if (!userfile.exists()) {
 			userfile.mkdirs();
 		}
+		
+		mContext = getApplicationContext();
 	}
 
+	public static Context getcontext(){
+		return mContext;
+	}
 	private void InitLocation() {
 		LogUtil.i("tong-----InitLocation");
 		LocationClientOption option = new LocationClientOption();
@@ -218,6 +234,13 @@ public class HanvonApplication extends FrontiaApplication {
 				setAddrDetail(location.getAddrStr());
 			}
 			Log.i("tong-------HanvonApplication", "setAddress=="+location.getCity() + location.getDistrict()+"setAddrDetail:"+addrDetail);
+			/*********add by cxz*****************/
+			setLongitude(location.getLongitude()+"");
+			setLatitude(location.getLatitude()+"");
+			setCountry(location.getCountry());
+			setProvince(location.getProvince());
+			setDistrict(location.getDistrict());
+			/***********add End*************/
 			setCity(location.getCity());
 			if(location.getCity()!=null){
 				//GetFirstWeather(location.getCity());
@@ -257,6 +280,43 @@ public class HanvonApplication extends FrontiaApplication {
 	}
 	public void setAddrDetail(String addrDetail) {
 		this.addrDetail = addrDetail;
+	}
+	
+	/**********统计部分，增加国家**********************/
+	public String getCountry() {
+		LogUtil.i("tong-----addrDetail:"+curCountry);
+		return curCountry;
+	}
+	public void setCountry(String country) {
+		this.curCountry = country;
+	}
+	public String getProvice() {
+		LogUtil.i("tong-----getProvice:"+curProvince);
+		return curProvince;
+	}
+	public void setProvince(String province) {
+		this.curProvince = province;
+	}
+	public String getDistrict() {
+		LogUtil.i("tong-----District:"+curDistrict);
+		return curDistrict;
+	}
+	public void setDistrict(String District) {
+		this.curDistrict = District;
+	}
+	public String getLongitude() {
+		LogUtil.i("tong-----Longitude:"+curLongitude);
+		return curLongitude;
+	}
+	public void setLongitude(String Longitude) {
+		this.curLongitude = Longitude;
+	}
+	public String getLatitude() {
+		LogUtil.i("tong-----Latitude:"+curLatitude);
+		return curLatitude;
+	}
+	public void setLatitude(String Latitude) {
+		this.curLatitude = Latitude;
 	}
 	/*
 	public void GetFirstWeather(String City){

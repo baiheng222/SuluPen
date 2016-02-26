@@ -14,6 +14,7 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.StaticLayout;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
@@ -32,6 +33,7 @@ import com.hanvon.sulupen.net.RequestServerData;
 import com.hanvon.sulupen.utils.ClearEditText;
 import com.hanvon.sulupen.utils.ConnectionDetector;
 import com.hanvon.sulupen.utils.LogUtil;
+import com.hanvon.sulupen.utils.StatisticsUtils;
 
 public class RegisterUserFromEmail extends Activity implements OnClickListener{	
 
@@ -45,7 +47,7 @@ public class RegisterUserFromEmail extends Activity implements OnClickListener{
 	private String strPassword;
 	
 	private ProgressDialog pd;
-	JSONObject JSuserInfoJson;
+	//JSONObject JSuserInfoJson;
 	
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -136,6 +138,8 @@ public class RegisterUserFromEmail extends Activity implements OnClickListener{
 				result = SendCodetoEmail();
 			} else if(flagTask == 2) {
 			    result = RigestUserApi();
+		    } else if(flagTask == 4) {
+			    result = UploadDeviceStat();
 		    }
 			return result;
 		}
@@ -188,10 +192,8 @@ public class RegisterUserFromEmail extends Activity implements OnClickListener{
 					    mEditor.putInt("status", 1);
 					    mEditor.commit();
 
-					    startActivity(new Intent(RegisterUserFromEmail.this, MainActivity.class));
-					    RegisterUserFromEmail.this.finish();
-					    pd.dismiss();
-					    Toast.makeText(RegisterUserFromEmail.this, "注册成功，请进入邮箱激活!", Toast.LENGTH_LONG).show();
+					    new RequestTask(4).execute();
+					    
 				    } else if (json.get("code").equals("520")){
 				    	pd.dismiss();
 					    Toast.makeText(RegisterUserFromEmail.this, "服务器异常，请稍后再试!", Toast.LENGTH_SHORT).show();
@@ -199,6 +201,11 @@ public class RegisterUserFromEmail extends Activity implements OnClickListener{
 				    	pd.dismiss();
 					    Toast.makeText(RegisterUserFromEmail.this, "登录失败!", Toast.LENGTH_SHORT).show();
 				    }
+			    }else if (flagTask == 4){
+			    	startActivity(new Intent(RegisterUserFromEmail.this, MainActivity.class));
+				    RegisterUserFromEmail.this.finish();
+				    pd.dismiss();
+				    Toast.makeText(RegisterUserFromEmail.this, "注册成功，请进入邮箱激活!", Toast.LENGTH_LONG).show();
 			    }
 		    } catch (JSONException e) {
 		    	pd.dismiss();
@@ -238,19 +245,19 @@ public class RegisterUserFromEmail extends Activity implements OnClickListener{
 		  	RequestResult result=new RequestResult();
 		  	result=RequestServerData.getActivityEmail(JSuserInfoJson);
 		  	return result;
-		}
+	}
 	 
 	 public RequestResult  RigestUserApi(){
 
 	    	JSONObject JSuserInfoJson = new JSONObject();
-	    	JSONObject userinfo = new JSONObject();
-	  	    try {
+	    	try {
 	  	    	JSuserInfoJson.put("uid", HanvonApplication.AppUid);
 	  	    	JSuserInfoJson.put("sid", HanvonApplication.AppSid);
 	  	    	JSuserInfoJson.put("user", strEmail);
 	  	    	JSuserInfoJson.put("pwd", strPassword);
 	  	    	JSuserInfoJson.put("email", strEmail);
 	  	    	JSuserInfoJson.put("registeWay","0");
+	  	    	JSuserInfoJson = StatisticsUtils.StatisticsJson(JSuserInfoJson);
 	  	    } catch (JSONException e) {
 	  		    e.printStackTrace();
 	  	    }
@@ -258,6 +265,33 @@ public class RegisterUserFromEmail extends Activity implements OnClickListener{
 	  	    LogUtil.i(JSuserInfoJson.toString());
 	  	    RequestResult result=new RequestResult();
 	  	    result=RequestServerData.userRegister(JSuserInfoJson);
+	  	    return result;
+	    }
+	 
+	    public RequestResult UploadDeviceStat(){
+
+	    	JSONObject devinfo = new JSONObject();
+	  	    try {
+	  	    	devinfo.put("userid", HanvonApplication.hvnName);
+	  	    	devinfo.put("devid", HanvonApplication.AppDeviceId);
+	  	    	devinfo.put("devModel", "Android");
+	  	    	devinfo.put("softName", HanvonApplication.AppSid);
+	  	    	devinfo.put("osName", android.os.Build.MODEL);
+	  	    	devinfo.put("osVer",android.os.Build.VERSION.RELEASE);
+	  	    	devinfo.put("softVer", HanvonApplication.AppVer);
+	  	    	devinfo.put("longitude", HanvonApplication.curLongitude);
+	  	    	devinfo.put("latitude", HanvonApplication.curLatitude);
+	  	    	devinfo.put("locationCountry", HanvonApplication.curCountry);
+	  	    	devinfo.put("locationProvince", HanvonApplication.curProvince);
+	  	    	devinfo.put("locationCity", HanvonApplication.curCity);
+	  	    	devinfo.put("locationArea", HanvonApplication.curDistrict);
+	  	    } catch (JSONException e) {
+	  		    e.printStackTrace();
+	  	    }
+
+	  	    LogUtil.i(devinfo.toString());
+	  	    RequestResult result=new RequestResult();
+	  	    result=RequestServerData.deviceStatUpload(devinfo);
 	  	    return result;
 	    }
 	 

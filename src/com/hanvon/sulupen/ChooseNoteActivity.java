@@ -36,6 +36,7 @@ import com.hanvon.sulupen.db.dao.NoteRecordDao;
 import com.hanvon.sulupen.utils.HvnCloudManager;
 import com.hanvon.sulupen.utils.LogUtil;
 import com.hanvon.sulupen.utils.SHA1Util;
+import com.hanvon.sulupen.utils.StatisticsUtils;
 
 public class ChooseNoteActivity extends Activity implements OnClickListener
 {
@@ -108,6 +109,8 @@ public class ChooseNoteActivity extends Activity implements OnClickListener
 		
 		initData();
 		initView();
+		
+		StatisticsUtils.IncreaseSeleteNoteBookPage();
 	}
 	
 	
@@ -197,6 +200,7 @@ public class ChooseNoteActivity extends Activity implements OnClickListener
 			break;
 			
 			case R.id.iv_share_note:
+				StatisticsUtils.IncreaseBatchShare();
 				if(!bShareClick)
 				{
 					//CharSequence cs =  R.string.link_mess;
@@ -209,14 +213,16 @@ public class ChooseNoteActivity extends Activity implements OnClickListener
 			}
 		     }
 			break;
-			
+
 			case R.id.iv_move_note:
+				StatisticsUtils.IncreaseChangeNoteBook();
 			    Intent changeIntent = new Intent(this, ChangNoteBookActivity.class);
 			    changeIntent.putExtra("NoteBook", mPassedNoteBook);
 			    startActivityForResult(changeIntent, RESULT_CHAGNE_NOTEBOOK_BATCH);
 			break;
-			
+
 			case R.id.iv_delete_note:
+				StatisticsUtils.IncreaseBatchDelete();
 				deleteSelectedNote();
 			break;
 		}

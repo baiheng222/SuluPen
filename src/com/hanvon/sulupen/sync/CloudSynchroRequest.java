@@ -313,8 +313,9 @@ public class CloudSynchroRequest {
     	//	LogUtil.i("-----type:"+type+"     --response:"+data);
     		try { // 回调数据
     			if(callBackData != null){
-    				if (data.equals("")){
+    				if (data == null || data.equals("")){
     					LogUtil.i("-----type:"+type+"     --response:"+data);
+    					return;
     				}
     				callBackData.back(data, type,total);
     			}

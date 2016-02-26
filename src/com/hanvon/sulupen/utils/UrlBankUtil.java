@@ -4,8 +4,8 @@ public class UrlBankUtil {
 	// 服务器对应ip地址:61.135.185.83
 	private static String ip = "http://hanwang.duapp.com:80";
 	private static String ipHanvon = "http://dpi.hanvon.com/";
-//	private static String HanvanApkIp = "http://cloud.hwyun.com/dws-cloud/rt/ap/v1";
-	private static String HanvanApkIp = "http://dpi.hanvon.com/rt/ap/v1";
+	private static String HanvanApkIp = "http://cloud.hwyun.com/dws-cloud/rt/ap/v1";
+//	private static String HanvanApkIp = "http://dpi.hanvon.com/rt/ap/v1";
 	// 本地IP地址
 	// public static String UrlRootPath="http://192.168.133.45:8080";
 	private static String baiduTranslateIp = "http://openapi.baidu.com/public/2.0/bmt/translate";
@@ -218,6 +218,34 @@ public class UrlBankUtil {
 	 */
 	public static String thirdUnBind(){
 		return  HanvanApkIp + "/user/thirdunbind";
+	}
+	
+	/**
+	 * 获取登录地址
+	 */
+	public static String getHvnLoginUrl(){
+		return  HanvanApkIp + "/user/login";
+	}
+	
+	/**
+	 * 获取登录地址
+	 */
+	public static String getHvnUploadUrl(){
+		return  HanvanApkIp + "/store/upload";
+	}
+	
+	/**
+	 * 获取行为功能统计
+	 */
+	public static String getFunctionUrl(){
+		return HanvanApkIp + "/statistics/gather/functionstat";
+	}
+	
+	/**
+	 * 后台统计数据收集设备信息接口
+	 */
+	public static String getDevicestatUrl(){
+		return HanvanApkIp + "/statistics/gather/devicestat";
 	}
 }
 

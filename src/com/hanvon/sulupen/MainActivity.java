@@ -59,6 +59,7 @@ import com.hanvon.sulupen.utils.CircleImageView;
 import com.hanvon.sulupen.utils.ConnectionDetector;
 import com.hanvon.sulupen.utils.LogUtil;
 import com.hanvon.sulupen.utils.MD5Util;
+import com.hanvon.sulupen.utils.StatisticsUtils;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.lidroid.xutils.BitmapUtils;
 import com.lidroid.xutils.bitmap.BitmapCommonUtils;
@@ -176,6 +177,15 @@ import com.lidroid.xutils.bitmap.BitmapCommonUtils;
         	LogUtil.i("--------Before Call BluetoothCheck（）-------3-------");
         	BluetoothCheck(1);
         }
+        
+        StatisticsUtils.IncreaseMainPage();
+        StatisticsUtils.SetCurTimeHour();
+        try {
+			StatisticsUtils.UpLoadFunctionStatus1(MainActivity.this);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     }
 
 	@Override
@@ -494,6 +504,7 @@ import com.lidroid.xutils.bitmap.BitmapCommonUtils;
         switch (view.getId())
         {
             case R.id.ll_new:
+            	StatisticsUtils.IncreaseCrtNoteBook();
             	Intent newIntent = new Intent(this, NewNoteBookActivity.class);
     			newIntent.putExtra("CreateNoteBook", FLAG_CREATE);
     			startActivity(newIntent);
@@ -505,6 +516,7 @@ import com.lidroid.xutils.bitmap.BitmapCommonUtils;
                 break;
                 
             case R.id.ll_search:
+            	StatisticsUtils.IncreaseSearchNoteBook();
             	Intent search = new Intent(this, SearchActivity.class);
             	startActivity(search);
                 break;
@@ -517,6 +529,7 @@ import com.lidroid.xutils.bitmap.BitmapCommonUtils;
 				defaultNoteBook.setNoteBookUpLoad(0);
 				defaultNoteBook.setNoteBookDelete(0);
 				*/
+            	StatisticsUtils.IncreaseCrtNoteRecord();
                 Intent newNoteIntent = new Intent(this, ScanNoteActivity.class);
                 String flagStr = Integer.toString(FLAG_CREATE_NOTE_WITH_DEFAULT_NOTEBOOK);
                 newNoteIntent.putExtra("CreatFlag", flagStr);
@@ -524,6 +537,7 @@ import com.lidroid.xutils.bitmap.BitmapCommonUtils;
                 startActivityForResult(newNoteIntent, 1);
                 break;
             case R.id.iv_rightbtn:
+            	StatisticsUtils.IncreaseBlueConnected();
             	if (isConnected()) {
             	    Intent blueDetailIntent = new Intent(this, BluetoothDetail.class);
         	    	startActivity(blueDetailIntent);
@@ -557,12 +571,14 @@ import com.lidroid.xutils.bitmap.BitmapCommonUtils;
             break;
             
             case R.id.rl_count:
-            	//Toast.makeText(this, "此版本暂不支持该功能！", Toast.LENGTH_SHORT).show();
+            	StatisticsUtils.IncreaseStatistics();
+            	//Toast.makeText(thisWWW.CLOUDMOUSE.COM.CN, "此版本暂不支持该功能！", Toast.LENGTH_SHORT).show();
             	Intent statistics = new Intent(this, StatisticsActivity.class);
             	startActivity(statistics);
             break;
             
             case R.id.rl_cloud:
+            	StatisticsUtils.IncreaseCloudSync();
             	/******************ceshi***********************/
             	CloudSynchroProcess sync = new CloudSynchroProcess(MainActivity.this,0);
     			try {
@@ -653,6 +669,9 @@ import com.lidroid.xutils.bitmap.BitmapCommonUtils;
 	protected void onDestroy() {
 		unregisterReceiver(btMsgReceiver);
 		LogUtil.i("-------onDestroy in Main Function--------------");
+		StatisticsUtils.WriteBack();
+		StatisticsUtils.releaseInstance();
+
 		super.onDestroy();
 	}
 

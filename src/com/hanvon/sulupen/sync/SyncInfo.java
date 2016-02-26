@@ -13,7 +13,8 @@ public class SyncInfo {
 	public final static int HVN_DOWN_FILES = 8;
 	public final static int HVN_GET_SYSTEM_TIME = 9;
 
-	public final static String HvnIpUrl = "http://dpi.hanvon.com/rt/ap/v1/";
+	//public final static String HvnIpUrl = "http://dpi.hanvon.com/rt/ap/v1/";
+	public final static String HvnIpUrl = "http://cloud.hwyun.com/dws-cloud/rt/ap/v1/";
  
     public final static String HvnDeleteTagsUrl = HvnIpUrl + "app/note/delTag";
     public final static String HvnDeleteFilesUrl = HvnIpUrl + "app/note/delContent";
@@ -21,8 +22,10 @@ public class SyncInfo {
     public final static String HvnUploadFileUrl = HvnIpUrl + "store/upload";
     public final static String HvnFilesListUrl = HvnIpUrl + "app/note/contentlist";
     public final static String HvnTagsListUrl = HvnIpUrl + "app/note/taglist";
-    public final static String HvnDOWNSingFileUrl = "http://dpi.hanvon.com/pub/file/singledownload.do?input=";
-    public final static String HvnDOWNFilesUrl = "http://dpi.hanvon.com/pub/file/download.do?input=";
+  //  public final static String HvnDOWNSingFileUrl = "http://dpi.hanvon.com/pub/file/singledownload.do?input=";
+  //  public final static String HvnDOWNFilesUrl = "http://dpi.hanvon.com/pub/file/download.do?input=";
+    public final static String HvnDOWNSingFileUrl = "http://cloud.hwyun.com/dws-cloud/pub/file/singledownload.do?input=";
+    public final static String HvnDOWNFilesUrl = "http://cloud.hwyun.com/dws-cloud/pub/file/download.do?input=";
     public final static String HvnGetSystemTimeUrl = HvnIpUrl + "/pub/std/getSystemTime";
 
   //下载解压文件根目录
